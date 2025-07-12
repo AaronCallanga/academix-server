@@ -1,0 +1,2 @@
+Email or SMS notification
+Verification by picture of ID
