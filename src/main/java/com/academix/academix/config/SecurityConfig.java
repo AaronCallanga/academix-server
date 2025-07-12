@@ -14,16 +14,20 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.web.SecurityFilterChain;
 
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Configuration
 public class SecurityConfig {
@@ -56,6 +60,23 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
+    }
+
+    @Bean
+    public JwtAuthenticationConverter jwtAuthenticationConverter() {
+        // 1. Create a JwtAuthenticationConverter instance
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        // 2. Tell it exactly how to pull the roles out of the token
+        converter.setJwtGrantedAuthoritiesConverter(
+                jwt -> {
+                    List<String> roles = jwt.getClaimAsStringList("roles");
+                    return roles.stream()
+                                .map(SimpleGrantedAuthority::new)
+                                .collect(Collectors.toList());
+                }
+                                                   );
+        // 3. Return the fully configured converter so Spring can use it
+        return converter;
     }
 
     @Bean
