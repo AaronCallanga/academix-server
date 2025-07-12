@@ -31,3 +31,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### SSH or GPG key files
+*.pem
+*.key
+*.pub
+id_rsa
+id_rsa.pub
