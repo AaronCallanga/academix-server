@@ -43,3 +43,7 @@ public class JwtServiceImpl implements JwtService {
         return jwtEncoder.encode(JwtEncoderParameters.from(header, claims)).getTokenValue();
     }
 }
+
+// TODO:
+// Auth Service and Controller
+// login, logout, register, verify email upon registration
