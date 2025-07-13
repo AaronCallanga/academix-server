@@ -1,0 +1,82 @@
+package com.academix.academix.security.service.implementation;
+
+import com.academix.academix.security.dto.LoginRequestDTO;
+import com.academix.academix.security.dto.LoginResponseDTO;
+import com.academix.academix.security.dto.RegisterRequestDTO;
+import com.academix.academix.security.entity.Role;
+import com.academix.academix.security.repository.RoleRepository;
+import com.academix.academix.security.service.api.AuthService;
+import com.academix.academix.security.service.api.JwtService;
+import com.academix.academix.user.entity.User;
+import com.academix.academix.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@Service
+@RequiredArgsConstructor
+public class AuthServiceImpl implements AuthService {
+
+    private final RoleRepository roleRepository;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserRepository userRepository;
+
+    @Override
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
+        // This triggers your UserDetailsService.loadUserByUsername()
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        loginRequestDTO.getEmail(), loginRequestDTO.getPassword()
+                )
+                                                                          );
+
+        String token = jwtService.generateToken((UserDetails) authentication.getPrincipal());
+        return new LoginResponseDTO(token);
+    }
+
+    @Transactional
+    @Override
+    public String register(RegisterRequestDTO registerRequestDTO) {
+        if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
+            return "Email Already Exists";
+        }
+
+        String hashedPassword = bCryptPasswordEncoder.encode(registerRequestDTO.getPassword());
+
+        if (registerRequestDTO.getRoles() == null || registerRequestDTO.getRoles().isEmpty()) {
+            Set<String> roles = new HashSet<>();
+            roles.add("ROLE_USER");
+            registerRequestDTO.setRoles(roles);
+        }
+
+        Set<Role> roles = registerRequestDTO.getRoles().stream()
+                                            .map(roleName -> roleRepository.findByName(roleName)
+                                                                           .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+                                            .collect(Collectors.toSet());
+
+        User user = User.builder()
+                .lrn(registerRequestDTO.getLrn())
+                .name(registerRequestDTO.getName())
+                .email(registerRequestDTO.getEmail())
+                .password(hashedPassword)
+                .contactNumber(registerRequestDTO.getContactNumber())
+                .isVerified(false)
+                .roles(roles)
+                .build();
+
+        userRepository.save(user);
+
+        return "User registered successfully";
+    }
+}

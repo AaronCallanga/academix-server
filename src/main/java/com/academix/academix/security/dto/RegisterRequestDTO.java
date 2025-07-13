@@ -28,6 +28,8 @@ public class RegisterRequestDTO {
     private String name;
     @NotBlank(message = "Contact number must not be blank")
     private String contactNumber;
+    @NotBlank(message = "User verification status must not be blank")
     private boolean isVerified;
-    Set<String> roles;
+    @NotBlank(message = "Roles must not be blank")
+    Set<String> roles;          // maybe anotation that ensure only the specified role can be registered
 }
