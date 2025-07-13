@@ -29,4 +29,5 @@ public class AuthController {
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {     // return check your email
         return new ResponseEntity<>(authService.register(registerRequestDTO), HttpStatus.OK);
     }
+
 }

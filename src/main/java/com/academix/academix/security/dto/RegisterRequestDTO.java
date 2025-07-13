@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,8 +29,7 @@ public class RegisterRequestDTO {
     private String name;
     @NotBlank(message = "Contact number must not be blank")
     private String contactNumber;
-    @NotBlank(message = "User verification status must not be blank")
     private boolean isVerified;
-    @NotBlank(message = "Roles must not be blank")
+    @NotEmpty(message = "Roles must not be blank")
     Set<String> roles;          // maybe anotation that ensure only the specified role can be registered
 }
