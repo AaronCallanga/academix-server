@@ -48,7 +48,7 @@ public class UserController {
 //                   create MimeMessage/SimpleMailMessage
 //                   link = url + /api/v1/verify?token=...
 //                   JavaMailSender.send(...)
-//              )
+//              ) - done
 //  Once user clicked -> GET url + /verify?token=...
 // AuthController -> verify(@RequestParam token, HttpServletRequest request
 //                          invoke authService.verify()

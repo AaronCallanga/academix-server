@@ -4,6 +4,7 @@ import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
 import com.academix.academix.security.service.api.AuthService;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.UnsupportedEncodingException;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -27,7 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {     // return check your email
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {     // return check your email
         return new ResponseEntity<>(authService.register(registerRequestDTO, request), HttpStatus.OK);
     }
 

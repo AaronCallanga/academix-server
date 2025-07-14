@@ -12,6 +12,7 @@ import com.academix.academix.security.service.api.EmailService;
 import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
+import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -56,7 +58,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {
+    public String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             return "Email Already Exists";
         }
@@ -96,6 +98,7 @@ public class AuthServiceImpl implements AuthService {
         String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
 
         // send email
+        emailService.sendEmail(user, url, token);
         return "User registered successfully";
     }
 }
