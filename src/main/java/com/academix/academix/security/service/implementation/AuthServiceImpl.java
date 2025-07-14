@@ -4,7 +4,9 @@ import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
 import com.academix.academix.security.entity.Role;
+import com.academix.academix.security.entity.VerificationToken;
 import com.academix.academix.security.repository.RoleRepository;
+import com.academix.academix.security.repository.VerificationTokenRepository;
 import com.academix.academix.security.service.api.AuthService;
 import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.user.entity.User;
@@ -18,8 +20,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
+    private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
@@ -77,6 +83,12 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
+        VerificationToken token = VerificationToken.builder()
+                .token(UUID.randomUUID().toString())
+                .expiryDate(LocalDateTime.now())
+                .user(user)
+                .build();
+        verificationTokenRepository.save(token);
         return "User registered successfully";
     }
 }
