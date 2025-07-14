@@ -35,6 +35,7 @@ public class UserController {
         return new ResponseEntity<>(url, HttpStatus.OK);
     }
 }
+// TODO:
 // Entity - User, VerificationToken(one to one with user unidirectional rel)
 // AuthService - register(UserRegistrationDTO, HttpServletRequest request)
 //              check if email exist -> hashed password -> save db,
