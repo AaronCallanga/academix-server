@@ -94,6 +94,8 @@ public class AuthServiceImpl implements AuthService {
         verificationTokenRepository.save(token);
 
         String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+
+        // send email
         return "User registered successfully";
     }
 }
