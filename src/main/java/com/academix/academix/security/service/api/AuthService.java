@@ -3,8 +3,9 @@ package com.academix.academix.security.service.api;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface AuthService {
     LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
-    String register(RegisterRequestDTO registerRequestDTO);
+    String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request);
 }

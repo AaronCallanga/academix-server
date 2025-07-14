@@ -4,6 +4,7 @@ import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
 import com.academix.academix.security.service.api.AuthService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,8 +27,8 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO) {     // return check your email
-        return new ResponseEntity<>(authService.register(registerRequestDTO), HttpStatus.OK);
+    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {     // return check your email
+        return new ResponseEntity<>(authService.register(registerRequestDTO, request), HttpStatus.OK);
     }
 
 }

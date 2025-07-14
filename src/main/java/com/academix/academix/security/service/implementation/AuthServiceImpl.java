@@ -8,9 +8,11 @@ import com.academix.academix.security.entity.VerificationToken;
 import com.academix.academix.security.repository.RoleRepository;
 import com.academix.academix.security.repository.VerificationTokenRepository;
 import com.academix.academix.security.service.api.AuthService;
+import com.academix.academix.security.service.api.EmailService;
 import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,6 +39,7 @@ public class AuthServiceImpl implements AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
+    private final EmailService emailService;
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
@@ -53,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public String register(RegisterRequestDTO registerRequestDTO) {
+    public String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request) {
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             return "Email Already Exists";
         }
@@ -89,6 +92,8 @@ public class AuthServiceImpl implements AuthService {
                 .user(user)
                 .build();
         verificationTokenRepository.save(token);
+
+        String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
         return "User registered successfully";
     }
 }
