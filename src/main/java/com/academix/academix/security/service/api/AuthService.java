@@ -10,5 +10,6 @@ import java.io.UnsupportedEncodingException;
 
 public interface AuthService {
     LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
-    String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException;
+    String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException;
+    String verify(String token);
 }

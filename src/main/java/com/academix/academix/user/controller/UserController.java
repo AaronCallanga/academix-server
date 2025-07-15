@@ -48,21 +48,24 @@ public class UserController {
 //                   create MimeMessage/SimpleMailMessage
 //                   link = url + /api/v1/verify?token=...
 //                   JavaMailSender.send(...)
-//              ) - done
+//              )
 //  Once user clicked -> GET url + /verify?token=...
 // AuthController -> verify(@RequestParam token, HttpServletRequest request
 //                          invoke authService.verify()
 //                           )
 // AuthService - verify(token
 //                  VerificationTokenRepository.findToken if exist -> throw exception if not
-//                  check if expired, find user then resendVerificationToken(user, request),delete token then return "token expired, check your email for new token"
+//                  check if expired, return token expired
+//                  (can resend through AuthController, (authentication, request
+//                  (find user then resendVerificationToken(authentication, request),delete token then return "token expired, check your email for new token")
+//
 //                  User user = verificationToken.getUser(); or User user = userRepo.findByVerificationToken
 //                  user.setVerify(true) -> save db
 //                  VerificationTokenRepository.deleteByToken(token)
-//                  )
-// AuthService - resendVerificationToken(user
-//                   user.getEmail()
-//                   Create Token
+//                  ) - done
+// AuthService - resendVerificationToken(authentication, String baseUrl
+//                   authentication.getName() or getPrincipal or fetch to the database using getName() (email)
+//                   Create Token, linked to user, save db
 //                   url = request.getRequestUrl.toString().replace(request.getRequestURI(), "")
 //                   emailService.sendVerificationEmail(url, token);
 //                  )

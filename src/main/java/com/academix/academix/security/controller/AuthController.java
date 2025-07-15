@@ -10,9 +10,11 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
@@ -31,7 +33,15 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequestDTO registerRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {     // return check your email
-        return new ResponseEntity<>(authService.register(registerRequestDTO, request), HttpStatus.OK);
+        String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
+        return new ResponseEntity<>(authService.register(registerRequestDTO, baseUrl), HttpStatus.OK);
     }
+
+    @GetMapping("/verify")
+    public ResponseEntity<String> verifyUser(@RequestParam String token) {
+        return new ResponseEntity<>(authService.verify(token), HttpStatus.OK);
+    }
+
+
 
 }

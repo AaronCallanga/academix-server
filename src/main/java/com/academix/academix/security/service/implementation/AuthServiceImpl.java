@@ -10,6 +10,7 @@ import com.academix.academix.security.repository.VerificationTokenRepository;
 import com.academix.academix.security.service.api.AuthService;
 import com.academix.academix.security.service.api.EmailService;
 import com.academix.academix.security.service.api.JwtService;
+import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
@@ -42,6 +43,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
+    private final TokenService tokenService;
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
@@ -58,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public String register(RegisterRequestDTO registerRequestDTO, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+    public String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException {
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             return "Email Already Exists";
         }
@@ -88,17 +90,31 @@ public class AuthServiceImpl implements AuthService {
 
         userRepository.save(user);
 
-        VerificationToken token = VerificationToken.builder()
-                .token(UUID.randomUUID().toString())
-                .expiryDate(LocalDateTime.now())
-                .user(user)
-                .build();
+        VerificationToken token = tokenService.generateToken(user);
         verificationTokenRepository.save(token);
 
-        String url = request.getRequestURL().toString().replace(request.getRequestURI(), "");
-
         // send email
-        emailService.sendEmail(user, url, token);
+        emailService.sendEmail(user, baseUrl, token);
         return "User registered successfully";
     }
+
+    @Transactional
+    @Override
+    public String verify(String token) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
+
+        if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
+            tokenService.deleteToken(verificationToken);
+            throw new RuntimeException("Token Expired"); // throw new TokenExpiredException("Verification token has expired."); @Transactional(REQUIRES_NEW) tokenService.delete(token)
+        }
+        User user = verificationToken.getUser();
+        user.setVerified(true);
+        userRepository.save(user);
+
+        tokenService.deleteToken(verificationToken);
+        return "User verified successfully";
+    }
+
+
 }
