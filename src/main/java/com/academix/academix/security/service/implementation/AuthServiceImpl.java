@@ -41,7 +41,6 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
     private final TokenService tokenService;
 
@@ -91,7 +90,6 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(user);
 
         VerificationToken token = tokenService.generateToken(user);
-        verificationTokenRepository.save(token);
 
         // send email
         emailService.sendEmail(user, baseUrl, token);
@@ -101,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
     @Transactional
     @Override
     public String verify(String token) {
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+        VerificationToken verificationToken = tokenService.getToken(token)
                 .orElseThrow(() -> new RuntimeException("Token not found"));
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {

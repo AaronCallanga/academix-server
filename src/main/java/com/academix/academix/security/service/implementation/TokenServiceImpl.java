@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -19,16 +20,24 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public VerificationToken generateToken(User user) {
-        return VerificationToken.builder()
+        VerificationToken token = VerificationToken.builder()
                                 .token(UUID.randomUUID().toString())
                                 .expiryDate(LocalDateTime.now().plusMinutes(15))
                                 .user(user)
                                 .build();
+        return verificationTokenRepository.save(token);
     }
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void deleteToken(VerificationToken token) {
         verificationTokenRepository.delete(token);
+    }
+
+    @Override
+    public Optional<VerificationToken> getToken(String token) {
+        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+                                   .orElseThrow(() -> new RuntimeException("Token not found"));
+       return Optional.ofNullable(verificationToken);
     }
 }
