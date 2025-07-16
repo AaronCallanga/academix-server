@@ -10,6 +10,6 @@ public class SampleController {
 
     @GetMapping("/sample")
     public ResponseEntity<String> sample() {
-        return new ResponseEntity<>("jwt required", HttpStatus.OK);
+        return new ResponseEntity<>("jwt required, you have accessed", HttpStatus.OK);
     }
 }
