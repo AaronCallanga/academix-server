@@ -20,6 +20,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -99,6 +100,7 @@ public class AuthServiceImpl implements AuthService {
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenService.deleteToken(verificationToken);
+            System.out.println("Token Expired");
             throw new RuntimeException("Token Expired"); // throw new TokenExpiredException("Verification token has expired."); @Transactional(REQUIRES_NEW) tokenService.delete(token)
         }
         User user = verificationToken.getUser();        //maybe find user by token,
@@ -111,7 +113,15 @@ public class AuthServiceImpl implements AuthService {
 
     @Override   // only for logged in
     public String resendVerification(Authentication authentication, String baseUrl) throws MessagingException, UnsupportedEncodingException {
-        User user = (User) authentication.getPrincipal();
+        String email;
+        if (authentication.getPrincipal() instanceof Jwt jwt) {
+            email = jwt.getClaim("sub"); // or "email", depending on your JWT structure
+        } else {
+            throw new IllegalStateException("Unexpected authentication principal type");
+        }
+
+        User user = userRepository.findByEmail(email)
+                                  .orElseThrow(() -> new RuntimeException("User not found"));
         VerificationToken verificationToken = tokenService.generateToken(user);
 
         emailService.sendVerification(user, baseUrl, verificationToken);
