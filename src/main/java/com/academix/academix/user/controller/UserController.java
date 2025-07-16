@@ -62,13 +62,13 @@ public class UserController {
 //                  User user = verificationToken.getUser(); or User user = userRepo.findByVerificationToken
 //                  user.setVerify(true) -> save db
 //                  VerificationTokenRepository.deleteByToken(token)
-//                  ) - done
+//                  )
 // AuthService - resendVerificationToken(authentication, String baseUrl
 //                   authentication.getName() or getPrincipal or fetch to the database using getName() (email)
 //                   Create Token, linked to user, save db
 //                   url = request.getRequestUrl.toString().replace(request.getRequestURI(), "")
 //                   emailService.sendVerificationEmail(url, token);
-//                  )
+//                  ) - done
 // implement AOP to check if a user verify to all the request,
 //                      get authentication.
 //                      User user = repo.findUser(authentication.getName())

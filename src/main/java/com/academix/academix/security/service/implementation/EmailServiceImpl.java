@@ -19,7 +19,7 @@ public class EmailServiceImpl implements EmailService {
     private final JavaMailSender mailSender;
 
     @Override
-    public void sendEmail(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
+    public void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
         String fromAddress = "aaroncallanga01@gmail.com";
         String senderName = "Academix";
@@ -28,7 +28,7 @@ public class EmailServiceImpl implements EmailService {
                 + "Please click the link below to verify your registration:<br>"
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
-                + "Your company name.";
+                + "Academix";
         MimeMessage message = mailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message);
 

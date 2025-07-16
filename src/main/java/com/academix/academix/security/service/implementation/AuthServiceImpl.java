@@ -6,7 +6,6 @@ import com.academix.academix.security.dto.RegisterRequestDTO;
 import com.academix.academix.security.entity.Role;
 import com.academix.academix.security.entity.VerificationToken;
 import com.academix.academix.security.repository.RoleRepository;
-import com.academix.academix.security.repository.VerificationTokenRepository;
 import com.academix.academix.security.service.api.AuthService;
 import com.academix.academix.security.service.api.EmailService;
 import com.academix.academix.security.service.api.JwtService;
@@ -14,7 +13,6 @@ import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,11 +23,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -92,15 +88,14 @@ public class AuthServiceImpl implements AuthService {
         VerificationToken token = tokenService.generateToken(user);
 
         // send email
-        emailService.sendEmail(user, baseUrl, token);
+        emailService.sendVerification(user, baseUrl, token);
         return "User registered successfully";
     }
 
     @Transactional
     @Override
     public String verify(String token) {
-        VerificationToken verificationToken = tokenService.getToken(token)
-                .orElseThrow(() -> new RuntimeException("Token not found"));
+        VerificationToken verificationToken = tokenService.getToken(token);
 
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenService.deleteToken(verificationToken);
@@ -112,6 +107,15 @@ public class AuthServiceImpl implements AuthService {
 
         tokenService.deleteToken(verificationToken);
         return "User verified successfully";
+    }
+
+    @Override   // only for logged in
+    public String resendVerification(Authentication authentication, String baseUrl) throws MessagingException, UnsupportedEncodingException {
+        User user = (User) authentication.getPrincipal();
+        VerificationToken verificationToken = tokenService.generateToken(user);
+
+        emailService.sendVerification(user, baseUrl, verificationToken);
+        return "Token send successfully. Please check your email";
     }
 
 

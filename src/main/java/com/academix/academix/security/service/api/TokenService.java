@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface TokenService {
     VerificationToken generateToken(User user);
     void deleteToken(VerificationToken token);
-    Optional<VerificationToken> getToken(String token);
+    VerificationToken getToken(String token);
 }

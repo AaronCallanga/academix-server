@@ -27,7 +27,10 @@ public class TokenServiceImpl implements TokenService {
                                 .build();
         return verificationTokenRepository.save(token);
     }
-
+    /*
+    Always create a new transaction, even if the caller method is already running inside a transaction.
+    Pause the outer transaction → Run this method in a new transaction → Commit/rollback it → Resume the outer one.
+     */
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void deleteToken(VerificationToken token) {
@@ -35,9 +38,8 @@ public class TokenServiceImpl implements TokenService {
     }
 
     @Override
-    public Optional<VerificationToken> getToken(String token) {
-        VerificationToken verificationToken = verificationTokenRepository.findByToken(token)
+    public VerificationToken getToken(String token) {
+        return verificationTokenRepository.findByToken(token)
                                    .orElseThrow(() -> new RuntimeException("Token not found"));
-       return Optional.ofNullable(verificationToken);
     }
 }
