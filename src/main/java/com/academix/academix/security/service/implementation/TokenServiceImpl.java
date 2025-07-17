@@ -20,6 +20,17 @@ public class TokenServiceImpl implements TokenService {
 
     @Override
     public VerificationToken generateToken(User user) {
+        // 1. Delete expired tokens
+        verificationTokenRepository.deleteByUserAndExpiryDateBefore(user, LocalDateTime.now());
+
+        // 2. Check if there's still an unexpired token for the user, send it instead of creating new one
+        Optional<VerificationToken> existingToken = verificationTokenRepository.findByUserAndExpiryDateAfter(user, LocalDateTime.now());
+        if (existingToken.isPresent()) {
+            System.out.println("Token still existing: " + existingToken.get().getToken());
+            return existingToken.get();
+        }
+
+        // 3. Generate new token
         VerificationToken token = VerificationToken.builder()
                                 .token(UUID.randomUUID().toString())
                                 .expiryDate(LocalDateTime.now().plusMinutes(15))

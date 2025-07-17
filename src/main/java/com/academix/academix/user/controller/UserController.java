@@ -67,6 +67,7 @@ public class UserController {
 //                   emailService.sendVerificationEmail(url, token);
 //                  ) - done
 // make email service async (done), and scheduled token cleanup for expired tokens
+// Send rate-limited resend email feedback like: "Token already sent. Please check your inbox or wait X minutes."
 // implement AOP to check if a user verify to all the request,
 //                      get authentication.
 //                      User user = repo.findUser(authentication.getName())

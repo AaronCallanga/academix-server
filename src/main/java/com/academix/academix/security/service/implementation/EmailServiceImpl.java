@@ -16,7 +16,7 @@ import java.io.UnsupportedEncodingException;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+//@Slf4j
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 
         mimeMessageHelper.setText(content, true);
         mailSender.send(message);
-        log.info("Sending email on thread {}", Thread.currentThread().getName());     // For testing
-        throw new RuntimeException("Test Exception");
+        //log.info("Sending email on thread {}", Thread.currentThread().getName());     // For testing
+        //throw new RuntimeException("Test Exception");
     }
 }
