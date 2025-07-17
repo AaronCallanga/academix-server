@@ -1,5 +1,6 @@
 package com.academix.academix.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,18 +11,17 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableAsync
+@RequiredArgsConstructor
 public class AsyncConfig implements AsyncConfigurer {
 
-    ThreadPoolExecutor threadPoolExecutor;
+    private ThreadPoolExecutor threadPoolExecutor;
 
-    @Autowired
-    private AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler;
+    private final AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler;
 
     @Bean(name = "emailExecutor")
     public Executor emailExecutor() {
@@ -30,9 +30,12 @@ public class AsyncConfig implements AsyncConfigurer {
         executor.setMaxPoolSize(20);
         executor.setQueueCapacity(30);
         executor.setThreadNamePrefix("emailExecutor-");         // thread factory
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.DiscardPolicy());
         executor.initialize();
         return executor;
     }
+
+    // you can create more executor based on its domain, use @Async("beanName) for using domain-specific executor
 
     // Default executor
     @Override

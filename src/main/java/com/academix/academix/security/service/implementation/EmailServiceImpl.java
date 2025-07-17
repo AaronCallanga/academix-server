@@ -6,18 +6,22 @@ import com.academix.academix.user.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
+    @Async("emailExecutor")
     @Override
     public void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
@@ -42,5 +46,7 @@ public class EmailServiceImpl implements EmailService {
 
         mimeMessageHelper.setText(content, true);
         mailSender.send(message);
+        log.info("Sending email on thread {}", Thread.currentThread().getName());
+        throw new RuntimeException("Test Exception");
     }
 }
