@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Async()
+    @Async("emailExecutor")
     @Override
     public void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();

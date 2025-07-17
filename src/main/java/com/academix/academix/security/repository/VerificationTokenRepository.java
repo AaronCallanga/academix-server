@@ -11,4 +11,5 @@ public interface VerificationTokenRepository extends JpaRepository<VerificationT
     Optional<VerificationToken> findByToken(String token);
     Optional<VerificationToken> findByUserAndExpiryDateAfter(User user, LocalDateTime now);
     void deleteByUserAndExpiryDateBefore(User user, LocalDateTime now);
+    void deleteByExpiryDateBefore(LocalDateTime now);
 }
