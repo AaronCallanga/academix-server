@@ -3,10 +3,12 @@ package com.academix.academix.exception;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+@Component
 public class DefaultAsyncUncaughtExceptionHandler implements AsyncUncaughtExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(DefaultAsyncUncaughtExceptionHandler.class);
 

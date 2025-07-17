@@ -1,5 +1,7 @@
 package com.academix.academix.config;
 
+import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
@@ -17,6 +19,9 @@ import java.util.concurrent.TimeUnit;
 public class AsyncConfig implements AsyncConfigurer {
 
     ThreadPoolExecutor threadPoolExecutor;
+
+    @Autowired
+    private AsyncUncaughtExceptionHandler asyncUncaughtExceptionHandler;
 
     @Bean(name = "emailExecutor")
     public Executor emailExecutor() {
@@ -48,6 +53,11 @@ public class AsyncConfig implements AsyncConfigurer {
         }
 
         return threadPoolExecutor;
+    }
+
+    @Override
+    public AsyncUncaughtExceptionHandler getAsyncUncaughtExceptionHandler() {
+        return this.asyncUncaughtExceptionHandler;
     }
 }
 
