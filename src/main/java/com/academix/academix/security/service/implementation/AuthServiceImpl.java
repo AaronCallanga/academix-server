@@ -98,6 +98,7 @@ public class AuthServiceImpl implements AuthService {
     public String verify(String token) {
         VerificationToken verificationToken = tokenService.getToken(token);
 
+        // Check if token expired
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenService.deleteToken(verificationToken);
             System.out.println("Token Expired");

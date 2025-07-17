@@ -66,7 +66,7 @@ public class UserController {
 //                   url = request.getRequestUrl.toString().replace(request.getRequestURI(), "")
 //                   emailService.sendVerificationEmail(url, token);
 //                  ) - done
-// make email service async, and scheduled token cleanup for expired tokens
+// make email service async (done), and scheduled token cleanup for expired tokens
 // implement AOP to check if a user verify to all the request,
 //                      get authentication.
 //                      User user = repo.findUser(authentication.getName())

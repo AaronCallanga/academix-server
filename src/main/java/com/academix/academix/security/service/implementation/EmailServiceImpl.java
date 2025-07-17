@@ -21,7 +21,7 @@ public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
 
-    @Async("emailExecutor")
+    @Async()
     @Override
     public void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
         String toAddress = user.getEmail();
@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 
         mimeMessageHelper.setText(content, true);
         mailSender.send(message);
-        log.info("Sending email on thread {}", Thread.currentThread().getName());
+        log.info("Sending email on thread {}", Thread.currentThread().getName());     // For testing
         throw new RuntimeException("Test Exception");
     }
 }

@@ -25,3 +25,8 @@ public class DefaultAsyncUncaughtExceptionHandler implements AsyncUncaughtExcept
     //     // Implement integration with monitoring/alert system
     // }
 }
+
+/*
+Do not swallow exceptions silently in async code. Always implement AsyncUncaughtExceptionHandler for void async methods.
+For @Async methods returning Future or CompletableFuture, prefer using .exceptionally() or try/catch.
+ */
