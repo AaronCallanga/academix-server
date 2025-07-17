@@ -66,12 +66,12 @@ public class UserController {
 //                   url = request.getRequestUrl.toString().replace(request.getRequestURI(), "")
 //                   emailService.sendVerificationEmail(url, token);
 //                  ) - done
+// make email service async, and scheduled token cleanup for expired tokens
 // implement AOP to check if a user verify to all the request,
 //                      get authentication.
 //                      User user = repo.findUser(authentication.getName())
 //                      check if verified
 //                      if so, invoke the method, else throw exceptions Forbidden
-// 	Add a scheduled task to delete tokens older than X hours
 // Maybe create a token service, generateVerificationToken, CheckExpiration, ResetPassword, 2FA
 
 // Sample AOP, uses Annotation
