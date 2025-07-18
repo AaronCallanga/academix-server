@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final AuthEmailService emailService;
+    private final AuthEmailService authEmailService;
     private final TokenService tokenService;
 
     @Override
@@ -89,7 +89,7 @@ public class AuthServiceImpl implements AuthService {
         VerificationToken token = tokenService.generateToken(user);
 
         // send email
-        emailService.sendVerification(user, baseUrl, token);
+        authEmailService.sendVerification(user, baseUrl, token);
         return "User registered successfully";
     }
 
@@ -125,7 +125,7 @@ public class AuthServiceImpl implements AuthService {
                                   .orElseThrow(() -> new RuntimeException("User not found"));
         VerificationToken verificationToken = tokenService.generateToken(user);
 
-        emailService.sendVerification(user, baseUrl, verificationToken);
+        authEmailService.sendVerification(user, baseUrl, verificationToken);
         return "Token send successfully. Please check your email";
     }
 

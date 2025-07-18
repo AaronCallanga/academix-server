@@ -3,9 +3,14 @@
 - Create an implementation of EmailService: abstract BaseEmailServiceImpl (acts as a base impl class - abstract allows to share logic)
         @Override sendEmail
 - Create domain specific interface that extends EmailService
-        AuthEmailService            void sendVerificationToken
+        AuthEmailService            void sendVerificationToken      (done)
         DocumentEmailService        void sendDocumentRequestReminder
 - Create the implementation of AuthEmailService and DocumentEmailService:
         AuthEmailServiceImpl extends BaseEmailServiceImpl
         DocumentEmailServiceImpl extends BaseEmailServiceImpl
         -- we extends BaseEmailServiceImpl to use the shared logic sendEmail
+
+Other domains:
+- Notification
+- Logging
+- Scheduling
