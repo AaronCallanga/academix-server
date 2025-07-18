@@ -14,4 +14,6 @@ public interface AuthService {
     String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException;
     String verify(String token);
     String resendVerification(Authentication authentication, String baseUrl) throws MessagingException, UnsupportedEncodingException;
+    // /api/auth/request-password-reset
+    // /api/auth/reset-password
 }

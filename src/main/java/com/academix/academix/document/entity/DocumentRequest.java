@@ -38,7 +38,7 @@ public class DocumentRequest {
     @Column(nullable = false)
     private LocalDateTime requestDate;
 
-    private LocalDateTime processedDate;
+    private LocalDateTime pickUpDate;
 
     // Manages the relationship, persistenec, changes, and so on
     @ManyToOne(fetch = FetchType.LAZY)      // the owning side, owns the foreign key namely 'requested_by_id'
@@ -46,5 +46,6 @@ public class DocumentRequest {
     private User requestedBy;
 
     @Column(length = 500)
-    private String remarks;
+    private String remarks;     // additional notes, feedback, clarification etc.
 }
+// maybe create a new entity for file upload of ID or authorization letter and linked it
