@@ -1,12 +1,14 @@
-package com.academix.academix.security.service.implementation;
+package com.academix.academix.email.impl;
 
+import com.academix.academix.email.BaseEmailServiceImpl;
 import com.academix.academix.security.entity.VerificationToken;
-import com.academix.academix.security.service.api.EmailService;
+import com.academix.academix.email.api.AuthEmailService;
 import com.academix.academix.user.entity.User;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -15,11 +17,12 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 
 @Service
-@RequiredArgsConstructor
 //@Slf4j
-public class EmailServiceImpl implements EmailService {
+public class AuthEmailServiceImpl extends BaseEmailServiceImpl implements AuthEmailService {
 
-    private final JavaMailSender mailSender;
+    public AuthEmailServiceImpl(JavaMailSender mailSender) {
+        super(mailSender);
+    }
 
     @Async("emailExecutor")
     @Override
@@ -33,19 +36,13 @@ public class EmailServiceImpl implements EmailService {
                 + "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>"
                 + "Thank you,<br>"
                 + "Academix";
-        MimeMessage message = mailSender.createMimeMessage();
-        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message);
 
         String verifyUrl = link.concat("/api/v1/auth/verify?token=" + token.getToken());
 
-        mimeMessageHelper.setFrom(fromAddress, senderName);
-        mimeMessageHelper.setTo(toAddress);
-        mimeMessageHelper.setSubject(subject);
         content = content.replace("[[name]]",user.getName());
         content = content.replace("[[URL]]", verifyUrl);
 
-        mimeMessageHelper.setText(content, true);
-        mailSender.send(message);
+        sendEmail(toAddress, subject, content);
         //log.info("Sending email on thread {}", Thread.currentThread().getName());     // For testing
         //throw new RuntimeException("Test Exception");
     }

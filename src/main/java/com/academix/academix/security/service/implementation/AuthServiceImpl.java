@@ -7,7 +7,7 @@ import com.academix.academix.security.entity.Role;
 import com.academix.academix.security.entity.VerificationToken;
 import com.academix.academix.security.repository.RoleRepository;
 import com.academix.academix.security.service.api.AuthService;
-import com.academix.academix.security.service.api.EmailService;
+import com.academix.academix.email.api.AuthEmailService;
 import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final UserRepository userRepository;
-    private final EmailService emailService;
+    private final AuthEmailService emailService;
     private final TokenService tokenService;
 
     @Override
