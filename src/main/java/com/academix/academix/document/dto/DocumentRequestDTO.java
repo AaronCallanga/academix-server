@@ -1,5 +1,6 @@
 package com.academix.academix.document.dto;
 
+import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,5 +38,5 @@ public class DocumentRequestDTO {
 
     private String requestedBy;     // user name
 
-    private String remarks;
+    private List<DocumentRemark> remarks;
 }

@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -45,7 +46,6 @@ public class DocumentRequest {
     @JoinColumn(name = "requested_by_id", nullable = false)     //usually, make the list(or many items) as the owning side
     private User requestedBy;
 
-    @Column(length = 500)
-    private String remarks;     // additional notes, feedback, clarification etc.
+    //private List<String> remarks;     // additional notes, feedback, clarification etc.
 }
 // maybe create a new entity for file upload of ID or authorization letter and linked it
