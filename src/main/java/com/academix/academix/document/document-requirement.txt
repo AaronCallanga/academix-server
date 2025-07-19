@@ -1,0 +1,2 @@
+TODO:
+1. Implement web-socket for real time notification of remarks and live shown of remarks

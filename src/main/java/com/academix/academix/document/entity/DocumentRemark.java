@@ -3,6 +3,7 @@ package com.academix.academix.document.entity;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -13,6 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -37,8 +40,9 @@ public class DocumentRemark {
     @Column(nullable = false)
     private LocalDateTime timeStamp;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)  // delete remarks when request is deleted, could also handle manually by deleteByRequestId via repo
     private DocumentRequest documentRequest;
 
     @ManyToOne

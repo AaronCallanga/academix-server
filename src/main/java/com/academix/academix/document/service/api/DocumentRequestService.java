@@ -1,6 +1,7 @@
 package com.academix.academix.document.service.api;
 
 import com.academix.academix.document.dto.DocumentRequestDTO;
+import com.academix.academix.document.dto.DocumentRequestListDTO;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -8,12 +9,11 @@ import java.util.List;
 public interface DocumentRequestService {
     // Implement pagination
     // Admin roles
-
-    List<DocumentRequestDTO> getAllDocumentRequests();
-    List<DocumentRequestDTO> getUserDocumentRequests(Long userId);
+    List<DocumentRequestListDTO> getAllDocumentRequests();
+    List<DocumentRequestListDTO> getUserDocumentRequests(Long userId);
 
     // Individual/Student roles
-    List<DocumentRequestDTO> getOwnDocumentRequests(Authentication authentication);
+    List<DocumentRequestListDTO> getOwnDocumentRequests(Authentication authentication);
 
     // General
     DocumentRequestDTO getDocumentRequestById(Long documentRequestId);
