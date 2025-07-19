@@ -1,6 +1,7 @@
 package com.academix.academix.document.entity;
 
 import com.academix.academix.user.entity.User;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,8 +27,14 @@ public class DocumentRemark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 1000)
     private String content;
+
+    @Column(nullable = false)
     private String role;        // ADMIN, REGISTRAR, STUDENT
+
+    @Column(nullable = false)
     private LocalDateTime timeStamp;
 
     @ManyToOne

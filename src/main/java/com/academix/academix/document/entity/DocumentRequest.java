@@ -46,6 +46,6 @@ public class DocumentRequest {
     @JoinColumn(name = "requested_by_id", nullable = false)     //usually, make the list(or many items) as the owning side
     private User requestedBy;
 
-    //private List<String> remarks;     // additional notes, feedback, clarification etc.
+    //private List<String> remarks;     // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
 }
 // maybe create a new entity for file upload of ID or authorization letter and linked it

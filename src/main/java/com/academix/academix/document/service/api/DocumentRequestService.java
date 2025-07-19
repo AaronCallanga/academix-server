@@ -12,7 +12,7 @@ public interface DocumentRequestService {
     List<DocumentRequestDTO> getAllDocumentRequests();
     List<DocumentRequestDTO> getUserDocumentRequests(Long userId);
 
-    // User/Student roles
+    // Individual/Student roles
     List<DocumentRequestDTO> getOwnDocumentRequests(Authentication authentication);
 
     // General
