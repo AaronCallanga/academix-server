@@ -1,6 +1,7 @@
 package com.academix.academix.document.dto;
 
 import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.user.dto.UserInfoDTO;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,6 @@ public class DocumentRemarkDTO {
     private String role;        // ADMIN, REGISTRAR, STUDENT
     private LocalDateTime timeStamp;
     private Long documentRequestId;
-    private Long authorId;
-    private String authorName;        // User who gives the remarks
+    private UserInfoDTO author;
 }
 

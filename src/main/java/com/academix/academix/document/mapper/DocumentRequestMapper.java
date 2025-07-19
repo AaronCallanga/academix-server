@@ -23,5 +23,6 @@ public interface DocumentRequestMapper {
     @Mapping(source = "requestedBy", target = "userInfo")
     DocumentRequestListDTO toDocumentRequestListDTO(DocumentRequest documentRequest);
     List<DocumentRequestListDTO> toDocumentRequestListDTO(List<DocumentRequest> documentRequestList);
-    void updateDocumentRequestEntityFromDTO(DocumentRequestDTO documentRequestDTO, @MappingTarget DocumentRequest documentRequestEntity);
+    // Create a new dto update request for update method, because in the implementation it updates the ID, no need to map the user i guess
+    //void updateDocumentRequestEntityFromDTO(DocumentRequestDTO documentRequestDTO, @MappingTarget DocumentRequest documentRequestEntity);
 }
