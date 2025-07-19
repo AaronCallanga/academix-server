@@ -1,6 +1,8 @@
 package com.academix.academix.user.mapper;
 
 import com.academix.academix.user.dto.UserDTO;
+import com.academix.academix.user.dto.UserDetailedInfoDTO;
+import com.academix.academix.user.dto.UserInfoDTO;
 import com.academix.academix.user.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,4 +15,6 @@ public interface UserMapper {
     UserDTO userToUserDTO(User user);
     List<UserDTO> usersToUserDTOs(List<User> users);
     User toUser(UserDTO userDTO);
+    UserDetailedInfoDTO toUserDetailedInfoDTO(User user);
+    UserInfoDTO toUserInfoDTO(User user);
 }
