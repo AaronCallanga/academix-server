@@ -26,6 +26,7 @@ public class DocumentRemarkDTO {
     private String role;        // ADMIN, REGISTRAR, STUDENT
     private LocalDateTime timeStamp;
     private Long documentRequestId;
+    private Long authorId;
     private String authorName;        // User who gives the remarks
 }
 

@@ -12,4 +12,5 @@ public interface UserMapper {
     @Mapping(source = "verified", target = "verified")
     UserDTO userToUserDTO(User user);
     List<UserDTO> usersToUserDTOs(List<User> users);
+    User toUser(UserDTO userDTO);
 }

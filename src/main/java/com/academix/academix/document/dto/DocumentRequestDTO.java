@@ -1,14 +1,7 @@
 package com.academix.academix.document.dto;
 
 import com.academix.academix.document.entity.DocumentRemark;
-import com.academix.academix.user.entity.User;
-import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.academix.academix.user.dto.UserDetailedInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class DocumentRequestDTO {
+public class DocumentRequestDTO {  // For individual request information
     private Long id;
 
     private String documentType; // F-137, Good Moral, etc.
@@ -36,7 +29,7 @@ public class DocumentRequestDTO {
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
-    private String requestedBy;     // user name
+    private UserDetailedInfoDTO userDetailedInfo;
 
     private List<DocumentRemark> remarks;
 }

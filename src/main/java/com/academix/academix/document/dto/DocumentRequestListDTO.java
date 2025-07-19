@@ -1,6 +1,7 @@
 package com.academix.academix.document.dto;
 
 import com.academix.academix.document.entity.DocumentRemark;
+import com.academix.academix.user.dto.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +27,6 @@ public class DocumentRequestListDTO {  // For list of document request
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
-    private String requestedBy;     // user name
+    private UserInfoDTO userInfo;
 
 }
