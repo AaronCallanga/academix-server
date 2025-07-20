@@ -1,7 +1,7 @@
 package com.academix.academix.document.service.api;
 
-import com.academix.academix.document.dto.DocumentRequestResponseDTO;
-import com.academix.academix.document.dto.DocumentRequestResponseListDTO;
+import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
+import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.academix.academix.document.dto;
+package com.academix.academix.document.dto.response;
 
 import com.academix.academix.user.dto.UserInfoDTO;
 import lombok.AllArgsConstructor;

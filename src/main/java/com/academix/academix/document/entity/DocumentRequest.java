@@ -1,6 +1,7 @@
 package com.academix.academix.document.entity;
 
 import com.academix.academix.user.entity.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -9,12 +10,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -46,6 +49,7 @@ public class DocumentRequest {
     @JoinColumn(name = "requested_by_id", nullable = false)     //usually, make the list(or many items) as the owning side
     private User requestedBy;
 
-    //private List<String> remarks;     // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
+    @OneToMany(mappedBy = "documentRequest", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DocumentRemark> remarks = new ArrayList<>();       // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
 }
 // maybe create a new entity for file upload of ID or authorization letter and linked it

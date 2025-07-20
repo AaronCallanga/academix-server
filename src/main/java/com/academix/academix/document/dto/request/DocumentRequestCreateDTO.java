@@ -1,4 +1,5 @@
-package com.academix.academix.document.dto;
+package com.academix.academix.document.dto.request;
+
 
 import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.user.dto.UserDetailedInfoDTO;
@@ -16,10 +17,9 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
-public class DocumentRequestResponseDTO {  // Response DTO
+public class DocumentRequestCreateDTO {
 
-    // For individual request information
-    private Long id;
+    private Long userId;
 
     private String documentType; // F-137, Good Moral, etc.
 
@@ -30,8 +30,6 @@ public class DocumentRequestResponseDTO {  // Response DTO
     private LocalDateTime requestDate;
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
-
-    private UserDetailedInfoDTO userDetailedInfo;
 
     private List<DocumentRemark> remarks;
 }

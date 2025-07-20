@@ -1,6 +1,6 @@
 package com.academix.academix.document.service.api;
 
-import com.academix.academix.document.dto.DocumentRemarkResponseDTO;
+import com.academix.academix.document.dto.response.DocumentRemarkResponseDTO;
 
 import java.util.List;
 

@@ -41,8 +41,8 @@ public class DocumentRemark {
     private LocalDateTime timeStamp;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "request_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)  // delete remarks when request is deleted, could also handle manually by deleteByRequestId via repo
+    @JoinColumn(name = "document_request_id", nullable = false)
+    //@OnDelete(action = OnDeleteAction.CASCADE)  // delete remarks when request is deleted, could also handle manually by deleteByRequestId via repo
     private DocumentRequest documentRequest;
 
     @ManyToOne
