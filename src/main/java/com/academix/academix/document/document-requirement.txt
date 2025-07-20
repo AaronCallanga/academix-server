@@ -4,6 +4,8 @@ TODO:
 3. Set the missing field like timeStamp, requestedBy in service layer. requestedBy -> get it from jwt email then findByEmail, then set the user
 4. Need to update/create remark entity manually to set missing fields. Same as document request, some fields are incomplete
 5. Implement Service, Controller
+6. Implement DTOs validation
+7. Implement Pagination for lists
 Sample:
 DocumentRemark remark = new DocumentRemark();
 remark.setMessage(requestDTO.getRemarkMessage());

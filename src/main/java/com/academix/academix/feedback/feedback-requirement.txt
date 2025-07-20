@@ -1,0 +1,2 @@
+1. Maybe many to one with DocumentRequest (unidirectional)
+2. Websocket or no

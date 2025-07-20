@@ -60,6 +60,7 @@ public class DocumentRequest {
     }
     public void removeRemark(DocumentRemark remark) {
         this.remarks.remove(remark);
+        remark.setDocumentRequest(null);
     }
 }
 // maybe create a new entity for file upload of ID or authorization letter and linked it
