@@ -31,7 +31,7 @@ public class DocumentRequestResponseDTO {  // Response DTO
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
-    private UserDetailedInfoDTO userDetailedInfo;
+    private UserDetailedInfoDTO requestedBy;
 
-    private List<DocumentRemark> remarks;
+    private List<DocumentRemarkResponseDTO> remarks;
 }

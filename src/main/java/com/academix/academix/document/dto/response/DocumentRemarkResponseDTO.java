@@ -19,7 +19,6 @@ public class DocumentRemarkResponseDTO {        // Response
     private String content;
     private String role;        // ADMIN, REGISTRAR, STUDENT
     private LocalDateTime timeStamp;
-    private Long documentRequestId;
     private UserInfoDTO author;
 }
 

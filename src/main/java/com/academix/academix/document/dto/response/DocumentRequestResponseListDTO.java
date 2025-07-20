@@ -25,6 +25,6 @@ public class DocumentRequestResponseListDTO {  // For list of document request
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
-    private UserInfoDTO userInfo;
+    private UserInfoDTO requestedBy;
 
 }
