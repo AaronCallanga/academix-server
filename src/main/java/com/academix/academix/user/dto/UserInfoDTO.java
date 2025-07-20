@@ -12,6 +12,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UserInfoDTO {
+    private Long id;
     private String lrn;
     private String name;
 }

@@ -1,3 +1,6 @@
 TODO:
 1. Implement web-socket for real time notification of remarks and live shown of remarks
 2. Create a new dto update request for update method, because in the implementation it updates the ID, no need to map the user I guess
+3. Create update dto too for remark, updating only the content
+4. DocumentRemarkResponseDTO, DocumentRequestResponseDTO, DocumentRequestListResponseDTO
+5. Document

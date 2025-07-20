@@ -17,6 +17,7 @@ public interface UserMapper {
     User fromUserDtoToUserEntity(UserDTO userDTO);
     UserDetailedInfoDTO toUserDetailedInfoDTO(User user);
     UserInfoDTO toUserInfoDTO(User user);
+    @Mapping(source = "id", target = "id")
     User fromUserInfoDtoToUserEntity(UserInfoDTO userInfoDTO);
     User fromUserDetailedInfoDtoToUserEntity(UserDetailedInfoDTO userDetailedInfoDTO);
 }

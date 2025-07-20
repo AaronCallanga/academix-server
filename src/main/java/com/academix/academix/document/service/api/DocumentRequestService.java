@@ -1,7 +1,7 @@
 package com.academix.academix.document.service.api;
 
-import com.academix.academix.document.dto.DocumentRequestDTO;
-import com.academix.academix.document.dto.DocumentRequestListDTO;
+import com.academix.academix.document.dto.DocumentRequestResponseDTO;
+import com.academix.academix.document.dto.DocumentRequestResponseListDTO;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -9,16 +9,16 @@ import java.util.List;
 public interface DocumentRequestService {
     // Implement pagination
     // Admin roles
-    List<DocumentRequestListDTO> getAllDocumentRequests();
-    List<DocumentRequestListDTO> getUserDocumentRequests(Long userId);
+    List<DocumentRequestResponseListDTO> getAllDocumentRequests();
+    List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId);
 
     // Individual/Student roles
-    List<DocumentRequestListDTO> getOwnDocumentRequests(Authentication authentication);
+    List<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication);
 
     // General
-    DocumentRequestDTO getDocumentRequestById(Long documentRequestId);
-    DocumentRequestDTO createDocumentRequest(DocumentRequestDTO documentRequestDTO);
-    DocumentRequestDTO updateDocumentRequest(DocumentRequestDTO documentRequestDTO);
+    DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
+    DocumentRequestResponseDTO createDocumentRequest(DocumentRequestResponseDTO documentRequestDTO);
+    DocumentRequestResponseDTO updateDocumentRequest(DocumentRequestResponseDTO documentRequestDTO);
     void removeDocumentRequest(Long documentRequestId);
     String cancelDocumentRequest(Long documentRequestId);
 

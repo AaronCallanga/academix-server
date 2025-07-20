@@ -1,7 +1,6 @@
 package com.academix.academix.document.dto;
 
-import com.academix.academix.document.entity.DocumentRemark;
-import com.academix.academix.user.dto.UserDetailedInfoDTO;
+import com.academix.academix.user.dto.UserInfoDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,19 +8,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class DocumentRequestDTO {  // For individual request information
+public class DocumentRequestResponseListDTO {  // For list of document request
     private Long id;
 
     private String documentType; // F-137, Good Moral, etc.
-
-    private String purpose; // Enrollment, transfer, job, etc.
 
     private String status; // PENDING, APPROVED, REJECTED    can modify by admin/registrar
 
@@ -29,7 +25,6 @@ public class DocumentRequestDTO {  // For individual request information
 
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
-    private UserDetailedInfoDTO userDetailedInfo;
+    private UserInfoDTO userInfo;
 
-    private List<DocumentRemark> remarks;
 }

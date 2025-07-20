@@ -1,13 +1,6 @@
 package com.academix.academix.document.dto;
 
-import com.academix.academix.document.entity.DocumentRequest;
 import com.academix.academix.user.dto.UserInfoDTO;
-import com.academix.academix.user.entity.User;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class DocumentRemarkDTO {
+public class DocumentRemarkResponseDTO {        // Response
     private Long id;
     private String content;
     private String role;        // ADMIN, REGISTRAR, STUDENT
