@@ -15,6 +15,7 @@ import java.util.List;
 public interface DocumentRequestMapper {
 
     //@Mapping(source = "userDetailedInfo", target = "requestedBy")
+    // For Creation
     @Mapping(target = "remarks", ignore = true)
     DocumentRequest toDocumentRequestEntity(DocumentRequestPayloadDTO documentRequestDTO);
 
@@ -31,6 +32,7 @@ public interface DocumentRequestMapper {
 
     List<DocumentRequestResponseListDTO> toDocumentRequestResponseListDTO(List<DocumentRequest> documentRequestList);
 
+    // For update
     @Mapping(target = "remarks", ignore = true) // only update its own comment
     void updateDocumentRequestEntityFromDTO(DocumentRequestPayloadDTO documentRequestDTO, @MappingTarget DocumentRequest documentRequestEntity);
 }

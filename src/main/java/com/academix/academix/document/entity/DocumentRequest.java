@@ -53,5 +53,13 @@ public class DocumentRequest {
 
     @OneToMany(mappedBy = "documentRequest", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DocumentRemark> remarks = new ArrayList<>();       // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
+
+    public void addRemark(DocumentRemark remark) {
+        this.remarks.add(remark);
+        remark.setDocumentRequest(this);
+    }
+    public void removeRemark(DocumentRemark remark) {
+        this.remarks.remove(remark);
+    }
 }
 // maybe create a new entity for file upload of ID or authorization letter and linked it

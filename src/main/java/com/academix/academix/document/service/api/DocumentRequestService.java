@@ -25,5 +25,4 @@ public interface DocumentRequestService {
     //POST  /api/requests/{id}/upload	Upload ID/authorization letter
     //POST	/api/feedback/{requestId}	Submit feedback after claim
 
-
 }
