@@ -31,8 +31,15 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     @Override
-    public DocumentRemarkResponseDTO updateRemark(DocumentRemarkResponseDTO documentRemarkResponseDTO) {
-        return null;
+    public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId) {
+        DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
+                .orElseThrow(() -> new RuntimeException("Document remark does not exist with the id :" + documentRemarkId));
+
+        String updatedContent = documentRemarkRequestDTO.getContent();
+        remark.setContent(updatedContent);
+        DocumentRemark updatedRemark = documentRemarkRepository.save(remark);
+
+        return documentRemarkMapper.toDocumentRemarkResponseDTO(updatedRemark);
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface DocumentRemarkService {
     // General
     List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId);
 
-    DocumentRemarkResponseDTO updateRemark(DocumentRemarkResponseDTO documentRemarkResponseDTO);
+    DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId);
 
     // ==== REMARKS ====
     DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO);
