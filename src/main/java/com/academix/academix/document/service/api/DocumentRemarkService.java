@@ -9,7 +9,7 @@ import java.util.List;
 public interface DocumentRemarkService {
     //  List<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentReqId)
     // General
-    List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(String requestId);
+    List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId);
 
     DocumentRemarkResponseDTO updateRemark(DocumentRemarkResponseDTO documentRemarkResponseDTO);
 
