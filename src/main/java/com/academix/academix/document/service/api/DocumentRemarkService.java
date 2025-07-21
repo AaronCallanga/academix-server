@@ -16,5 +16,5 @@ public interface DocumentRemarkService {
 
     // ==== REMARKS ====
     DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication);
-    void removeRemark(Long documentRequestId, Long remarkRequestId);
+    void deleteRemark(Long documentRequestId, Long documentRemarkId);
 }

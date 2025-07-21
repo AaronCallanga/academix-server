@@ -81,24 +81,23 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                 .timeStamp(LocalDateTime.now())
                 .build();
 
-
-        // Set the remark to the DocumentRequest entity
-        documentRequest.addRemark(newRemark);
-
+        // Persist the new remark to the database
         DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
 
         return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
     @Override
-    public void removeRemark(Long documentRequestId, Long remarkRequestId) {
-
+    public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
+        documentRemarkRepository.deleteById(documentRemarkId);
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {
         List<String> priorities = List.of("ROLE_ADMIN", "ROLE_REGISTRAR", "ROLE_STUDENT");
 
+        // Loop through all the item in the priorities
         for (String priority : priorities) {
+            // Nested loop for each item of roles
             for (Role role : roles) {
                 if (priority.equals(role.getName())) {
                     return priority.replace("ROLE_", ""); // Converts ROLE_ADMIN -> ADMIN

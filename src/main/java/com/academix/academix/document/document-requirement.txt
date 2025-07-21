@@ -6,6 +6,7 @@ TODO:
 5. Implement Service, Controller
 6. Implement DTOs validation
 7. Implement Pagination for lists
+8. Implement AOP logging or SLF4J
 
 Create a branch feature to practice git
 
