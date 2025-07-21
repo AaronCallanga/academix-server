@@ -45,7 +45,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     @Override
     public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId) {
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
-                .orElseThrow(() -> new RuntimeException("Document remark does not exist with the id :" + documentRemarkId));
+                .orElseThrow(() -> new RuntimeException("Document remark does not exist with the id : " + documentRemarkId));
 
         String updatedContent = documentRemarkRequestDTO.getContent();
         remark.setContent(updatedContent);
@@ -56,7 +56,6 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     @Override
     public DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication) {
-
         // Fetch the document request
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("Document request does not exist with the id :" + documentRequestId));
@@ -68,7 +67,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         String email = authentication.getName();
         // Fetch the user from the database based on the email
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new RuntimeException("User not found"));
+                                  .orElseThrow(() -> new RuntimeException("User not found with the email : " + email));
 
         // Extract User roles based on the highest role it has
         String role = determineHighestPriorityRole(user.getRoles());
@@ -82,7 +81,12 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                 .timeStamp(LocalDateTime.now())
                 .build();
 
+
+        // Set the remark to the DocumentRequest entity
+        documentRequest.addRemark(newRemark);
+
         DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
+
         return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
@@ -92,9 +96,16 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {
-        if (roles.contains("ROLE_ADMIN")) return "ADMIN";
-        if (roles.contains("ROLE_REGISTRAR")) return "REGISTRAR";
-        if (roles.contains("ROLE_STUDENT")) return "STUDENT";
+        List<String> priorities = List.of("ROLE_ADMIN", "ROLE_REGISTRAR", "ROLE_STUDENT");
+
+        for (String priority : priorities) {
+            for (Role role : roles) {
+                if (priority.equals(role.getName())) {
+                    return priority.replace("ROLE_", ""); // Converts ROLE_ADMIN -> ADMIN
+                }
+            }
+        }
         return "UNKNOWN";
     }
+
 }
