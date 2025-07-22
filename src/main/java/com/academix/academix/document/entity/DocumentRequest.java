@@ -1,5 +1,7 @@
 package com.academix.academix.document.entity;
 
+import com.academix.academix.document.enums.DocumentStatus;
+import com.academix.academix.document.enums.DocumentType;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -36,14 +38,14 @@ public class DocumentRequest {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String documentType; // F-137, Good Moral, etc.
+    private DocumentType documentType; // F-137, Good Moral, etc.
 
     @Column(nullable = false)
     private String purpose; // Enrollment, transfer, job, etc.
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private String status; // PENDING, APPROVED, REJECTED
+    private DocumentStatus status; // PENDING, APPROVED, REJECTED
 
     @Column(nullable = false)
     private LocalDateTime requestDate;

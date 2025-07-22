@@ -19,7 +19,7 @@ public interface DocumentRequestService {
 
     // ==== COMMON ====
     DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
-    DocumentRequestResponseDTO createDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO);
+    DocumentRequestResponseDTO createDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO, Authentication authentication);
     DocumentRequestResponseDTO updateDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO);
     DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId); // set status to cancelled
     void removeDocumentRequest(Long documentRequestId);
