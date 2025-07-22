@@ -3,16 +3,30 @@ package com.academix.academix.document.service.implementation;
 import com.academix.academix.document.dto.request.DocumentRequestPayloadDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
+import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.mapper.DocumentRequestMapper;
+import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class DocumentRequestServiceImpl implements DocumentRequestService {
+
+    private final DocumentRequestRepository documentRequestRepository;
+    private final DocumentRequestMapper documentRequestMapper;
 
     @Override
     public List<DocumentRequestResponseListDTO> getAllDocumentRequests() {
-        return List.of();
+        // Fetch all the document request
+        List<DocumentRequest> documentRequests = documentRequestRepository.findAll();
+
+        // Map the list to List of DTOs and return it
+        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
     }
 
     @Override
