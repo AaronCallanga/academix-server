@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface DocumentRequestRepository extends JpaRepository<DocumentRequest, Long> {
     List<DocumentRequest> findByUserId(Long userId);
+    List<DocumentRequest> findByUserEmail(String email);
 }

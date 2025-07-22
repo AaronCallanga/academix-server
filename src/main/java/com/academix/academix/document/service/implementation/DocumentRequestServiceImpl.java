@@ -40,6 +40,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public List<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication) {
+        // Extract the email from the authenticaiton object
+        String email = authentication.getName();
+
+        // Fetch the list of document request by user's email
+        //List<DocumentRequest> documentRequests = documentRequestRepository.findBY
+
         return List.of();
     }
 
