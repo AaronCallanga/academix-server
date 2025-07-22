@@ -19,3 +19,11 @@ remark.setCreatedBy(currentUser);
 remark.setCreatedAt(LocalDateTime.now());
 
 documentRequest.getRemarks().add(remark);
+
+public enum Role {
+    STUDENT,
+    TEACHER,
+    REGISTRAR,
+    PRINCIPAL,
+    ADMIN
+}

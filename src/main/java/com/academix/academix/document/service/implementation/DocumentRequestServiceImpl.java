@@ -38,7 +38,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId) {
         // Fetch the document request of the user by its ID
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByUserId(userId);
+        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId);
 
         // Map the list to List of DTOs and return it
         return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
@@ -50,7 +50,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         String email = authentication.getName();
 
         // Fetch the list of document request by user's email
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByUserEmail(email);
+        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email);
 
         // Map the document requests to list of DTOs and return it
         return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
