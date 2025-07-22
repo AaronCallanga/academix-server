@@ -44,9 +44,10 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         String email = authentication.getName();
 
         // Fetch the list of document request by user's email
-        //List<DocumentRequest> documentRequests = documentRequestRepository.findBY
+        List<DocumentRequest> documentRequests = documentRequestRepository.findByUserEmail(email);
 
-        return List.of();
+        // Map the document requests to list of DTOs and return it
+        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
     }
 
     @Override
