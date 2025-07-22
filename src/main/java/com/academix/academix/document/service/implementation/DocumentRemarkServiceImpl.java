@@ -69,20 +69,8 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new RuntimeException("User not found with the email : " + email));
 
-        // Extract User roles based on the highest role it has
-        String role = determineHighestPriorityRole(user.getRoles());
-
-        // Build/ Create the new remark entity
-        DocumentRemark newRemark = DocumentRemark.builder()
-                .content(content)
-                .documentRequest(documentRequest)
-                .author(user)
-                .role(role)
-                .timeStamp(LocalDateTime.now())
-                .build();
-
         // Persist the new remark to the database
-        DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
+        DocumentRemark savedRemark = createDocumentRemark(content, user, documentRequest);
 
         return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
