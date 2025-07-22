@@ -4,6 +4,8 @@ import com.academix.academix.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,12 +34,14 @@ public class DocumentRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String documentType; // F-137, Good Moral, etc.
 
     @Column(nullable = false)
     private String purpose; // Enrollment, transfer, job, etc.
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private String status; // PENDING, APPROVED, REJECTED
 
