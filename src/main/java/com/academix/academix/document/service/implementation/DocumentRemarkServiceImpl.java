@@ -92,6 +92,22 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         documentRemarkRepository.deleteById(documentRemarkId);
     }
 
+    @Override
+    public DocumentRemark createDocumentRemark(String content, User user, DocumentRequest documentRequest) {
+        String role = determineHighestPriorityRole(user.getRoles());
+
+        // Build/ Create the new remark entity
+        DocumentRemark newRemark = DocumentRemark.builder()
+                                                 .content(content)
+                                                 .documentRequest(documentRequest)
+                                                 .author(user)
+                                                 .role(role)
+                                                 .timeStamp(LocalDateTime.now())
+                                                 .build();
+
+        return documentRemarkRepository.save(newRemark);
+    }
+
     private String determineHighestPriorityRole(Set<Role> roles) {
         List<String> priorities = List.of("ROLE_ADMIN", "ROLE_REGISTRAR", "ROLE_STUDENT");
 

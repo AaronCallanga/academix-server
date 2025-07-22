@@ -3,10 +3,12 @@ package com.academix.academix.document.service.implementation;
 import com.academix.academix.document.dto.request.DocumentRequestPayloadDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
+import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.document.entity.DocumentRequest;
 import com.academix.academix.document.enums.DocumentStatus;
 import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
+import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
@@ -16,7 +18,9 @@ import org.springframework.stereotype.Service;
 
 import javax.swing.text.Document;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -25,6 +29,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
     private final UserRepository userRepository;
+    private final DocumentRemarkService documentRemarkService;
 
     @Override
     public List<DocumentRequestResponseListDTO> getAllDocumentRequests() {
@@ -76,22 +81,25 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
 
         // User mapper to map all the available fields from the DTO to document request entity
+        // This map the DocumentType, Purpose, and PickupDate
         DocumentRequest newDocumentRequest = documentRequestMapper.toDocumentRequestEntity(documentRequestDTO);
 
-        // Modify or fill all the remaining fields
-        //newDocumentRequest.
+        // Modify or fill all the remaining fields excluding remarks
+        newDocumentRequest.setStatus(DocumentStatus.REQUESTED);
+        newDocumentRequest.setRequestDate(LocalDateTime.now());
+        newDocumentRequest.setRequestedBy(user);
 
-//        // Create a new document request object through builder pattern
-//        DocumentRequest newDocumentRequest = DocumentRequest.builder()
-//                .documentType(documentRequestDTO.getDocumentType())
-//                .purpose(documentRequestDTO.getPurpose())
-//                .status(DocumentStatus.REQUESTED.name())
-//                .requestDate(LocalDateTime.now())
-//                .pickUpDate(documentRequestDTO.getPickUpDate())
-//                .requestedBy(user)
-//                .remarks(documentRequestDTO.getRemarks())
-//                .build();
-        return null;
+        // Save the newDocumentRequest without setting the remarks entity
+        DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
+
+        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and set its own documentRequest with the savedDocumentRequest
+        List<DocumentRemark> remarks = new ArrayList<>(documentRequestDTO.getRemarks().stream()
+                                                                       .map(r -> documentRemarkService.createDocumentRemark(r.getContent(), user, savedDocumentRequest))
+                                                                       .collect(Collectors.toList())
+        );
+        savedDocumentRequest.setRemarks(remarks);
+
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
     }
 
     @Override
