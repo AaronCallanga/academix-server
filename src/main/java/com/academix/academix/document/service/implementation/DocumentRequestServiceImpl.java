@@ -52,7 +52,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId) {
-        return null;
+        // Fetch the document request by its ID
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Map the document request to DTO then return it
+        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
     }
 
     @Override
