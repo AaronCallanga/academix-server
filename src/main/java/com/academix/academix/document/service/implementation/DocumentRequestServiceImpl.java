@@ -62,6 +62,11 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequestResponseDTO createDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO) {
+        // Create a new document request object through builder pattern
+        DocumentRequest newDocumentRequest = DocumentRequest.builder()
+                .documentType(documentRequestDTO.getDocumentType())
+                .purpose(documentRequestDTO.getPurpose())
+                .status()
         return null;
     }
 
