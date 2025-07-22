@@ -31,6 +31,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId) {
+        // Fetch the document request of the user by its ID
+        //List<DocumentRequest> documentRequests = documentRequestRepository.fin
+
         return List.of();
     }
 
