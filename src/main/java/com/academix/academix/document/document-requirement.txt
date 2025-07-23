@@ -1,15 +1,14 @@
 TODO:
 1. Implement web-socket for real time notification of remarks and live shown of remarks
 2. Add file handling for authorization letter, or more verification process(sending id, pic, bio-data)
-3. Set the missing field like timeStamp, requestedBy in service layer. requestedBy -> get it from jwt email then findByEmail, then set the user
-4. Need to update/create remark entity manually to set missing fields. Same as document request, some fields are incomplete
+3. Implement messaging/event per document request. So admin/registrar can see it
 5. Implement Service (use addRemark/removeRemark to DocumentRequestService not in remark service), Controller
 6. Implement DTOs validation
 7. Implement Pagination for lists
 8. Implement AOP logging or SLF4J
 9. Make things transactional
 10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
-
+11. Implement logging in updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
 Create a branch feature to practice git
 
 Sample:

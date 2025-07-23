@@ -11,8 +11,7 @@ import org.springframework.security.core.Authentication;
 import java.util.List;
 
 public interface DocumentRemarkService {
-    //  List<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentReqId)
-    // General
+    // GENERAL
     List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId);
 
     DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId);

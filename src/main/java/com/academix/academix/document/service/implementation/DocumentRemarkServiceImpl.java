@@ -70,8 +70,8 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                                   .orElseThrow(() -> new RuntimeException("User not found with the email : " + email));
 
         // Persist the new remark to the database
-        DocumentRemark savedRemark = createDocumentRemark(content, user, documentRequest);
-
+        DocumentRemark newRemark = createDocumentRemark(content, user, documentRequest);
+        DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
         return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
@@ -93,7 +93,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                                                  .timeStamp(LocalDateTime.now())
                                                  .build();
 
-        return documentRemarkRepository.save(newRemark);
+        return newRemark;
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {

@@ -106,7 +106,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
         /**
          * @NOTE: After updating, maybe log it in database? just many to one with the document request
-         *         - And admin/registrar can see it that the user changed/updated the request
+         *         - And admin/registrar can see it that the user changed/updated the request in log section
+         *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
          * */
 
         // Fetch the document request by ID
@@ -129,7 +130,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public void removeDocumentRequest(Long documentRequestId) {
+    public void deleteDocumentRequest(Long documentRequestId) {
 
     }
 }
