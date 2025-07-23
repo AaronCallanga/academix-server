@@ -3,7 +3,6 @@ TODO:
 2. Add file handling for authorization letter, or more verification process(sending id, pic, bio-data)
 3. Implement messaging/event per document request. So admin/registrar can see it
 4. Add a type field to DocumentRemark (USER, SYSTEM, LOG, etc.) and roles too (user, documetn remark)
-5. Implement Service (use addRemark/removeRemark to DocumentRequestService not in remark service), Controller
 6. Implement DTOs validation
 7. Implement Pagination for lists
 8. Implement AOP logging or SLF4J

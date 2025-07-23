@@ -71,6 +71,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
         // Create the remark entity
         DocumentRemark newRemark = buildDocumentRemark(content, user, documentRequest);
+        documentRequest.addRemark(newRemark);  // Optional, this only affects the memory
 
         // Persist the new remark to the database
         DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
@@ -94,7 +95,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         }
 
         // Remove the remark from the request (to update the bidirectional relationship)
-        documentRequest.getRemarks().remove(documentRemark); // Optional: if you want to maintain consistency
+        documentRequest.removeRemark(documentRemark); // Optional: if you want to maintain consistency
         documentRemark.setDocumentRequest(null); // Optional
 
         // Delete the remark
