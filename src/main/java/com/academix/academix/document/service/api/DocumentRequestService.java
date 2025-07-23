@@ -1,7 +1,7 @@
 package com.academix.academix.document.service.api;
 
-import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
-import com.academix.academix.document.dto.request.DocumentRequestPayloadDTO;
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import org.springframework.security.core.Authentication;
@@ -19,8 +19,8 @@ public interface DocumentRequestService {
 
     // ==== COMMON ====
     DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
-    DocumentRequestResponseDTO createDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO, Authentication authentication);
-    DocumentRequestResponseDTO updateDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO);
+    DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
+    DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId);
     DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId); // set status to cancelled
     void removeDocumentRequest(Long documentRequestId);
 

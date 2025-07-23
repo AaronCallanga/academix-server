@@ -1,6 +1,7 @@
 package com.academix.academix.document.mapper;
 
-import com.academix.academix.document.dto.request.DocumentRequestPayloadDTO;
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.entity.DocumentRequest;
@@ -17,7 +18,7 @@ public interface DocumentRequestMapper {
     //@Mapping(source = "userDetailedInfo", target = "requestedBy")
     // For Creation
     @Mapping(target = "remarks", ignore = true)
-    DocumentRequest toDocumentRequestEntity(DocumentRequestPayloadDTO documentRequestDTO);
+    DocumentRequest toDocumentRequestEntity(CreateDocumentRequestDTO documentRequestDTO);
 
     //@Mapping(target = "requestedBy" , expression = "java(documentRequest.getRequestedBy().getName())")
 //    @Mapping(source = "requestedBy", target = "userDetailedInfo")
@@ -33,6 +34,5 @@ public interface DocumentRequestMapper {
     List<DocumentRequestResponseListDTO> toDocumentRequestResponseListDTO(List<DocumentRequest> documentRequestList);
 
     // For update
-    @Mapping(target = "remarks", ignore = true) // only update its own comment
-    void updateDocumentRequestEntityFromDTO(DocumentRequestPayloadDTO documentRequestDTO, @MappingTarget DocumentRequest documentRequestEntity);
+    void updateDocumentRequestEntityFromDTO(UpdateDocumentRequestDTO documentRequestDTO, @MappingTarget DocumentRequest documentRequestEntity);
 }

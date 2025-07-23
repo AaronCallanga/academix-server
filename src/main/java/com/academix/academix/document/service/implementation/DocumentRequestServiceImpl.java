@@ -1,6 +1,7 @@
 package com.academix.academix.document.service.implementation;
 
-import com.academix.academix.document.dto.request.DocumentRequestPayloadDTO;
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.entity.DocumentRemark;
@@ -16,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.Document;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +72,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO createDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO, Authentication authentication) {
+    public DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication) {
         // Get the email from sub of authentication object
         String email = authentication.getName();
 
@@ -103,8 +103,24 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO updateDocumentRequest(DocumentRequestPayloadDTO documentRequestDTO) {
-        return null;
+    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
+        /**
+         * @NOTE: After updating, maybe log it in database? just many to one with the document request
+         *         - And admin/registrar can see it that the user changed/updated the request
+         * */
+
+        // Fetch the document request by ID
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Update the fields of DocumentRequest entity with the available fields in the DTO using mapper
+        documentRequestMapper.updateDocumentRequestEntityFromDTO(documentRequestDTO, documentRequest);
+
+        // Save the changes to the database
+        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Return the savedRequest and mapped it to response DTO
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override

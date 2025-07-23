@@ -8,6 +8,7 @@ TODO:
 7. Implement Pagination for lists
 8. Implement AOP logging or SLF4J
 9. Make things transactional
+10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
 
 Create a branch feature to practice git
 
