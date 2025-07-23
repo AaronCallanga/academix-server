@@ -92,7 +92,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
         for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
-            DocumentRemark documentRemark = documentRemarkService.buildDocumentRemark(documentRemarkRequestDTO.getContent(), user, null);
+            DocumentRemark documentRemark = documentRemarkService.buildDocumentRemark(documentRemarkRequestDTO.getContent(), user);
             newDocumentRequest.addRemark(documentRemark);  // handle the remark.setRequest(), so setting it to null initially is fine
         }
 

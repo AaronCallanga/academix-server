@@ -80,11 +80,26 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
+        // validate the remark belongs to the request, for stricter data integrity
         documentRemarkRepository.deleteById(documentRemarkId);
     }
 
     @Override
     public DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest) {
+        String role = determineHighestPriorityRole(user.getRoles());
+
+        // Build/Create the new remark entity
+        return DocumentRemark.builder()
+                             .content(content)
+                             .author(user)
+                             .role(role)
+                             .documentRequest(documentRequest)
+                             .timeStamp(LocalDateTime.now())
+                             .build();
+    }
+
+    @Override
+    public DocumentRemark buildDocumentRemark(String content, User user) {
         String role = determineHighestPriorityRole(user.getRoles());
 
         // Build/Create the new remark entity

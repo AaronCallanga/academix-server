@@ -21,4 +21,5 @@ public interface DocumentRemarkService {
     void deleteRemark(Long documentRequestId, Long documentRemarkId);
 
     DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest);
+    DocumentRemark buildDocumentRemark(String content, User user);
 }
