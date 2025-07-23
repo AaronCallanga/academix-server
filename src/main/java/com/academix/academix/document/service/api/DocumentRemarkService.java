@@ -20,5 +20,5 @@ public interface DocumentRemarkService {
     DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication);
     void deleteRemark(Long documentRequestId, Long documentRemarkId);
 
-    DocumentRemark createDocumentRemark(String content, User user, DocumentRequest documentRequest);
+    DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest);
 }
