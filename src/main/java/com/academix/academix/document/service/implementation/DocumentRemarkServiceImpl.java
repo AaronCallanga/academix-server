@@ -80,8 +80,25 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
-        // validate the remark belongs to the request, for stricter data integrity
-        documentRemarkRepository.deleteById(documentRemarkId);
+        // Fetch the document request
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                                                                   .orElseThrow(() -> new RuntimeException("Document request not found with id: " + documentRequestId));
+
+        // Fetch the remark
+        DocumentRemark documentRemark = documentRemarkRepository.findById(documentRemarkId)
+                                                                .orElseThrow(() -> new RuntimeException("Document remark not found with id: " + documentRemarkId));
+
+        // Validate that the remark belongs to the request
+        if (!documentRemark.getDocumentRequest().getId().equals(documentRequest.getId())) {
+            throw new IllegalArgumentException("Remark does not belong to the given document request");
+        }
+
+        // Remove the remark from the request (to update the bidirectional relationship)
+        documentRequest.getRemarks().remove(documentRemark); // Optional: if you want to maintain consistency
+        documentRemark.setDocumentRequest(null); // Optional
+
+        // Delete the remark
+        documentRemarkRepository.delete(documentRemark);
     }
 
     @Override
