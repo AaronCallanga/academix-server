@@ -69,17 +69,9 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new RuntimeException("User not found with the email : " + email));
 
-        // Extract User roles based on the highest role it has
-        String role = determineHighestPriorityRole(user.getRoles());
-
-        // Build/ Create the new remark entity
-        DocumentRemark newRemark = DocumentRemark.builder()
-                .content(content)
-                .documentRequest(documentRequest)
-                .author(user)
-                .role(role)
-                .timeStamp(LocalDateTime.now())
-                .build();
+        // Create the remark entity
+        DocumentRemark newRemark = buildDocumentRemark(content, user, documentRequest);
+        documentRequest.addRemark(newRemark);  // Optional, this only affects the memory
 
         // Persist the new remark to the database
         DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
@@ -89,7 +81,52 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
-        documentRemarkRepository.deleteById(documentRemarkId);
+        // Fetch the document request
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                                                                   .orElseThrow(() -> new RuntimeException("Document request not found with id: " + documentRequestId));
+
+        // Fetch the remark
+        DocumentRemark documentRemark = documentRemarkRepository.findById(documentRemarkId)
+                                                                .orElseThrow(() -> new RuntimeException("Document remark not found with id: " + documentRemarkId));
+
+        // Validate that the remark belongs to the request
+        if (!documentRemark.getDocumentRequest().getId().equals(documentRequest.getId())) {
+            throw new IllegalArgumentException("Remark does not belong to the given document request");
+        }
+
+        // Remove the remark from the request (to update the bidirectional relationship)
+        documentRequest.removeRemark(documentRemark); // Optional: if you want to maintain consistency
+        documentRemark.setDocumentRequest(null); // Optional
+
+        // Delete the remark
+        documentRemarkRepository.delete(documentRemark);
+    }
+
+    @Override
+    public DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest) {
+        String role = determineHighestPriorityRole(user.getRoles());
+
+        // Build/Create the new remark entity
+        return DocumentRemark.builder()
+                             .content(content)
+                             .author(user)
+                             .role(role)
+                             .documentRequest(documentRequest)
+                             .timeStamp(LocalDateTime.now())
+                             .build();
+    }
+
+    @Override
+    public DocumentRemark buildDocumentRemark(String content, User user) {
+        String role = determineHighestPriorityRole(user.getRoles());
+
+        // Build/Create the new remark entity
+        return DocumentRemark.builder()
+                             .content(content)
+                             .author(user)
+                             .role(role)
+                             .timeStamp(LocalDateTime.now())
+                             .build();
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {
