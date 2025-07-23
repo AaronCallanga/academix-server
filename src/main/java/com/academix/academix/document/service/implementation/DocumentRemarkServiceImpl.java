@@ -69,9 +69,12 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new RuntimeException("User not found with the email : " + email));
 
-        // Persist the new remark to the database
+        // Create the remark entity
         DocumentRemark newRemark = createDocumentRemark(content, user, documentRequest);
+
+        // Persist the new remark to the database
         DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
+
         return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
@@ -84,16 +87,14 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     public DocumentRemark createDocumentRemark(String content, User user, DocumentRequest documentRequest) {
         String role = determineHighestPriorityRole(user.getRoles());
 
-        // Build/ Create the new remark entity
-        DocumentRemark newRemark = DocumentRemark.builder()
-                                                 .content(content)
-                                                 .documentRequest(documentRequest)
-                                                 .author(user)
-                                                 .role(role)
-                                                 .timeStamp(LocalDateTime.now())
-                                                 .build();
-
-        return newRemark;
+        // Build/Create the new remark entity
+        return DocumentRemark.builder()
+                             .content(content)
+                             .documentRequest(documentRequest)
+                             .author(user)
+                             .role(role)
+                             .timeStamp(LocalDateTime.now())
+                             .build();
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {

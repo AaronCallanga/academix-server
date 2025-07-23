@@ -1,6 +1,7 @@
 package com.academix.academix.document.service.implementation;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -89,15 +90,14 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         newDocumentRequest.setRequestDate(LocalDateTime.now());
         newDocumentRequest.setRequestedBy(user);
 
+        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
+        for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
+            DocumentRemark documentRemark = documentRemarkService.createDocumentRemark(documentRemarkRequestDTO.getContent(), user, null);
+            newDocumentRequest.addRemark(documentRemark);
+        }
+
         // Save the newDocumentRequest without setting the remarks entity
         DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
-
-        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and set its own documentRequest with the savedDocumentRequest
-        List<DocumentRemark> remarks = new ArrayList<>(documentRequestDTO.getRemarks().stream()
-                                                                       .map(r -> documentRemarkService.createDocumentRemark(r.getContent(), user, savedDocumentRequest))
-                                                                       .collect(Collectors.toList())
-        );
-        savedDocumentRequest.setRemarks(remarks);
 
         return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
     }
