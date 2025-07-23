@@ -147,6 +147,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public void deleteDocumentRequest(Long documentRequestId) {
-
+        // Delete the document request entity by ID
+        documentRequestRepository.deleteById(documentRequestId);
     }
 }
