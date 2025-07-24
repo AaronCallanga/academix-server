@@ -1,5 +1,6 @@
 package com.academix.academix.document.controller;
 
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.service.api.DocumentRequestService;
@@ -9,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -45,11 +48,18 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/requestId")
+    @GetMapping("/{id}")
     public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.getDocumentRequestById(requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
+
+    @PostMapping
+    public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.createDocumentRequest(createDocumentRequestDTO, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
+    }
+
 
 
 }
