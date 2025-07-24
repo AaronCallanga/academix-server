@@ -1,11 +1,13 @@
 package com.academix.academix.document.controller;
 
+import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.service.api.DocumentRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,6 +24,14 @@ public class DocumentRequestController {
     public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllDocumentRequests() {
         List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
                 documentRequestService.getAllDocumentRequests();
+
+        return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<DocumentRequestResponseListDTO> getAllUserDocumentRequests(@PathVariable Long userId) {
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
+                documentRequestService.getUserDocumentRequests(userId);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
