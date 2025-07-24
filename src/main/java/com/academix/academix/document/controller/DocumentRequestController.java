@@ -45,6 +45,12 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
+    @GetMapping("/requestId")
+    public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.getDocumentRequestById(requestId);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
 
 }
 
