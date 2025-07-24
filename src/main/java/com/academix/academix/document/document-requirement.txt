@@ -8,7 +8,7 @@ TODO:
 8. Implement AOP logging or SLF4J
 9. Make things transactional
 10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
-11. Implement logging in updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
+11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
 Create a branch feature to practice git
 
 Sample:
