@@ -6,6 +6,7 @@ import com.academix.academix.document.service.api.DocumentRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,13 +29,22 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/{userId}")
-    public ResponseEntity<DocumentRequestResponseListDTO> getAllUserDocumentRequests(@PathVariable Long userId) {
+    @GetMapping("/users/{userId}")
+    public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllUserDocumentRequests(@PathVariable Long userId) {
         List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
                 documentRequestService.getUserDocumentRequests(userId);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
+
+    @GetMapping("/own")
+    public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllOwnDocumentRequests(Authentication authentication) {
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
+                documentRequestService.getOwnDocumentRequests(authentication);
+
+        return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
+    }
+
 
 }
 
