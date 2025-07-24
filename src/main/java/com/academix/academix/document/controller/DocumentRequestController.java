@@ -70,7 +70,11 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
-
+    @DeleteMapping("/{requestId}")
+    public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId) {
+        documentRequestService.deleteDocumentRequest(requestId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
 
 
