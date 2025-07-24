@@ -1,6 +1,7 @@
 package com.academix.academix.document.controller;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.service.api.DocumentRequestService;
@@ -8,9 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -48,7 +52,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.getDocumentRequestById(requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
@@ -59,6 +63,14 @@ public class DocumentRequestController {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.createDocumentRequest(createDocumentRequestDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{requestId}")
+    public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
+
 
 
 
