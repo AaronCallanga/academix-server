@@ -64,7 +64,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{requestId}")
+    @PatchMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
@@ -76,6 +76,11 @@ public class DocumentRequestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PatchMapping("/{requestId}/cancel")
+    public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
 
 
 }
