@@ -1,5 +1,6 @@
 package com.academix.academix.document.dto.request;
 
+import com.academix.academix.document.enums.DocumentType;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,8 +20,8 @@ import java.time.LocalDateTime;
 @Builder
 public class UpdateDocumentRequestDTO {
 
-    @NotBlank(message = "Document type is required")
-    private String documentType; // F-137, Good Moral, etc.
+    @NotNull(message = "Document type is required")
+    private DocumentType documentType; // F-137, Good Moral, etc.
 
     @Size(min = 5, max = 500)
     @NotBlank(message = "Purpose is required")
