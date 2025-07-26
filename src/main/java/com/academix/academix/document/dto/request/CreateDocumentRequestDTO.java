@@ -1,6 +1,10 @@
 package com.academix.academix.document.dto.request;
 
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,11 +22,15 @@ import java.util.List;
 public class CreateDocumentRequestDTO {        // For updating and creating document request
 
 //    private Long userId; // requestedBy get from jwt
-
+    @NotBlank(message = "Document type is required")
     private String documentType; // F-137, Good Moral, etc.
 
+    @Size(min = 5, max = 500)
+    @NotBlank(message = "Purpose is required")
     private String purpose; // Enrollment, transfer, job, etc.
 
+    @NotNull(message = "Pickup date is required")
+    @Future(message = "Pickup date must be in the future")
     private LocalDateTime pickUpDate;       // approved date by admin/registrar
 
     private List<DocumentRemarkRequestDTO> remarks;
