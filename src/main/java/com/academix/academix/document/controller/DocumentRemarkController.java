@@ -3,6 +3,7 @@ package com.academix.academix.document.controller;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.service.api.DocumentRemarkService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,13 +33,13 @@ public class DocumentRemarkController {
     }
 
     @PatchMapping("/{remarksId}")
-    public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId) {
+    public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.updateRemark(documentRemarkRequestDTO, remarksId);
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/documents/{requestId}")
-    public ResponseEntity<DocumentRemarkResponseDTO> addDocumentRemark(@RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long requestId, Authentication authentication) {
+    public ResponseEntity<DocumentRemarkResponseDTO> addDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long requestId, Authentication authentication) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.addRemark(requestId, documentRemarkRequestDTO, authentication);
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
