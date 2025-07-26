@@ -1,5 +1,8 @@
 package com.academix.academix.document.dto.request;
 
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,8 +19,11 @@ import java.util.List;
 @Builder
 public class DocumentRequestAdminUpdateDTO {
 
+    @NotBlank(message = "Document status is required")
     private String status;  // PENDING, APPROVED, REJECTED
 
+    @NotNull(message = "Pickup date is required")
+    @Future(message = "Pickup date must be in the future")
     private LocalDateTime pickUpDate;
 
 //    private List<DocumentRemarkRequestDTO> remarks;
