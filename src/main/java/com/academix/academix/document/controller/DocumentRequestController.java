@@ -5,6 +5,7 @@ import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -59,13 +60,13 @@ public class DocumentRequestController {
     }
 
     @PostMapping
-    public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
+    public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@Valid @RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.createDocumentRequest(createDocumentRequestDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{requestId}")
-    public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId) {
+    public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
