@@ -59,9 +59,15 @@ public class DocumentRequestController {
     }
 
     @GetMapping("/own")
-    public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllOwnDocumentRequests(Authentication authentication) {
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getOwnDocumentRequests(authentication);
+    public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllOwnDocumentRequests(
+            Authentication authentication,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ASC") String sortField,
+            @RequestParam(defaultValue = "requestDate") String sortDirection
+                                                                                         ) {
+        Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
+                documentRequestService.getOwnDocumentRequests(authentication, page, size, sortField, sortDirection);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
