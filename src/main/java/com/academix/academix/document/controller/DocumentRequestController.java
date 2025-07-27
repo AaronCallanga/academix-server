@@ -7,6 +7,7 @@ import com.academix.academix.document.dto.response.DocumentRequestResponseListDT
 import com.academix.academix.document.service.api.DocumentRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -30,9 +32,14 @@ public class DocumentRequestController {
     private final DocumentRequestService documentRequestService;
 
     @GetMapping
-    public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllDocumentRequests() {
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getAllDocumentRequests();
+    public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllDocumentRequests(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ASC") String sortField,
+            @RequestParam(defaultValue = "requestDate") String sortDirection
+                                                                                      ) {
+        Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
+                documentRequestService.getAllDocumentRequests(page, size, sortField, sortDirection);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
