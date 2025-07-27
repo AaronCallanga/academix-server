@@ -4,6 +4,7 @@ import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
 public interface DocumentRequestService {
 
     // ==== ADMIN / REGISTRAR ====
-    List<DocumentRequestResponseListDTO> getAllDocumentRequests();
+    Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId);
 
     // ==== INDIVIDUAL / STUDENT ====
