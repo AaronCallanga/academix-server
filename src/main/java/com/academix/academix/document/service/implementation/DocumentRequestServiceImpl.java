@@ -52,12 +52,18 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId) {
-        // Fetch the document request of the user by its ID
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId);
+    public Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection) {
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
-        // Map the list to List of DTOs and return it
-        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
+        // Fetch the document request of the user by its ID
+        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId, pageRequest);
+
+
+        // Map the list to List of DTOs
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override

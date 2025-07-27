@@ -13,7 +13,7 @@ public interface DocumentRequestService {
 
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
-    List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId);
+    Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
 
     // ==== INDIVIDUAL / STUDENT ====
     List<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication);
