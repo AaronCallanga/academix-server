@@ -45,9 +45,15 @@ public class DocumentRequestController {
     }
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<List<DocumentRequestResponseListDTO>> getAllUserDocumentRequests(@PathVariable Long userId) {
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getUserDocumentRequests(userId);
+    public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllUserDocumentRequests(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ASC") String sortField,
+            @RequestParam(defaultValue = "requestDate") String sortDirection
+                                                                                          ) {
+        Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
+                documentRequestService.getUserDocumentRequests(userId, page, size, sortField, sortDirection);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
