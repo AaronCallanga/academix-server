@@ -20,6 +20,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 public class DocumentRequest {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -61,6 +63,9 @@ public class DocumentRequest {
     private List<DocumentRemark> remarks = new ArrayList<>();       // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
 
     public void addRemark(DocumentRemark remark) {
+        if (this.remarks == null) {
+            this.remarks = new ArrayList<>();
+        }
         this.remarks.add(remark);
         remark.setDocumentRequest(this);
     }

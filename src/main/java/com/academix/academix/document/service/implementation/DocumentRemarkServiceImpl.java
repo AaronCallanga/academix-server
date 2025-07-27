@@ -43,9 +43,17 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     @Override
-    public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId) {
+    public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId) {
+
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                                                                   .orElseThrow(() -> new RuntimeException("Document request not found with id: " + documentRequestId));
+
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
                 .orElseThrow(() -> new RuntimeException("Document remark does not exist with the id : " + documentRemarkId));
+
+        if (!remark.getDocumentRequest().getId().equals(documentRequest.getId())) {
+            throw new IllegalArgumentException("Remark does not belong to the given document request");
+        }
 
         String updatedContent = documentRemarkRequestDTO.getContent();
         remark.setContent(updatedContent);
@@ -107,13 +115,16 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         String role = determineHighestPriorityRole(user.getRoles());
 
         // Build/Create the new remark entity
-        return DocumentRemark.builder()
+        DocumentRemark documentRemark = DocumentRemark.builder()
                              .content(content)
                              .author(user)
                              .role(role)
                              .documentRequest(documentRequest)
                              .timeStamp(LocalDateTime.now())
                              .build();
+
+        return documentRemarkRepository.save(documentRemark);
+
     }
 
     @Override

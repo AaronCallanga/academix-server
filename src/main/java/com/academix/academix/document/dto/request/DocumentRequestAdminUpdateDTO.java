@@ -1,6 +1,7 @@
 package com.academix.academix.document.dto.request;
 
 import com.academix.academix.document.enums.DocumentStatus;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ public class DocumentRequestAdminUpdateDTO {
 
     @NotNull(message = "Pickup date is required")
     @Future(message = "Pickup date must be in the future")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime pickUpDate;
 
 //    private List<DocumentRemarkRequestDTO> remarks;

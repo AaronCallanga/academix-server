@@ -32,9 +32,9 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 
-    @PatchMapping("/{remarksId}")
-    public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId) {
-        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.updateRemark(documentRemarkRequestDTO, remarksId);
+    @PatchMapping("/{remarksId}/documents/{requestId}")
+    public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
+        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
