@@ -63,19 +63,26 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Map the list to List of DTOs
         List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
 
+        // Re-build the page object to return the items with mapped to dtos
         return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
-    public List<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication) {
+    public Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection) {
         // Extract the email from the authenticaiton object
         String email = authentication.getName();
 
+        // Build the Page Request
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
         // Fetch the list of document request by user's email
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email);
+        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email, pageRequest);
 
         // Map the document requests to list of DTOs and return it
-        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
