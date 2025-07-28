@@ -33,7 +33,7 @@ public class DocumentRemarkController {
             @PathVariable Long requestId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "DESC") String sortDirection,
             @RequestParam(defaultValue = "timeStamp") String sortField
                                                                                            ) {
         Page<DocumentRemarkResponseDTO> documentRemarks = documentRemarkService.getAllDocumentRemarksByRequestId(requestId, page, size, sortField, sortDirection);
