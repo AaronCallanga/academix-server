@@ -15,6 +15,10 @@ import com.academix.academix.document.service.api.DocumentRequestService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
@@ -33,33 +37,52 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRemarkService documentRemarkService;
 
     @Override
-    public List<DocumentRequestResponseListDTO> getAllDocumentRequests() {
+    public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
         // Fetch all the document request
-        List<DocumentRequest> documentRequests = documentRequestRepository.findAll();
+        Page<DocumentRequest> documentRequests = documentRequestRepository.findAll(pageRequest);
 
-        // Map the list to List of DTOs and return it
-        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
+        // Convert the paged document requests to List of DTOs (total of 10 by default)
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
-    public List<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId) {
+    public Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection) {
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
         // Fetch the document request of the user by its ID
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId);
+        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId, pageRequest);
 
-        // Map the list to List of DTOs and return it
-        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
+
+        // Map the list to List of DTOs
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
-    public List<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication) {
+    public Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection) {
         // Extract the email from the authenticaiton object
         String email = authentication.getName();
 
+        // Build the Page Request
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
         // Fetch the list of document request by user's email
-        List<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email);
+        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email, pageRequest);
 
         // Map the document requests to list of DTOs and return it
-        return documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests);
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
