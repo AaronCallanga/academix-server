@@ -6,13 +6,14 @@ import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.document.entity.DocumentRequest;
 import com.academix.academix.user.entity.User;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
 public interface DocumentRemarkService {
     // GENERAL
-    List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId);
+    Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int size, int page, String sortField, String sortDirection);
 
     DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId);
 

@@ -12,6 +12,10 @@ import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
@@ -32,14 +36,21 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     private final UserRepository userRepository;
 
     @Override
-    public List<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId) {
-        List<DocumentRemark> documentRemarkList =
-                documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId);
+    public Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int page, int size, String sortField, String sortDirection) {
+        // Define the page requeest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
+        // Fetch the paged data by ID
+        Page<DocumentRemark> documentRemarkList =
+                documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
+                //documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId, pageRequest);
+
+        // Map the paged content (list of document remarks) to DTOs
         List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
-                documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkList);
+                documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkList.getContent());
 
-        return documentRemarkResponseDTOList;
+        // Return the paged data
+        return new PageImpl<>(documentRemarkResponseDTOList, pageRequest, documentRemarkList.getTotalElements());
     }
 
     @Override
