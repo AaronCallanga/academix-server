@@ -3,13 +3,12 @@ TODO:
 2. Add file handling for authorization letter, or more verification process(sending id, pic, bio-data)
 3. Implement messaging/event per document request. So admin/registrar can see it
 4. Add a type field to DocumentRemark (USER, SYSTEM, LOG, etc.) and roles too (user, documetn remark)
-7. Implement Pagination for lists
+7. Implement Pagination for lists (for remark/user)
 8. Implement AOP logging or SLF4J
 9. Make things transactional
 10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
 11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
 12. Refactor code base/ clean up
-13. @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss") for DTOs
 
 Sample:
 DocumentRemark remark = new DocumentRemark();
