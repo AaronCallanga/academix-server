@@ -1,6 +1,7 @@
 package com.academix.academix.scheduler;
 
 import com.academix.academix.security.repository.VerificationTokenRepository;
+import com.academix.academix.security.service.api.TokenService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +21,14 @@ import java.time.LocalDateTime;
 public class VerificationTokenTask {
 
     private final TaskScheduler tokenScheduler;
-    private final VerificationTokenRepository verificationTokenRepository;
+    private final TokenService tokenService;
 
     @Autowired
     public VerificationTokenTask(@Qualifier("tokenScheduler") TaskScheduler tokenScheduler,
-                          VerificationTokenRepository verificationTokenRepository) {
+                                 TokenService tokenService
+                                 ) {
         this.tokenScheduler = tokenScheduler;
-        this.verificationTokenRepository = verificationTokenRepository;
+        this.tokenService = tokenService;
     }
 
     @PostConstruct
@@ -37,7 +39,7 @@ public class VerificationTokenTask {
     @Transactional
     public void deleteAllExpiredTokens() {
         log.info("Running token cleanup at {}", LocalDateTime.now());
-        int deleted = verificationTokenRepository.deleteByExpiryDateBefore(LocalDateTime.now());
+        int deleted = tokenService.deleteExpiredTokens();
         log.info("Cleaning up expired tokens on thread {}", Thread.currentThread().getName());     // For testing
         log.info("Deleted {} expired verification tokens", deleted);
     }
