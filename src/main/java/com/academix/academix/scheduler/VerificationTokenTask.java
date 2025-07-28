@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -33,11 +34,12 @@ public class VerificationTokenTask {
         tokenScheduler.scheduleAtFixedRate(this::deleteAllExpiredTokens, Duration.ofHours(1));
     }
 
+    @Transactional
     public void deleteAllExpiredTokens() {
         log.info("Running token cleanup at {}", LocalDateTime.now());
         int deleted = verificationTokenRepository.deleteByExpiryDateBefore(LocalDateTime.now());
         log.info("Cleaning up expired tokens on thread {}", Thread.currentThread().getName());     // For testing
-        log.info("Deleted {} expired verification tokens", 0);
+        log.info("Deleted {} expired verification tokens", deleted);
     }
 
 }
