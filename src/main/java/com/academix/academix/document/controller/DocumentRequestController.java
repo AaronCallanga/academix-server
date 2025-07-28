@@ -35,8 +35,8 @@ public class DocumentRequestController {
     public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllDocumentRequests(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortField,
-            @RequestParam(defaultValue = "requestDate") String sortDirection
+            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "requestDate") String sortField
                                                                                       ) {
         Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
                 documentRequestService.getAllDocumentRequests(page, size, sortField, sortDirection);
@@ -49,8 +49,8 @@ public class DocumentRequestController {
             @PathVariable Long userId,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortField,
-            @RequestParam(defaultValue = "requestDate") String sortDirection
+            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "requestDate") String sortField
                                                                                           ) {
         Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
                 documentRequestService.getUserDocumentRequests(userId, page, size, sortField, sortDirection);
@@ -63,8 +63,8 @@ public class DocumentRequestController {
             Authentication authentication,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortField,
-            @RequestParam(defaultValue = "requestDate") String sortDirection
+            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "requestDate") String sortField
                                                                                          ) {
         Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
                 documentRequestService.getOwnDocumentRequests(authentication, page, size, sortField, sortDirection);

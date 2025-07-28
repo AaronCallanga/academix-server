@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface DocumentRemarkRepository extends CrudRepository<DocumentRemark, Long> {
-    Page<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentRequestId);
+    List<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentRequestId);
 }
