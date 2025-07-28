@@ -42,7 +42,8 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
         // Fetch the paged data by ID
         Page<DocumentRemark> documentRemarkList =
-                documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId, pageRequest);
+                documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
+                //documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId, pageRequest);
 
         // Map the paged content (list of document remarks) to DTOs
         List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
