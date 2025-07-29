@@ -9,6 +9,7 @@ TODO:
 10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
 11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
 12. Refactor code base/ clean up
+13. Implemented PrePersist or EnableJpaAuditing
 
 
 // For admin update - approve, reject, complete, revert

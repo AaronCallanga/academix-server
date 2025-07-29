@@ -14,6 +14,7 @@ import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
+import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -35,6 +36,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRequestMapper documentRequestMapper;
     private final UserRepository userRepository;
     private final DocumentRemarkService documentRemarkService;
+    private final UserService userService;
 
     @Override
     public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
@@ -97,12 +99,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication) {
-        // Get the email from sub of authentication object
-        String email = authentication.getName();
 
         // Fetch the authenticated user
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        User user = userService.getUserFromAuthentication(authentication);
 
         // User mapper to map all the available fields from the DTO to document request entity
         // This map the DocumentType, Purpose, and PickupDate
@@ -173,4 +172,5 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
     }
+
 }

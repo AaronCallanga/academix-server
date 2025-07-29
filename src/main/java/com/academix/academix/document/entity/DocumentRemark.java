@@ -52,4 +52,11 @@ public class DocumentRemark {
     @ManyToOne
     @JoinColumn(name = "author_id", nullable = false)
     private User author;        // User who gives the remarks
+
+    /*
+    @PrePersist
+    public void prePersist() {
+    this.timeStamp = LocalDateTime.now();
+}
+     */
 }

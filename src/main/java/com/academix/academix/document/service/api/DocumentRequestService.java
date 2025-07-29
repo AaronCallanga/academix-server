@@ -14,6 +14,7 @@ public interface DocumentRequestService {
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
+    //void setDocumentRequestStatusToInProgress(Long documentRequestId);
 
     // ==== INDIVIDUAL / STUDENT ====
     Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);
