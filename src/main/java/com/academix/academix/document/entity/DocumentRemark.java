@@ -1,8 +1,11 @@
 package com.academix.academix.document.entity;
 
+import com.academix.academix.document.enums.DocumentRemarkRole;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -35,12 +38,13 @@ public class DocumentRemark {
     private String content;
 
     @Column(nullable = false)
-    private String role;        // ADMIN, REGISTRAR, STUDENT
+    @Enumerated(EnumType.STRING)
+    private DocumentRemarkRole role;        // ADMIN, REGISTRAR, STUDENT
 
     @Column(nullable = false)
     private LocalDateTime timeStamp;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "document_request_id", nullable = false)
     //@OnDelete(action = OnDeleteAction.CASCADE)  // delete remarks when request is deleted, could also handle manually by deleteByRequestId via repo
     private DocumentRequest documentRequest;
