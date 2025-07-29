@@ -193,6 +193,26 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
+    @Override
+    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId) {
+        /**
+         * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
+         *         - And admin/registrar can see it that the user changed/updated the request in log section
+         *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
+         * */
+        // Fetch the Document Request Entity
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                                                                   .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Set the status to CANCELLED
+        documentRequest.setStatus(DocumentStatus.CANCELLED);
+
+        // Save to database
+        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+    }
 
     @Override
     public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
@@ -220,27 +240,6 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.IN_PROGRESS);
-
-        // Save to database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
-
-        // Mapped savedReqyest to DTO then return it as a response
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
-    }
-
-    @Override
-    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId) {
-        /**
-         * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
-         *         - And admin/registrar can see it that the user changed/updated the request in log section
-         *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
-         * */
-        // Fetch the Document Request Entity
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
-
-        // Set the status to CANCELLED
-        documentRequest.setStatus(DocumentStatus.CANCELLED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
