@@ -147,6 +147,33 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
+    public DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication) {
+        return null;
+    }
+
+    @Override
+    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication) {
+        return null;
+    }
+
+    @Override
+    public DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication) {
+        return null;
+    }
+
+    @Override
+    public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
+                                                                               Authentication authentication) {
+        return null;
+    }
+
+    @Override
+    public DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId,
+                                                                           Authentication authentication) {
+        return null;
+    }
+
+    @Override
     public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
