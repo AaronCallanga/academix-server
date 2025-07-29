@@ -5,6 +5,7 @@ import com.academix.academix.document.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -27,8 +29,14 @@ public class DocumentRemarkController {
     private final DocumentRemarkService documentRemarkService;
 
     @GetMapping("/{requestId}")
-    public ResponseEntity<List<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(@PathVariable Long requestId) {
-        List<DocumentRemarkResponseDTO> documentRemarks = documentRemarkService.getAllDocumentRemarksByRequestId(requestId);
+    public ResponseEntity<Page<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(
+            @PathVariable Long requestId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "DESC") String sortDirection,
+            @RequestParam(defaultValue = "timeStamp") String sortField
+                                                                                           ) {
+        Page<DocumentRemarkResponseDTO> documentRemarks = documentRemarkService.getAllDocumentRemarksByRequestId(requestId, page, size, sortField, sortDirection);
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 

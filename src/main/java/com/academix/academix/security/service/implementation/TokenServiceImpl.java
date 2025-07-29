@@ -53,4 +53,10 @@ public class TokenServiceImpl implements TokenService {
         return verificationTokenRepository.findByToken(token)
                                    .orElseThrow(() -> new RuntimeException("Token not found"));
     }
+
+    @Override
+    @Transactional
+    public int deleteExpiredTokens() {      // Use as a clean up in VerificaitonTokenTask scheduled
+        return verificationTokenRepository.deleteByExpiryDateBefore(LocalDateTime.now());
+    }
 }

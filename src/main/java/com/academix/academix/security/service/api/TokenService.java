@@ -9,4 +9,5 @@ public interface TokenService {
     VerificationToken generateToken(User user);
     void deleteToken(VerificationToken token);
     VerificationToken getToken(String token);
+    int deleteExpiredTokens();
 }
