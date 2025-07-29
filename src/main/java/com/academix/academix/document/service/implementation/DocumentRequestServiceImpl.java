@@ -197,7 +197,18 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
                                                                                Authentication authentication) {
-        return null;
+        // Fetch the document request by ID
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Update the status to READY_FOR_PICKUP
+        documentRequest.setStatus(DocumentStatus.READY_FOR_PICKUP);
+
+        // Save to database
+        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
