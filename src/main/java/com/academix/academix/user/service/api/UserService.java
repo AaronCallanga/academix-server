@@ -4,5 +4,5 @@ import com.academix.academix.user.entity.User;
 import org.springframework.security.core.Authentication;
 
 public interface UserService {
-    User getUUserFromAuthentication(Authentication authentication);
+    User getUserFromAuthentication(Authentication authentication);
 }
