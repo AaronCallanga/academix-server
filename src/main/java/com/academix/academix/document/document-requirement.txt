@@ -10,7 +10,7 @@ TODO:
 11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
 12. Refactor code base/ clean up - use userService.getUserFromAuth
 13. Implemented PrePersist or EnableJpaAuditing
-15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED
+15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED. Just create an object of remark, Authentication for author
 
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
