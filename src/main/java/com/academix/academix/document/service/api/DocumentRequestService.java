@@ -14,7 +14,11 @@ public interface DocumentRequestService {
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
-    //void setDocumentRequestStatusToInProgress(Long documentRequestId);
+    DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
 
     // ==== INDIVIDUAL / STUDENT ====
     Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);
