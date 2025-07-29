@@ -164,7 +164,18 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication) {
-        return null;
+        // Fetch the document request by ID
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Update the status to REJECTED
+        documentRequest.setStatus(DocumentStatus.REJECTED);
+
+        // Save to database
+        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
