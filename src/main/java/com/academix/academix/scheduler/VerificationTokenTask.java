@@ -36,7 +36,6 @@ public class VerificationTokenTask {
         tokenScheduler.scheduleAtFixedRate(this::deleteAllExpiredTokens, Duration.ofHours(1));
     }
 
-    @Transactional
     public void deleteAllExpiredTokens() {
         log.info("Running token cleanup at {}", LocalDateTime.now());
         int deleted = tokenService.deleteExpiredTokens();
