@@ -141,7 +141,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
+    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication) {
         /**
          * @NOTE: After updating, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -152,11 +152,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the fields of DocumentRequest entity with the available fields in the DTO using mapper
         documentRequestMapper.updateDocumentRequestEntityFromDTO(documentRequestDTO, documentRequest);
 
         // Save the changes to the database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.CREATED,
+                "Request Submitted",
+                user
+                                                      );
 
         // Return the savedRequest and mapped it to response DTO
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
