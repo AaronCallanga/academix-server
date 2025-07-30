@@ -9,5 +9,5 @@ public enum DocumentAction {
     CANCELLED,
     REMARK_ADDED,
     AUTO_EXPIRED,   // e.g., system-driven for clean up
-    DOWNLOADED
+    DOWNLOADED      // for extracting request to PDF
 }

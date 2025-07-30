@@ -33,7 +33,7 @@ import java.util.Set;
 @Setter
 @Builder
 @Table(name = "users")
-public class User {
+public class User {     // STUDENT, maybe refactor name, then create another entity ADMIN/Schools officials
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

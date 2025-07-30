@@ -1,5 +1,8 @@
 package com.academix.academix.log.dto.response;
 
+import com.academix.academix.log.enums.ActorType;
+import com.academix.academix.log.enums.DocumentAction;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +24,8 @@ public class DocumentRequestAuditResponseDTO {
     private String performedByName; // optional: to avoid frontend joining user names
 
     private String action;
+    private String actorType;
     private String remark;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime performedAt;
 }

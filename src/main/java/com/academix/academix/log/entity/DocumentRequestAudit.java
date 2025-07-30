@@ -1,8 +1,12 @@
 package com.academix.academix.log.entity;
 
 import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.log.enums.ActorType;
+import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
@@ -31,7 +35,11 @@ public class DocumentRequestAudit {
     @ManyToOne
     private User performedBy;
 
-    private String action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"
+    @Enumerated(EnumType.STRING)
+    private DocumentAction action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"
+
+    @Enumerated(EnumType.STRING)
+    private ActorType actorType;
 
     private String remark; // optional: reason, comment, etc.
 

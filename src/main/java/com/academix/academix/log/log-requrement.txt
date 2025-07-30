@@ -1,2 +1,3 @@
-1. Implement clean up for expired request // No action taken
+1. Implement clean up for expired request // No action taken after x days, the request should be deleted if requestedBy > x days
 2. Pagination
+3. Maybe implement list of logs + detailed log(detailed user info, and maybe changes for what have been updated)

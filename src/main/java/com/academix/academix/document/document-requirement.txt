@@ -10,7 +10,8 @@ TODO:
 12. Refactor code base/ clean up - use userService.getUserFromAuth, in remark/request too
 13. Implement PrePersist or EnableJpaAuditing
 15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED. Just create an object of remark/log, Authentication for author
-
+16. Make request STATUS to EXPIRED after x days if status does not change to REQUESTED
+17. Update to status should only be change if the condition is true such as, REQUESTED to IN_PROGRESS and not IN_PROGRESS to REQUESTED (this should be change in forceAdminUpdate)
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
 
