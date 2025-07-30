@@ -276,11 +276,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.READY_FOR_PICKUP);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.READY_FOR_PICKUP,
+                "Ready for Pickup",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
