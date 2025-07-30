@@ -27,7 +27,6 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     @Override
     public DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest,
                                                               ActorRole actorRole,
-                                                              String actorName,
                                                               DocumentAction documentAction,
                                                               String remark,
                                                               User userOptional) {
