@@ -6,11 +6,10 @@ TODO:
 7. Implement Pagination for lists (for remark/user)
 8. Implement AOP logging or SLF4J
 9. Make things transactional
-10. Your features/document-request-service-impl is not yet merge, complete it before merging. Make sure to pull origin master if remote repo is changed in other pc
 11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
-12. Refactor code base/ clean up - use userService.getUserFromAuth
-13. Implemented PrePersist or EnableJpaAuditing
-15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED. Just create an object of remark, Authentication for author
+12. Refactor code base/ clean up - use userService.getUserFromAuth, in remark/request too
+13. Implement PrePersist or EnableJpaAuditing
+15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED. Just create an object of remark/log, Authentication for author
 
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log

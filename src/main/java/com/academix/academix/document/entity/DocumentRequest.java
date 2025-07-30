@@ -60,7 +60,7 @@ public class DocumentRequest {
     private User requestedBy;
 
     @OneToMany(mappedBy = "documentRequest", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DocumentRemark> remarks = new ArrayList<>();       // additional notes, feedback, clarification etc. // linked via uni-directional, just fetch remark when returning requestdto
+    private List<DocumentRemark> remarks = new ArrayList<>();       // additional notes, feedback, clarification etc.
 
     public void addRemark(DocumentRemark remark) {
         if (this.remarks == null) {

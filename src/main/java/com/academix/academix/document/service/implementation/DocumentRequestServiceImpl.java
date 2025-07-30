@@ -2,6 +2,7 @@ package com.academix.academix.document.service.implementation;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
+import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -240,6 +241,27 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.IN_PROGRESS);
+
+        // Save to database
+        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+    }
+
+    @Override
+    public DocumentRequestResponseDTO adminUpdateDocumentRequest(Long documentRequestId,
+                                                                 DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO,
+                                                                 Authentication authentication) {
+        // Fetch the document request by ID
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Update the fields
+        documentRequest.setStatus(documentRequestAdminUpdateDTO.getStatus());
+        documentRequest.setPickUpDate(documentRequestAdminUpdateDTO.getPickUpDate());
+
+        // Log the actions
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);

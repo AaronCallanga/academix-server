@@ -1,6 +1,7 @@
 package com.academix.academix.document.service.api;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -19,6 +20,8 @@ public interface DocumentRequestService {
     DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
+    /** @NOTE: Use for FORCE update for status and pick up date  - UI shows current status choice, use this to change the pick-up date */
+    DocumentRequestResponseDTO adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
 
     // ==== INDIVIDUAL / STUDENT ====
     Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);
