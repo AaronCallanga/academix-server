@@ -12,5 +12,5 @@ import java.util.List;
 public interface DocumentRequestAuditService {
 
     DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest, ActorRole actorRole,String actorName, DocumentAction documentAction, String remark, User userOptional);
-    List<DocumentRequestAuditResponseDTO> getAllDocumentRequests(Long documentRequestId); // Should be paged by timeStamp latest as default
+    List<DocumentRequestAuditResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId); // Should be paged by timeStamp latest as default
 }

@@ -45,9 +45,9 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     }
 
     @Override
-    public List<DocumentRequestAuditResponseDTO> getAllDocumentRequests(Long documentRequestId) {
+    public List<DocumentRequestAuditResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId) {
         List<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentId(documentRequestId);
-        return documentRequestAuditMapper;
+        return documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList);
     }
 
 }
