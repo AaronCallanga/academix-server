@@ -1,0 +1,15 @@
+package com.academix.academix.log.service.api;
+
+
+import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.log.dto.response.DocumentRequestAuditResponseDTO;
+import com.academix.academix.log.enums.DocumentAction;
+import com.academix.academix.user.entity.User;
+
+import java.util.List;
+
+public interface DocumentRequestAudit {
+
+    DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest, User user, DocumentAction documentAction, String remark);
+    List<DocumentRequestAuditResponseDTO> getAllDocumentRequests(Long documentRequestId); // Should be paged by timeStamp latest as default
+}
