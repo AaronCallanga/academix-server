@@ -128,6 +128,15 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save the newDocumentRequest without setting the remarks entity
         DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
 
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedDocumentRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.CREATED,
+                "Request Submitted",
+                user
+                                                      );
+
         return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
     }
 
