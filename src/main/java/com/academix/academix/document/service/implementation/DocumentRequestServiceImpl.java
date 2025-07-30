@@ -380,9 +380,25 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public void deleteDocumentRequest(Long documentRequestId) {
+    public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, String reason) {
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
+        // Retrieve the document request before deleting it (so you can still log it)
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
+
+        // Log the action
+        documentRequestAuditService.logDocumentRequest(
+                documentRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.DELETED,
+                reason,
+                user
+                                                      );
     }
 
     private ActorRole determineActorType(Set<Role> roles) {

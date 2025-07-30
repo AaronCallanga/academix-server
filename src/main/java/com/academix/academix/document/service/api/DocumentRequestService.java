@@ -31,7 +31,7 @@ public interface DocumentRequestService {
     DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
     DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, String reason); // set status to cancelled
-    void deleteDocumentRequest(Long documentRequestId);
+    void deleteDocumentRequest(Long documentRequestId, Authentication authentication, String reason);
 
     // ==== FILES / FEEDBACK ====
     //void uploadAuthorization(Long documentRequestId, MultipartFile file); // Not implemented yet
