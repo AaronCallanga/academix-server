@@ -26,15 +26,17 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
 
     @Override
     public DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest,
-                                                              User user,
+                                                              ActorRole actorRole,
+                                                              String actorName,
                                                               DocumentAction documentAction,
-                                                              String remark) {
+                                                              String remark,
+                                                              User userOptional) {
         DocumentRequestAudit audit = DocumentRequestAudit.builder()
                                                          .documentRequest(documentRequest)
-                                                         .performedBy(user)
+                                                         .performedBy(userOptional) // null if SYSTEM
                                                          .performedAt(LocalDateTime.now())
                                                          .action(documentAction)
-                                                         .actorRole(determineActorRole(user.getRoles()))
+                                                         .actorRole(actorRole)
                                                          .remark(remark)
                                                          .build();
 
@@ -44,25 +46,8 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
 
     @Override
     public List<DocumentRequestAuditResponseDTO> getAllDocumentRequests(Long documentRequestId) {
-        return List.of();
+        List<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentId(documentRequestId);
+        return documentRequestAuditMapper;
     }
-    private ActorRole determineActorRole(Set<Role> roles) {
-        List<ActorRole> priorityOrder = List.of(
-                ActorRole.ADMIN,
-                ActorRole.REGISTRAR,
-                ActorRole.STUDENT
-                                               );
-
-        for (ActorRole actorRole : priorityOrder) {
-            for (Role role : roles) {
-                if (role.getName().equalsIgnoreCase("ROLE_" + actorRole.name())) {
-                    return actorRole;
-                }
-            }
-        }
-
-        return ActorRole.USER; // default
-    }
-
 
 }
