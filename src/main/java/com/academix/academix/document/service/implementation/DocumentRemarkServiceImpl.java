@@ -163,7 +163,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                 }
             }
         }
-        return "UNKNOWN";
+        return "USER";
     }
 
 }

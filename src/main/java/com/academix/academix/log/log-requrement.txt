@@ -1,0 +1,4 @@
+1. Implement clean up for expired request // No action taken after x days, the request should be deleted if requestedBy > x days
+2. Pagination
+3. Maybe implement list of logs + detailed log(detailed user info, and maybe changes for what have been updated)
+4. Create method for every action, and use it in your DocumentRequestService
