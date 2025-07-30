@@ -237,7 +237,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
-    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId) {
+    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, String reason) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -245,13 +245,25 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
          * */
         // Fetch the Document Request Entity
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                                                                   .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
 
         // Set the status to CANCELLED
         documentRequest.setStatus(DocumentStatus.CANCELLED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.CANCELLED,
+                reason,
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);

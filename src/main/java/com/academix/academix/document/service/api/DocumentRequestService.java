@@ -30,7 +30,7 @@ public interface DocumentRequestService {
     DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
     DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
     DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId);
-    DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId); // set status to cancelled
+    DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, String reason); // set status to cancelled
     void deleteDocumentRequest(Long documentRequestId);
 
     // ==== FILES / FEEDBACK ====
