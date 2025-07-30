@@ -165,8 +165,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
                 determineActorType(user.getRoles()),
-                DocumentAction.CREATED,
-                "Request Submitted",
+                DocumentAction.UPDATED,
+                "User Request Updated",
                 user
                                                       );
 
@@ -356,14 +356,24 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the fields
         documentRequest.setStatus(documentRequestAdminUpdateDTO.getStatus());
         documentRequest.setPickUpDate(documentRequestAdminUpdateDTO.getPickUpDate());
 
-        // Log the actions
-
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.UPDATED,
+                "Admin Forced Updated",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
