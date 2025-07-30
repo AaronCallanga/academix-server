@@ -1,6 +1,7 @@
 package com.academix.academix.log.enums;
 
-public enum ActorType {
+public enum ActorRole {
+    STUDENT,
     USER,
     ADMIN,
     REGISTRAR,

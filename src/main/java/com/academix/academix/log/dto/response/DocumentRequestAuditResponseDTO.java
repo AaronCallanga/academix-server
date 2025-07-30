@@ -1,7 +1,5 @@
 package com.academix.academix.log.dto.response;
 
-import com.academix.academix.log.enums.ActorType;
-import com.academix.academix.log.enums.DocumentAction;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

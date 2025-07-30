@@ -1,7 +1,7 @@
 package com.academix.academix.log.entity;
 
 import com.academix.academix.document.entity.DocumentRequest;
-import com.academix.academix.log.enums.ActorType;
+import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.user.entity.User;
 import jakarta.persistence.Entity;
@@ -39,7 +39,7 @@ public class DocumentRequestAudit {
     private DocumentAction action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"
 
     @Enumerated(EnumType.STRING)
-    private ActorType actorType;
+    private ActorRole actorRole;
 
     private String remark; // optional: reason, comment, etc.
 

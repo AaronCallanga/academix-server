@@ -8,7 +8,7 @@ import com.academix.academix.user.entity.User;
 
 import java.util.List;
 
-public interface DocumentRequestAudit {
+public interface DocumentRequestAuditService {
 
     DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest, User user, DocumentAction documentAction, String remark);
     List<DocumentRequestAuditResponseDTO> getAllDocumentRequests(Long documentRequestId); // Should be paged by timeStamp latest as default
