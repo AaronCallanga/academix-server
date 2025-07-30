@@ -16,7 +16,7 @@ public interface DocumentRequestService {
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
     DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, String reason);
     DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
