@@ -13,6 +13,10 @@ import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.log.enums.ActorRole;
+import com.academix.academix.log.enums.DocumentAction;
+import com.academix.academix.log.service.api.DocumentRequestAuditService;
+import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import com.academix.academix.user.service.api.UserService;
@@ -27,6 +31,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +43,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final UserRepository userRepository;
     private final DocumentRemarkService documentRemarkService;
     private final UserService userService;
+    private final DocumentRequestAuditService documentRequestAuditService;
 
     @Override
     public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
@@ -153,11 +159,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to APPROVED
         documentRequest.setStatus(DocumentStatus.APPROVED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.APPROVED,
+                "Request Approved",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -275,5 +293,25 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
     }
+
+    private ActorRole determineActorType(Set<Role> roles) {
+        List<ActorRole> priorityOrder = List.of(
+                ActorRole.ADMIN,
+                ActorRole.REGISTRAR,
+                ActorRole.STUDENT,
+                ActorRole.USER
+                                               );
+
+        for (ActorRole actorRole : priorityOrder) {
+            for (Role role : roles) {
+                if (role.getName().equalsIgnoreCase("ROLE_" + actorRole.name())) {
+                    return actorRole;
+                }
+            }
+        }
+
+        return ActorRole.USER; // You can add UNKNOWN in your enum if not already there
+    }
+
 
 }

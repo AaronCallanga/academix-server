@@ -25,7 +25,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     private final DocumentRequestAuditMapper documentRequestAuditMapper;
 
     @Override
-    public DocumentRequestAuditResponseDTO logDocumentRequest(DocumentRequest documentRequest,
+    public void logDocumentRequest(DocumentRequest documentRequest,
                                                               ActorRole actorRole,
                                                               DocumentAction documentAction,
                                                               String remark,
@@ -40,7 +40,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
                                                          .build();
 
         DocumentRequestAudit savedAudit = documentRequestAuditRepository.save(audit);
-        return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(savedAudit);
+        //return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(savedAudit);
     }
 
     @Override
