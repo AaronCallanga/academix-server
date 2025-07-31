@@ -122,8 +122,14 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}/ready-pickup")
-    public ResponseEntity<DocumentRequestResponseDTO> readyForPickupDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
+    public ResponseEntity<DocumentRequestResponseDTO> setToReadyForPickupDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToReadyForPickup(requestId, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{requestId}/in-progress")
+    public ResponseEntity<DocumentRequestResponseDTO> setToInProgressDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToInProgress(requestId, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
