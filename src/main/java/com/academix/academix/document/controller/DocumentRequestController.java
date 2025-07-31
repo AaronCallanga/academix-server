@@ -102,6 +102,12 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PatchMapping("/{requestId}/approve")
+    public ResponseEntity<DocumentRequestResponseDTO> approveDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.approveDocumentRequest(requestId, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
 
 }
 
