@@ -85,8 +85,8 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}")
-    public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId);
+    public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
