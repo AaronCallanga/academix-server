@@ -121,6 +121,12 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PatchMapping("/{requestId}/ready-pickup")
+    public ResponseEntity<DocumentRequestResponseDTO> readyForPickupDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToReadyForPickup(requestId, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
 
 }
 
