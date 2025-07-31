@@ -115,6 +115,12 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PatchMapping("/{requestId}/release")
+    public ResponseEntity<DocumentRequestResponseDTO> releaseDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.releaseDocumentRequest(requestId, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
 
 }
 
