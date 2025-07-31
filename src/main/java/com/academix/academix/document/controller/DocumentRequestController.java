@@ -91,8 +91,8 @@ public class DocumentRequestController {
     }
 
     @DeleteMapping("/{requestId}")
-    public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId) {
-        documentRequestService.deleteDocumentRequest(requestId);
+    public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, String reason) {
+        documentRequestService.deleteDocumentRequest(requestId, authentication, reason);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
