@@ -1,6 +1,7 @@
 package com.academix.academix.document.controller;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
 import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
@@ -130,6 +131,12 @@ public class DocumentRequestController {
     @PatchMapping("/{requestId}/in-progress")
     public ResponseEntity<DocumentRequestResponseDTO> setToInProgressDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToInProgress(requestId, authentication);
+        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{requestId}/admin")
+    public ResponseEntity<DocumentRequestResponseDTO> adminUpdateDocumentRequest(@PathVariable Long requestId, @RequestBody DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.adminUpdateDocumentRequest(requestId, documentRequestAdminUpdateDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
