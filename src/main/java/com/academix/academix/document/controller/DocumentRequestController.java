@@ -1,6 +1,7 @@
 package com.academix.academix.document.controller;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
+import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -91,14 +92,14 @@ public class DocumentRequestController {
     }
 
     @DeleteMapping("/{requestId}")
-    public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, String reason) {
-        documentRequestService.deleteDocumentRequest(requestId, authentication, reason);
+    public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, @RequestBody ReasonDTO reasonDto) {
+        documentRequestService.deleteDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{requestId}/cancel")
-    public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, String reason) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId, authentication, reason);
+    public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, ReasonDTO reasonDto) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
@@ -109,8 +110,8 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}/reject")
-    public ResponseEntity<DocumentRequestResponseDTO> rejectDocumentRequest(@PathVariable Long requestId, Authentication authentication, String reason) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.rejectDocumentRequest(requestId, authentication, reason);
+    public ResponseEntity<DocumentRequestResponseDTO> rejectDocumentRequest(@PathVariable Long requestId, Authentication authentication, ReasonDTO reasonDto) {
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.rejectDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 

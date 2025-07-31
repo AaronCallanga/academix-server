@@ -3,6 +3,7 @@ package com.academix.academix.document.service.implementation;
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
+import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -203,7 +204,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, String reason) {
+    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
@@ -222,7 +223,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 savedRequest,
                 determineActorType(user.getRoles()),
                 DocumentAction.REJECTED,
-                reason,
+                reasonDto.getReason(),
                 user
                                                       );
 
@@ -258,7 +259,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
-    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, String reason) {
+    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -282,7 +283,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 savedRequest,
                 determineActorType(user.getRoles()),
                 DocumentAction.CANCELLED,
-                reason,
+                reasonDto.getReason(),
                 user
                                                       );
 
@@ -380,7 +381,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, String reason) {
+    public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
@@ -396,7 +397,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 documentRequest,
                 determineActorType(user.getRoles()),
                 DocumentAction.DELETED,
-                reason,
+                reasonDto.getReason(),
                 user
                                                       );
     }
