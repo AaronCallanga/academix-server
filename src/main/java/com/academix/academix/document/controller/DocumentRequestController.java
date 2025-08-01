@@ -135,7 +135,7 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}/admin")
-    public ResponseEntity<DocumentRequestResponseDTO> adminUpdateDocumentRequest(@PathVariable Long requestId, @RequestBody DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication) {
+    public ResponseEntity<DocumentRequestResponseDTO> adminUpdateDocumentRequest(@PathVariable Long requestId, @Valid @RequestBody DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.adminUpdateDocumentRequest(requestId, documentRequestAdminUpdateDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
