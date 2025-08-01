@@ -111,7 +111,7 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}/reject")
-    public ResponseEntity<DocumentRequestResponseDTO> rejectDocumentRequest(@PathVariable Long requestId, Authentication authentication, ReasonDTO reasonDto) {
+    public ResponseEntity<DocumentRequestResponseDTO> rejectDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.rejectDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
