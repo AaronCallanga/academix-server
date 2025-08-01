@@ -7,7 +7,9 @@ public enum DocumentAction {
     REJECTED,
     RELEASED,
     CANCELLED,
-    REMARK_ADDED,
+    IN_PROGRESS,
+    READY_FOR_PICKUP,
+    DELETED,
     AUTO_EXPIRED,   // e.g., system-driven for clean up
     DOWNLOADED      // for extracting request to PDF
 }

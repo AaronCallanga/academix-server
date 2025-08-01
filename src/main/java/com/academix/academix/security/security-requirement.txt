@@ -1,4 +1,7 @@
  TODO:
+ 1. Implement PreAuthorize, RBAC
+
+
 Entity - User, VerificationToken(one to one with user unidirectional rel)
 AuthService - register(UserRegistrationDTO, HttpServletRequest request)
                check if email exist -> hashed password -> save db,

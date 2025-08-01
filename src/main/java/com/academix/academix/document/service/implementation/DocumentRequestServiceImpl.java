@@ -3,6 +3,7 @@ package com.academix.academix.document.service.implementation;
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
+import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -13,6 +14,10 @@ import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.log.enums.ActorRole;
+import com.academix.academix.log.enums.DocumentAction;
+import com.academix.academix.log.service.api.DocumentRequestAuditService;
+import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import com.academix.academix.user.service.api.UserService;
@@ -27,6 +32,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +44,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final UserRepository userRepository;
     private final DocumentRemarkService documentRemarkService;
     private final UserService userService;
+    private final DocumentRequestAuditService documentRequestAuditService;
 
     @Override
     public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
@@ -122,11 +129,20 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save the newDocumentRequest without setting the remarks entity
         DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
 
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedDocumentRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.CREATED,
+                "Request Submitted",
+                user
+                                                      );
+
         return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
     }
 
     @Override
-    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
+    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication) {
         /**
          * @NOTE: After updating, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -137,11 +153,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the fields of DocumentRequest entity with the available fields in the DTO using mapper
         documentRequestMapper.updateDocumentRequestEntityFromDTO(documentRequestDTO, documentRequest);
 
         // Save the changes to the database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.UPDATED,
+                "User Request Updated",
+                user
+                                                      );
 
         // Return the savedRequest and mapped it to response DTO
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -153,27 +181,51 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to APPROVED
         documentRequest.setStatus(DocumentStatus.APPROVED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
 
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.APPROVED,
+                "Request Approved",
+                user
+                                                      );
+
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
-    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication) {
+    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
 
         // Update the status to REJECTED
         documentRequest.setStatus(DocumentStatus.REJECTED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.REJECTED,
+                reasonDto.getReason(),
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -185,17 +237,29 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to RELEASED
         documentRequest.setStatus(DocumentStatus.RELEASED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
 
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.RELEASED,
+                "Document Released",
+                user
+                                                      );
+
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
-    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId) {
+    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -203,13 +267,25 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
          * */
         // Fetch the Document Request Entity
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                                                                   .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
 
         // Set the status to CANCELLED
         documentRequest.setStatus(DocumentStatus.CANCELLED);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.CANCELLED,
+                reasonDto.getReason(),
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -222,11 +298,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.READY_FOR_PICKUP);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.READY_FOR_PICKUP,
+                "Ready for Pickup",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -239,11 +327,23 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.IN_PROGRESS);
 
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.IN_PROGRESS,
+                "Marked as In Progress",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
@@ -257,23 +357,69 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
                 .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
 
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
         // Update the fields
         documentRequest.setStatus(documentRequestAdminUpdateDTO.getStatus());
         documentRequest.setPickUpDate(documentRequestAdminUpdateDTO.getPickUpDate());
 
-        // Log the actions
-
         // Save to database
         DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.UPDATED,
+                "Admin Forced Updated",
+                user
+                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
-    public void deleteDocumentRequest(Long documentRequestId) {
+    public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
+        // Retrieve the document request before deleting it (so you can still log it)
+        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
+
+        // Log the action
+        documentRequestAuditService.logDocumentRequest(
+                documentRequest,
+                determineActorType(user.getRoles()),
+                DocumentAction.DELETED,
+                reasonDto.getReason(),
+                user
+                                                      );
     }
+
+    private ActorRole determineActorType(Set<Role> roles) {
+        List<ActorRole> priorityOrder = List.of(
+                ActorRole.ADMIN,
+                ActorRole.REGISTRAR,
+                ActorRole.STUDENT,
+                ActorRole.USER
+                                               );
+
+        for (ActorRole actorRole : priorityOrder) {
+            for (Role role : roles) {
+                if (role.getName().equalsIgnoreCase("ROLE_" + actorRole.name())) {
+                    return actorRole;
+                }
+            }
+        }
+
+        return ActorRole.USER; // You can add UNKNOWN in your enum if not already there
+    }
+
 
 }

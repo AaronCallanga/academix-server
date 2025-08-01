@@ -2,6 +2,7 @@ package com.academix.academix.document.service.api;
 
 import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRequestAdminUpdateDTO;
+import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
@@ -16,7 +17,7 @@ public interface DocumentRequestService {
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
     DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
     DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
@@ -29,9 +30,9 @@ public interface DocumentRequestService {
     // ==== COMMON ====
     DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
     DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
-    DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId);
-    DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId); // set status to cancelled
-    void deleteDocumentRequest(Long documentRequestId);
+    DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
+    DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
+    void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
 
     // ==== FILES / FEEDBACK ====
     //void uploadAuthorization(Long documentRequestId, MultipartFile file); // Not implemented yet
