@@ -99,7 +99,7 @@ public class DocumentRequestController {
     }
 
     @PatchMapping("/{requestId}/cancel")
-    public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, ReasonDTO reasonDto) {
+    public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
