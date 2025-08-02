@@ -14,6 +14,7 @@ import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
@@ -98,8 +99,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId) {
         // Fetch the document request by its ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Map the document request to DTO then return it
         return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
@@ -150,8 +150,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
          * */
 
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -178,8 +177,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -206,8 +204,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -234,8 +231,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     @Override
     public DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -266,8 +262,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
          *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
          * */
         // Fetch the Document Request Entity
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -295,8 +290,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
                                                                                Authentication authentication) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -324,8 +318,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     public DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId,
                                                                            Authentication authentication) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -354,8 +347,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                                                                  DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO,
                                                                  Authentication authentication) {
         // Fetch the document request by ID
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
@@ -386,8 +378,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         User user = userService.getUserFromAuthentication(authentication);
 
         // Retrieve the document request before deleting it (so you can still log it)
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new RuntimeException("DocumentRequest not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
@@ -400,6 +391,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 reasonDto.getReason(),
                 user
                                                       );
+    }
+
+    @Override
+    public DocumentRequest fetchDocumentRequestById(Long documentRequestId) {
+        return documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new ResourceNotFoundException("DocumentRequest not found with id: " + documentRequestId));
     }
 
     private ActorRole determineActorType(Set<Role> roles) {

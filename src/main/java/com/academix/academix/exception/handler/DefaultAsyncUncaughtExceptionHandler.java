@@ -1,4 +1,4 @@
-package com.academix.academix.exception;
+package com.academix.academix.exception.handler;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
