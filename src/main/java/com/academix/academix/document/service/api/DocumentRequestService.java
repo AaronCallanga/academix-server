@@ -6,6 +6,7 @@ import com.academix.academix.document.dto.request.ReasonDTO;
 import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
+import com.academix.academix.document.entity.DocumentRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
@@ -33,6 +34,9 @@ public interface DocumentRequestService {
     DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
     void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
+
+    // === UTILS ====
+    DocumentRequest fetchDocumentRequestById(Long documentRequestId);
 
     // ==== FILES / FEEDBACK ====
     //void uploadAuthorization(Long documentRequestId, MultipartFile file); // Not implemented yet

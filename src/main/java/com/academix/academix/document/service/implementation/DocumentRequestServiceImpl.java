@@ -14,6 +14,7 @@ import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
@@ -400,6 +401,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 reasonDto.getReason(),
                 user
                                                       );
+    }
+
+    @Override
+    public DocumentRequest fetchDocumentRequestById(Long documentRequestId) {
+        return documentRequestRepository.findById(documentRequestId)
+                .orElseThrow(() -> new ResourceNotFoundException("DocumentRequest not found with id: " + documentRequestId));
     }
 
     private ActorRole determineActorType(Set<Role> roles) {
