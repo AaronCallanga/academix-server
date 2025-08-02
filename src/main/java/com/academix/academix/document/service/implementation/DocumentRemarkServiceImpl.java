@@ -8,6 +8,7 @@ import com.academix.academix.document.mapper.DocumentRemarkMapper;
 import com.academix.academix.document.repository.DocumentRemarkRepository;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
+import com.academix.academix.document.service.api.DocumentRequestService;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
@@ -33,7 +34,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     private final DocumentRemarkRepository documentRemarkRepository;
     private final DocumentRemarkMapper documentRemarkMapper;
-    private final DocumentRequestRepository documentRequestRepository;
+    private final DocumentRequestService documentRequestService;
     private final UserRepository userRepository;
 
     @Override
@@ -57,8 +58,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     @Override
     public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId) {
 
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                                                                   .orElseThrow(() -> new ResourceNotFoundException("Document request not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
                 .orElseThrow(() -> new ResourceNotFoundException("Document remark does not exist with the id : " + documentRemarkId));
@@ -77,8 +77,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     @Override
     public DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication) {
         // Fetch the document request
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Document request does not exist with the id :" + documentRequestId));
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
         // Extract the content from the DTO
         String content = remarkRequestDTO.getContent();
@@ -102,8 +101,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
         // Fetch the document request
-        DocumentRequest documentRequest = documentRequestRepository.findById(documentRequestId)
-                                                                   .orElseThrow(() -> new ResourceNotFoundException("Document request not found with id: " + documentRequestId));
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
         // Fetch the remark
         DocumentRemark documentRemark = documentRemarkRepository.findById(documentRemarkId)
