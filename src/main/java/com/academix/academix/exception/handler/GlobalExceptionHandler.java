@@ -4,6 +4,7 @@ import com.academix.academix.exception.response.ErrorResponse;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -22,4 +23,6 @@ public class GlobalExceptionHandler {
                 .build();
         return new ResponseEntity<>(errorResponse.toString(), HttpStatus.NOT_FOUND);
     }
+
+
 }
