@@ -2,6 +2,7 @@ package com.academix.academix.exception.handler;
 
 import com.academix.academix.exception.response.ErrorResponse;
 import com.academix.academix.exception.response.ValidationErrorResponse;
+import com.academix.academix.exception.types.BadRequestException;
 import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -31,6 +32,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse.toString(), HttpStatus.NOT_FOUND);
     }
 
+    // Request cannot be completed due to a conflict with the current state of the resource
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorResponse> handleConflictException(ConflictException e) {
         ErrorResponse response = new ErrorResponse(
@@ -43,6 +45,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException e) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "BAD_REQUEST",
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
