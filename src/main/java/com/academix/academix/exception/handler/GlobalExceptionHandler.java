@@ -2,6 +2,7 @@ package com.academix.academix.exception.handler;
 
 import com.academix.academix.exception.response.ErrorResponse;
 import com.academix.academix.exception.response.ValidationErrorResponse;
+import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,17 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorResponse.toString(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflictException(ConflictException e) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "CONFLICT",
+                e.getMessage()
+        );
 
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
