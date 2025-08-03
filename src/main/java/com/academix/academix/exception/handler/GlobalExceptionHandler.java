@@ -6,6 +6,7 @@ import com.academix.academix.exception.types.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -52,6 +53,18 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.FORBIDDEN.value(),
                 "FORBIDDEN",
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(AuthenticationException.class) // User is not yet authenticated
+    public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.UNAUTHORIZED.value(),
+                "UNAUTHORIZED",
                 e.getMessage()
         );
 
