@@ -23,14 +23,14 @@ public class GlobalExceptionHandler {
 
     // Handles custom 404 errors when a resource is not found.
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .statusCode(HttpStatus.NOT_FOUND.value())
                 .errorResponse("RESOURCE NOT FOUND")
                 .message(e.getMessage())
                 .build();
-        return new ResponseEntity<>(errorResponse.toString(), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     // Request cannot be completed due to a conflict with the current state of the resource
