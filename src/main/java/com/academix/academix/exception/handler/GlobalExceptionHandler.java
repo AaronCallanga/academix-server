@@ -21,6 +21,7 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    // Handles custom 404 errors when a resource is not found.
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<String> handleResourceNotFoundException(ResourceNotFoundException e) {
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -45,6 +46,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
+    // Client sends invalid or malformed data
     @ExceptionHandler(BadRequestException.class)
     public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException e) {
         ErrorResponse response = new ErrorResponse(
@@ -57,6 +59,10 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * Handles validation errors from @Valid and Bean Validation API.
+     * Returns field-specific validation messages.
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<String> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
@@ -75,7 +81,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(validationErrorResponse.toString(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(AccessDeniedException.class)      // For RBAC, User can't access something
+    // Authenticated user lacks necessary roles/permissions.
+    @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handleAccessDeniedException(AccessDeniedException e) {
         ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
@@ -87,7 +94,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler(AuthenticationException.class) // User is not yet authenticated
+    // User is not yet authenticated
+    @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<ErrorResponse> handleAuthenticationException(AuthenticationException e) {
         ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
@@ -99,7 +107,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
     }
 
-    // Client made a request of specific HTTP Method (POST, GET...) to api but it is not supported
+    // Client's request used wrong HTTP method (e.g., POST instead of GET).
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
         ErrorResponse response = new ErrorResponse(
@@ -112,7 +120,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    // Generic handler that handles all the other exceptions not yet handled
+    // Handles all uncaught exceptions — 500 Internal Server Error.
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception e) {
         ErrorResponse response = new ErrorResponse(
