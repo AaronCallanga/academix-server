@@ -5,6 +5,7 @@ import com.academix.academix.exception.response.ValidationErrorResponse;
 import com.academix.academix.exception.types.BadRequestException;
 import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
+import com.academix.academix.exception.types.TokenExpiredException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -54,6 +55,19 @@ public class GlobalExceptionHandler {
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
                 "BAD_REQUEST",
+                e.getMessage()
+        );
+
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    // Client sends invalid or expired verification token
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ErrorResponse> handleTokenExpiredException(TokenExpiredException e) {
+        ErrorResponse response = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "TOKEN_EXPIRED",
                 e.getMessage()
         );
 
