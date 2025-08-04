@@ -80,8 +80,8 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEmailSendFailureException(EmailSendFailureException e) {
         ErrorResponse response = new ErrorResponse(
                 LocalDateTime.now(),
-                HttpStatus.CONFLICT.value(),
-                "TOKEN_EXPIRED",
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "SENDING_EMAIL_FAILED",
                 e.getMessage()
         );
 
