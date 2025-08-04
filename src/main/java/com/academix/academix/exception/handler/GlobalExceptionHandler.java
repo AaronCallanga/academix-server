@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
-    // Client sends invalid or expired verification token
+    // Server fails to send email
     @ExceptionHandler(EmailSendFailureException.class)
     public ResponseEntity<ErrorResponse> handleEmailSendFailureException(EmailSendFailureException e) {
         ErrorResponse response = new ErrorResponse(
