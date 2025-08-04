@@ -2,6 +2,7 @@ package com.academix.academix.security.service.implementation;
 
 import com.academix.academix.exception.types.BadRequestException;
 import com.academix.academix.exception.types.ConflictException;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
@@ -124,7 +125,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new RuntimeException("User not found"));
+                                  .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         VerificationToken verificationToken = tokenService.generateToken(user);
 
         authEmailService.sendVerification(user, baseUrl, verificationToken);
