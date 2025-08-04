@@ -3,6 +3,7 @@ package com.academix.academix.security.service.implementation;
 import com.academix.academix.exception.types.BadRequestException;
 import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
+import com.academix.academix.exception.types.TokenExpiredException;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
@@ -105,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenService.deleteToken(verificationToken);
             System.out.println("Token Expired");
-            throw new ConflictException("Token Expired"); // throw new TokenExpiredException("Verification token has expired."); @Transactional(REQUIRES_NEW) tokenService.delete(token)
+            throw new TokenExpiredException("Verification token has expired."); //Note: @Transactional(REQUIRES_NEW) tokenService.delete(token)
         }
         User user = verificationToken.getUser();        //maybe find user by token,
         user.setVerified(true);
