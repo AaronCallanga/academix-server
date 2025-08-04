@@ -14,6 +14,7 @@ TODO:
 17. Update to status should only be change if the condition is true such as, REQUESTED to IN_PROGRESS and not IN_PROGRESS to REQUESTED (this should be change in forceAdminUpdate)
 19. Transanction propagation = new for logs even if the operation is rollback?
 20. Implement custom exceptions, for ex if updating status and fails condition (REQUESTED to IN_PROGRESS) throw exception
+21. Maybe make the logging(persistence to DB) as AOP
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
 

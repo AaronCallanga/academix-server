@@ -1,5 +1,6 @@
 package com.academix.academix.security.service.implementation;
 
+import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
@@ -58,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException {
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
-            return "Email Already Exists";
+            throw new ConflictException("User already exist!");
         }
 
         String hashedPassword = bCryptPasswordEncoder.encode(registerRequestDTO.getPassword());
