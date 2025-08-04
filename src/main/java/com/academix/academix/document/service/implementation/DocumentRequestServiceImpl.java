@@ -9,11 +9,13 @@ import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.enums.ActionPermission;
 import com.academix.academix.document.enums.DocumentStatus;
 import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
@@ -419,5 +421,11 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return ActorRole.USER; // You can add UNKNOWN in your enum if not already there
     }
 
+    private void validateAction(DocumentRequest request, ActionPermission action) {
+        if (!action.isAllowed(request.getStatus())) {
+            throw new ConflictException("Cannot " + action.name().toLowerCase().replace("_", " ")
+                    + " when status is " + request.getStatus());
+        }
+    }
 
 }
