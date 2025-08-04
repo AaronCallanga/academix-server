@@ -1,5 +1,6 @@
 package com.academix.academix.security.service.implementation;
 
+import com.academix.academix.exception.types.BadRequestException;
 import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
@@ -72,7 +73,7 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = registerRequestDTO.getRoles().stream()
                                             .map(roleName -> roleRepository.findByName(roleName)
-                                                                           .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+                                                                           .orElseThrow(() -> new BadRequestException("Role not found: " + roleName)))
                                             .collect(Collectors.toSet());
 
         User user = User.builder()
