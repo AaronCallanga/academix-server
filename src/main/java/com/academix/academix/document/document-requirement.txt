@@ -35,3 +35,4 @@ public enum Role {
     ADMIN
 }
 
+POST	/api/requests/{id}/upload	Upload ID/authorization letter

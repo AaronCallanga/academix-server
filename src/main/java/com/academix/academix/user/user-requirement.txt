@@ -1,0 +1,3 @@
+GET	/api/users/me	Get current user profile
+PUT	/api/users/me	Update profile
+GET	/api/requests/my	Get my document requests

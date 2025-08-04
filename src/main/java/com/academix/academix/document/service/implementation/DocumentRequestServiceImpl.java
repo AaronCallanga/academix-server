@@ -39,7 +39,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DocumentRequestServiceImpl implements DocumentRequestService {
-
+// throw exceptions for wrong status state
+    // check for other exceptions to throw
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
     private final UserRepository userRepository;
