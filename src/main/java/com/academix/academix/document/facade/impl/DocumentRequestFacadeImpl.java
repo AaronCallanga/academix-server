@@ -86,7 +86,22 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
     public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO,
                                                             Long documentRequestId,
                                                             Authentication authentication) {
-        return null;
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
+        DocumentRequest savedRequest = documentRequestService.updateDocumentRequest(documentRequestDTO, documentRequestId);
+
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.UPDATED,
+                "User Request Updated",
+                user
+                                                      );
+
+        // Return the savedRequest and mapped it to response DTO
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
