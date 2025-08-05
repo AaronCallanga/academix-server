@@ -49,7 +49,9 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
 
     @Override
     public DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId) {
-        return null;
+        DocumentRequest documentRequest = documentRequestService.getDocumentRequestById(documentRequestId);
+        // Map the document request to DTO then return it
+        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
     }
 
     @Override

@@ -33,10 +33,10 @@ public interface DocumentRequestService {
     Page<DocumentRequest> getOwnDocumentRequests(Authentication authentication, PageRequest pageRequest);
 
     // ==== COMMON ====
-    DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);
-    DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
-    DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
+    DocumentRequest getDocumentRequestById(Long documentRequestId);
+    DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
+    DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
+    DocumentRequest cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
     void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
 
     // === UTILS ====

@@ -99,16 +99,16 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId) {
+    public DocumentRequest getDocumentRequestById(Long documentRequestId) {
         // Fetch the document request by its ID
-        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
+        return fetchDocumentRequestById(documentRequestId);
 
-        // Map the document request to DTO then return it
-        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
+//        // Map the document request to DTO then return it
+//        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
     }
 
     @Override
-    public DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication) {
+    public DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication) {
 
         // Fetch the authenticated user
         User user = userService.getUserFromAuthentication(authentication);
@@ -144,7 +144,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication) {
+    public DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication) {
         /**
          * @NOTE: After updating, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
