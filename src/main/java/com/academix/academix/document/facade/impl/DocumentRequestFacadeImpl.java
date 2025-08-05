@@ -10,7 +10,9 @@ import com.academix.academix.document.facade.api.DocumentRequestFacade;
 import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
+import com.academix.academix.user.entity.User;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -57,7 +59,27 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
     @Override
     public DocumentRequestResponseDTO createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO,
                                                             Authentication authentication) {
-        return null;
+        // Fetch the authenticated user
+        User user = userService.getUserFromAuthentication(authentication);
+
+        // Modify or fill all the remaining fields excluding remarks
+        DocumentRequest newDocumentRequest = documentRequestService.buildDocumentRequest(documentRequestDTO, user);
+
+        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
+        documentRemarkService.buildDocumentRemarkList(documentRequestDTO, newDocumentRequest, user);
+
+        DocumentRequest savedDocumentRequest = documentRequestService.save(newDocumentRequest);
+
+        // Log the created request
+        documentRequestAuditService.logDocumentRequest(
+                savedDocumentRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.CREATED,
+                "Request Submitted",
+                user
+                                                      );
+
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
     }
 
     @Override

@@ -107,41 +107,57 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 //        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
     }
 
+//    @Override
+//    public DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, User user) {
+//
+////        // Fetch the authenticated user
+////        User user = userService.getUserFromAuthentication(authentication);
+//
+//        // User mapper to map all the available fields from the DTO to document request entity
+//        // This map the DocumentType, Purpose, and PickupDate
+//        DocumentRequest newDocumentRequest = documentRequestMapper.toDocumentRequestEntity(documentRequestDTO);
+//
+//        // Modify or fill all the remaining fields excluding remarks
+//        newDocumentRequest.setStatus(DocumentStatus.REQUESTED);
+//        newDocumentRequest.setRequestDate(LocalDateTime.now());
+//        newDocumentRequest.setRequestedBy(user);
+//
+//        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
+//        for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
+//            DocumentRemark documentRemark = documentRemarkService.buildDocumentRemark(documentRemarkRequestDTO.getContent(), user);
+//            newDocumentRequest.addRemark(documentRemark);  // handle the remark.setRequest(), so setting it to null initially is fine
+//        }
+//
+//        // Save the newDocumentRequest without setting the remarks entity
+//        DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
+//
+//        // Log the created request
+//        documentRequestAuditService.logDocumentRequest(
+//                savedDocumentRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.CREATED,
+//                "Request Submitted",
+//                user
+//                                                      );
+//
+//        return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
+//    }
+
     @Override
-    public DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication) {
-
-        // Fetch the authenticated user
-        User user = userService.getUserFromAuthentication(authentication);
-
-        // User mapper to map all the available fields from the DTO to document request entity
-        // This map the DocumentType, Purpose, and PickupDate
-        DocumentRequest newDocumentRequest = documentRequestMapper.toDocumentRequestEntity(documentRequestDTO);
-
-        // Modify or fill all the remaining fields excluding remarks
-        newDocumentRequest.setStatus(DocumentStatus.REQUESTED);
-        newDocumentRequest.setRequestDate(LocalDateTime.now());
-        newDocumentRequest.setRequestedBy(user);
-
-        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
-        for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
-            DocumentRemark documentRemark = documentRemarkService.buildDocumentRemark(documentRemarkRequestDTO.getContent(), user);
-            newDocumentRequest.addRemark(documentRemark);  // handle the remark.setRequest(), so setting it to null initially is fine
-        }
-
-        // Save the newDocumentRequest without setting the remarks entity
-        DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
-
-        // Log the created request
-        documentRequestAuditService.logDocumentRequest(
-                savedDocumentRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.CREATED,
-                "Request Submitted",
-                user
-                                                      );
-
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
+    public DocumentRequest buildDocumentRequest(CreateDocumentRequestDTO dto, User user) {
+        DocumentRequest request = documentRequestMapper.toDocumentRequestEntity(dto);
+        request.setStatus(DocumentStatus.REQUESTED);
+        request.setRequestDate(LocalDateTime.now());
+        request.setRequestedBy(user);
+        return request;
     }
+
+    @Override
+    public DocumentRequest save(DocumentRequest request) {
+        return documentRequestRepository.save(request);
+    }
+
+
 
     @Override
     public DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication) {

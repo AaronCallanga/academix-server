@@ -9,6 +9,7 @@ import com.academix.academix.document.dto.response.DocumentRequestResponseListDT
 import com.academix.academix.document.entity.DocumentRequest;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.security.entity.Role;
+import com.academix.academix.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -34,7 +35,7 @@ public interface DocumentRequestService {
 
     // ==== COMMON ====
     DocumentRequest getDocumentRequestById(Long documentRequestId);
-    DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, Authentication authentication);
+    //DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, User user);
     DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
     DocumentRequest cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
     void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
@@ -48,4 +49,7 @@ public interface DocumentRequestService {
     //POST  /api/requests/{id}/upload	Upload ID/authorization letter
     //POST	/api/feedback/{requestId}	Submit feedback after claim
 
+
+    DocumentRequest buildDocumentRequest(CreateDocumentRequestDTO dto, User user);
+    DocumentRequest save(DocumentRequest request);
 }

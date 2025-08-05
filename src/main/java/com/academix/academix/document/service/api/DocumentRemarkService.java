@@ -1,5 +1,6 @@
 package com.academix.academix.document.service.api;
 
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
@@ -23,4 +24,6 @@ public interface DocumentRemarkService {
 
     DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest);
     DocumentRemark buildDocumentRemark(String content, User user);
+
+    void buildDocumentRemarkList(CreateDocumentRequestDTO documentRequestDTO, DocumentRequest newDocumentRequest, User user);
 }

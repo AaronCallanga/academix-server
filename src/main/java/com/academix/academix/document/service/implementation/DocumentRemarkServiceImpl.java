@@ -1,5 +1,6 @@
 package com.academix.academix.document.service.implementation;
 
+import com.academix.academix.document.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.entity.DocumentRemark;
@@ -148,6 +149,14 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                              .role(role)
                              .timeStamp(LocalDateTime.now())
                              .build();
+    }
+
+    @Override
+    public void buildDocumentRemarkList(CreateDocumentRequestDTO documentRequestDTO, DocumentRequest newDocumentRequest, User user) {
+        for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
+            DocumentRemark documentRemark = buildDocumentRemark(documentRemarkRequestDTO.getContent(), user);
+            newDocumentRequest.addRemark(documentRemark);  // handle the remark.setRequest(), so setting it to null initially is fine
+        }
     }
 
     private String determineHighestPriorityRole(Set<Role> roles) {
