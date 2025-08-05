@@ -15,8 +15,13 @@ import com.academix.academix.user.entity.User;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +39,15 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
                                                                        String sortField,
                                                                        String sortDirection) {
 
-        return documentRequestService.getAllDocumentRequests(page, size, sortField, sortDirection);
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
+        Page<DocumentRequest> documentRequests = documentRequestService.getAllDocumentRequests(pageRequest);
+        // Convert the paged document requests to List of DTOs (total of 10 by default)
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override

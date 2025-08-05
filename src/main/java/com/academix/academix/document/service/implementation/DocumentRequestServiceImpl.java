@@ -50,12 +50,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRequestAuditService documentRequestAuditService;
 
     @Override
-    public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
+    public Page<DocumentRequest> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
         // Build the PageRequest object
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch all the document request
-        Page<DocumentRequest> documentRequests = documentRequestRepository.findAll(pageRequest);
+        return documentRequestRepository.findAll(pageRequest);
 
         // Convert the paged document requests to List of DTOs (total of 10 by default)
         List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
@@ -65,7 +65,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection) {
+    public Page<DocumentRequest> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection) {
         // Build the PageRequest object
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 

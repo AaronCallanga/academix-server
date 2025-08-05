@@ -10,6 +10,7 @@ import com.academix.academix.document.entity.DocumentRequest;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.security.entity.Role;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
@@ -18,8 +19,8 @@ import java.util.Set;
 public interface DocumentRequestService {
 
     // ==== ADMIN / REGISTRAR ====
-    Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
-    Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
+    Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest);
+    Page<DocumentRequest> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
     DocumentRequest approveDocumentRequest(Long documentRequestId);
     DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
     DocumentRequest releaseDocumentRequest(Long documentRequestId);
