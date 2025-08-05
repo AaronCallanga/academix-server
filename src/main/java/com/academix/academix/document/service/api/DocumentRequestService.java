@@ -7,23 +7,26 @@ import com.academix.academix.document.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.log.enums.ActorRole;
+import com.academix.academix.security.entity.Role;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DocumentRequestService {
 
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
-    DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
-    DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
-    DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
+    DocumentRequest approveDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequest rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
+    DocumentRequest releaseDocumentRequest(Long documentRequestId, Authentication authentication);
+    DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
+    DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
     /** @NOTE: Use for FORCE update for status and pick up date  - UI shows current status choice, use this to change the pick-up date */
-    DocumentRequestResponseDTO adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
+    DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
 
     // ==== INDIVIDUAL / STUDENT ====
     Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);
@@ -37,7 +40,7 @@ public interface DocumentRequestService {
 
     // === UTILS ====
     DocumentRequest fetchDocumentRequestById(Long documentRequestId);
-
+    ActorRole determineActorType(Set<Role> roles);
     // ==== FILES / FEEDBACK ====
     //void uploadAuthorization(Long documentRequestId, MultipartFile file); // Not implemented yet
     //void submitFeedback(Long documentRequestId, FeedbackDTO feedbackDTO); // Placeholder for future

@@ -45,7 +45,6 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     // check for other exceptions to throw
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
-    private final UserRepository userRepository;
     private final DocumentRemarkService documentRemarkService;
     private final UserService userService;
     private final DocumentRequestAuditService documentRequestAuditService;
@@ -178,7 +177,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication) {
+    public DocumentRequest approveDocumentRequest(Long documentRequestId, Authentication authentication) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
@@ -208,7 +207,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
+    public DocumentRequest rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
@@ -238,7 +237,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication) {
+    public DocumentRequest releaseDocumentRequest(Long documentRequestId, Authentication authentication) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
@@ -267,7 +266,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
-    public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
+    public DocumentRequest cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -302,7 +301,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
+    public DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
                                                                                Authentication authentication) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
@@ -333,7 +332,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId,
+    public DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId,
                                                                            Authentication authentication) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
@@ -364,7 +363,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequestResponseDTO adminUpdateDocumentRequest(Long documentRequestId,
+    public DocumentRequest adminUpdateDocumentRequest(Long documentRequestId,
                                                                  DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO,
                                                                  Authentication authentication) {
         // Fetch the document request by ID
@@ -420,7 +419,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
                 .orElseThrow(() -> new ResourceNotFoundException("DocumentRequest not found with id: " + documentRequestId));
     }
 
-    private ActorRole determineActorType(Set<Role> roles) {
+    @Override
+    public ActorRole determineActorType(Set<Role> roles) {
         List<ActorRole> priorityOrder = List.of(
                 ActorRole.ADMIN,
                 ActorRole.REGISTRAR,
