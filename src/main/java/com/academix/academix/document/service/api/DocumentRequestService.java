@@ -24,7 +24,7 @@ public interface DocumentRequestService {
     DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
     DocumentRequest releaseDocumentRequest(Long documentRequestId);
     DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId);
-    DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
+    DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId);
     /** @NOTE: Use for FORCE update for status and pick up date  - UI shows current status choice, use this to change the pick-up date */
     DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
 

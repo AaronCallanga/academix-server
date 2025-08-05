@@ -120,7 +120,20 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
     @Override
     public DocumentRequestResponseDTO setDocumentRequestStatusToInProgress(Long documentRequestId,
                                                                            Authentication authentication) {
-        return null;
+        DocumentRequest savedRequest = documentRequestService.setDocumentRequestStatusToInProgress(documentRequestId);
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.IN_PROGRESS,
+                "Marked as In Progress",
+                user
+                                                      );
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
