@@ -15,6 +15,7 @@ TODO:
 19. Transanction propagation = new for logs even if the operation is rollback?
 20. Implement custom exceptions, for ex if updating status and fails condition (REQUESTED to IN_PROGRESS) throw exception
 21. Maybe make the logging(persistence to DB) as AOP
+22. use validateAction in request service impl, validateAction(documentRequest, ActionPermission.APPROVE);
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
 
