@@ -56,7 +56,16 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
                                                                         int size,
                                                                         String sortField,
                                                                         String sortDirection) {
-        return documentRequestService.getUserDocumentRequests(userId, page, size, sortField, sortDirection);
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+
+        Page<DocumentRequest> documentRequests = documentRequestService.getUserDocumentRequests(userId, pageRequest);
+
+        // Map the list to List of DTOs
+        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+
+        // Re-build the page object to return the items with mapped to dtos
+        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override

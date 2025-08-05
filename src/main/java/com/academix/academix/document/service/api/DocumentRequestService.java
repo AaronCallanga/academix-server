@@ -20,7 +20,7 @@ public interface DocumentRequestService {
 
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest);
-    Page<DocumentRequest> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
+    Page<DocumentRequest> getUserDocumentRequests(Long userId, PageRequest pageRequest);
     DocumentRequest approveDocumentRequest(Long documentRequestId);
     DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
     DocumentRequest releaseDocumentRequest(Long documentRequestId);

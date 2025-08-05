@@ -50,27 +50,27 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRequestAuditService documentRequestAuditService;
 
     @Override
-    public Page<DocumentRequest> getAllDocumentRequests(int page, int size, String sortField, String sortDirection) {
-        // Build the PageRequest object
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+    public Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest) {
+//        // Build the PageRequest object
+//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch all the document request
         return documentRequestRepository.findAll(pageRequest);
 
-        // Convert the paged document requests to List of DTOs (total of 10 by default)
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-
-        // Re-build the page object to return the items with mapped to dtos
-        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
+//        // Convert the paged document requests to List of DTOs (total of 10 by default)
+//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+//
+//        // Re-build the page object to return the items with mapped to dtos
+//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
-    public Page<DocumentRequest> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection) {
-        // Build the PageRequest object
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+    public Page<DocumentRequest> getUserDocumentRequests(Long userId, PageRequest pageRequest) {
+//        // Build the PageRequest object
+//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch the document request of the user by its ID
-        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedById(userId, pageRequest);
+        return  documentRequestRepository.findByRequestedById(userId, pageRequest);
 
 
         // Map the list to List of DTOs
