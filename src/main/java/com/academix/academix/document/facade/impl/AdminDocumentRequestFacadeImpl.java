@@ -102,7 +102,19 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
     @Override
     public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
                                                                                Authentication authentication) {
-
+        DocumentRequest savedRequest = documentRequestService.setDocumentRequestStatusToReadyForPickup(documentRequestId);
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.READY_FOR_PICKUP,
+                "Ready for Pickup",
+                user
+                                                      );
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
