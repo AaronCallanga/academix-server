@@ -341,6 +341,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.SET_READY_FOR_PICKUP);
+
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.IN_PROGRESS);
 
