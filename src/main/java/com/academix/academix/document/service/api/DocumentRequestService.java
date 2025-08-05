@@ -30,7 +30,7 @@ public interface DocumentRequestService {
     DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO);
 
     // ==== INDIVIDUAL / STUDENT ====
-    Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);
+    Page<DocumentRequest> getOwnDocumentRequests(Authentication authentication, PageRequest pageRequest);
 
     // ==== COMMON ====
     DocumentRequestResponseDTO getDocumentRequestById(Long documentRequestId);

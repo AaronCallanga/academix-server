@@ -70,32 +70,32 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 //        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch the document request of the user by its ID
-        return  documentRequestRepository.findByRequestedById(userId, pageRequest);
+        return documentRequestRepository.findByRequestedById(userId, pageRequest);
 
 
-        // Map the list to List of DTOs
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-
-        // Re-build the page object to return the items with mapped to dtos
-        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
+//        // Map the list to List of DTOs
+//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+//
+//        // Re-build the page object to return the items with mapped to dtos
+//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
-    public Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection) {
+    public Page<DocumentRequest> getOwnDocumentRequests(Authentication authentication, PageRequest pageRequest) {
         // Extract the email from the authenticaiton object
         String email = authentication.getName();
 
-        // Build the Page Request
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+//        // Build the Page Request
+//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch the list of document request by user's email
-        Page<DocumentRequest> documentRequests = documentRequestRepository.findByRequestedByEmail(email, pageRequest);
+        return documentRequestRepository.findByRequestedByEmail(email, pageRequest);
 
-        // Map the document requests to list of DTOs and return it
-        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-
-        // Re-build the page object to return the items with mapped to dtos
-        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
+//        // Map the document requests to list of DTOs and return it
+//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
+//
+//        // Re-build the page object to return the items with mapped to dtos
+//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
