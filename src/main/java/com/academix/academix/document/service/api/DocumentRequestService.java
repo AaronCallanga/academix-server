@@ -26,7 +26,7 @@ public interface DocumentRequestService {
     DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId);
     DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId);
     /** @NOTE: Use for FORCE update for status and pick up date  - UI shows current status choice, use this to change the pick-up date */
-    DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
+    DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO);
 
     // ==== INDIVIDUAL / STUDENT ====
     Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication, int page, int size, String sortField, String sortDirection);

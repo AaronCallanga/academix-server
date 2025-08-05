@@ -362,32 +362,31 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequest adminUpdateDocumentRequest(Long documentRequestId,
-                                                                 DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO,
-                                                                 Authentication authentication) {
+                                                                 DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
-        // Get the User from the Authentication Object
-        User user = userService.getUserFromAuthentication(authentication);
+//        // Get the User from the Authentication Object
+//        User user = userService.getUserFromAuthentication(authentication);
 
         // Update the fields
         documentRequest.setStatus(documentRequestAdminUpdateDTO.getStatus());
         documentRequest.setPickUpDate(documentRequestAdminUpdateDTO.getPickUpDate());
 
         // Save to database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+        return documentRequestRepository.save(documentRequest);
 
-        // Log the update
-        documentRequestAuditService.logDocumentRequest(
-                savedRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.UPDATED,
-                "Admin Forced Updated",
-                user
-                                                      );
+//        // Log the update
+//        documentRequestAuditService.logDocumentRequest(
+//                savedRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.UPDATED,
+//                "Admin Forced Updated",
+//                user
+//                                                      );
 
-        // Mapped savedReqyest to DTO then return it as a response
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+//        // Mapped savedReqyest to DTO then return it as a response
+//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override

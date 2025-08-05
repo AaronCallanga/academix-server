@@ -140,6 +140,18 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
     public DocumentRequestResponseDTO adminUpdateDocumentRequest(Long documentRequestId,
                                                                  DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO,
                                                                  Authentication authentication) {
-        return null;
+        DocumentRequest savedRequest = documentRequestService.adminUpdateDocumentRequest(documentRequestId, documentRequestAdminUpdateDTO);
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.UPDATED,
+                "Admin Forced Updated",
+                user
+                                                      );
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 }
