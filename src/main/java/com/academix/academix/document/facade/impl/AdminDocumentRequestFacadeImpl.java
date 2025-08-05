@@ -66,6 +66,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
                                                             Authentication authentication,
                                                             ReasonDTO reasonDto) {
         DocumentRequest savedRequest = documentRequestService.rejectDocumentRequest(documentRequestId, reasonDto);
+
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
@@ -83,13 +84,25 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
 
     @Override
     public DocumentRequestResponseDTO releaseDocumentRequest(Long documentRequestId, Authentication authentication) {
-        return null;
+        DocumentRequest savedRequest = documentRequestService.releaseDocumentRequest(documentRequestId);
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.RELEASED,
+                "Document Released",
+                user
+                                                      );
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequestResponseDTO setDocumentRequestStatusToReadyForPickup(Long documentRequestId,
                                                                                Authentication authentication) {
-        return null;
+
     }
 
     @Override

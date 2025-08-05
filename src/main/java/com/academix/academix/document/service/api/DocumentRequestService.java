@@ -22,8 +22,8 @@ public interface DocumentRequestService {
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
     DocumentRequest approveDocumentRequest(Long documentRequestId);
     DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
-    DocumentRequest releaseDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
+    DocumentRequest releaseDocumentRequest(Long documentRequestId);
+    DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId);
     DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);
     /** @NOTE: Use for FORCE update for status and pick up date  - UI shows current status choice, use this to change the pick-up date */
     DocumentRequest adminUpdateDocumentRequest(Long documentRequestId, DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication);
