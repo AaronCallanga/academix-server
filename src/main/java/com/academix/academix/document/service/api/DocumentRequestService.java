@@ -20,8 +20,8 @@ public interface DocumentRequestService {
     // ==== ADMIN / REGISTRAR ====
     Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page, int size, String sortField, String sortDirection);
     Page<DocumentRequestResponseListDTO> getUserDocumentRequests(Long userId, int page, int size, String sortField, String sortDirection);
-    DocumentRequest approveDocumentRequest(Long documentRequestId, Authentication authentication);
-    DocumentRequest rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
+    DocumentRequest approveDocumentRequest(Long documentRequestId);
+    DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
     DocumentRequest releaseDocumentRequest(Long documentRequestId, Authentication authentication);
     DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId, Authentication authentication);
     DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId, Authentication authentication);

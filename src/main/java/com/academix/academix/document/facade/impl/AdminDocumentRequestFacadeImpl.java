@@ -48,7 +48,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
 
     @Override
     public DocumentRequestResponseDTO approveDocumentRequest(Long documentRequestId, Authentication authentication) {
-        DocumentRequest savedRequest = documentRequestService.approveDocumentRequest(documentRequestId, authentication);
+        DocumentRequest savedRequest = documentRequestService.approveDocumentRequest(documentRequestId);
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
         documentRequestAuditService.logDocumentRequest(
@@ -65,7 +65,20 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
     public DocumentRequestResponseDTO rejectDocumentRequest(Long documentRequestId,
                                                             Authentication authentication,
                                                             ReasonDTO reasonDto) {
-        return null;
+        DocumentRequest savedRequest = documentRequestService.rejectDocumentRequest(documentRequestId, reasonDto);
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.REJECTED,
+                reasonDto.getReason(),
+                user
+                                                      );
+
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override

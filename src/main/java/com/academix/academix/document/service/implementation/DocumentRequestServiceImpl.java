@@ -177,12 +177,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequest approveDocumentRequest(Long documentRequestId, Authentication authentication) {
+    public DocumentRequest approveDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
-        // Get the User from the Authentication Object
-        User user = userService.getUserFromAuthentication(authentication);
+//        // Get the User from the Authentication Object
+//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.APPROVE);
@@ -191,28 +191,28 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         documentRequest.setStatus(DocumentStatus.APPROVED);
 
         // Save to database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+        return documentRequestRepository.save(documentRequest);
 
-        // Log the update
-        documentRequestAuditService.logDocumentRequest(
-                savedRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.APPROVED,
-                "Request Approved",
-                user
-                                                      );
+//        // Log the update
+//        documentRequestAuditService.logDocumentRequest(
+//                savedRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.APPROVED,
+//                "Request Approved",
+//                user
+//                                                      );
 
-        // Mapped savedReqyest to DTO then return it as a response
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+//        // Mapped savedReqyest to DTO then return it as a response
+//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
-    public DocumentRequest rejectDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
+    public DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
-        // Get the User from the Authentication Object
-        User user = userService.getUserFromAuthentication(authentication);
+//        // Get the User from the Authentication Object
+//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.REJECT);
@@ -221,19 +221,19 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         documentRequest.setStatus(DocumentStatus.REJECTED);
 
         // Save to database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+       return documentRequestRepository.save(documentRequest);
 
-        // Log the update
-        documentRequestAuditService.logDocumentRequest(
-                savedRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.REJECTED,
-                reasonDto.getReason(),
-                user
-                                                      );
+//        // Log the update
+//        documentRequestAuditService.logDocumentRequest(
+//                savedRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.REJECTED,
+//                reasonDto.getReason(),
+//                user
+//                                                      );
 
         // Mapped savedReqyest to DTO then return it as a response
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+       // return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
