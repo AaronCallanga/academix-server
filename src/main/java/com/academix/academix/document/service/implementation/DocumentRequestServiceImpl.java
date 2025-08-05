@@ -279,6 +279,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.CANCEL);
+
         // Set the status to CANCELLED
         documentRequest.setStatus(DocumentStatus.CANCELLED);
 
