@@ -185,7 +185,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
-        // Validate if changing status is allowed
+        // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.APPROVE);
 
         // Update the status to APPROVED
@@ -215,6 +215,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.REJECT);
 
         // Update the status to REJECTED
         documentRequest.setStatus(DocumentStatus.REJECTED);
