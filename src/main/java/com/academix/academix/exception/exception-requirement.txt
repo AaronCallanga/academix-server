@@ -1,0 +1,30 @@
+✅ Auditing and Logging Edge Cases
+Log exceptions like:
+Request canceled or deleted
+Attempted status change to invalid state
+Unauthorized access attempts
+Database constraint issues
+
+Uncommon but Useful Exceptions
+| Exception                       | HTTP Code | When to Use                                                   |
+| ------------------------------- | --------- | ------------------------------------------------------------- |
+| `FileStorageException`          | 500       | If your app handles file uploads and storage fails.           |
+| `ExternalServiceException`      | 502 / 503 | If calling another service (e.g., email, notification) fails. |
+| `RateLimitExceededException`    | 429       | Custom: user sends too many requests.                         |
+| `UnsupportedMediaTypeException` | 415       | Wrong content-type, e.g. XML sent but expecting JSON.         |
+| `TimeoutException`              | 504       | Custom: slow response from internal or external processing.   |
+
+✅ Essential Built-in Spring / Java Exceptions (Commonly Handled)
+| Exception                                             | HTTP Code                       | When It Occurs                                                     |
+| ----------------------------------------------------- | ------------------------------- | ------------------------------------------------------------------ |
+| `MethodArgumentNotValidException`                     | 400 Bad Request                 | Invalid field input (e.g. missing or invalid DTO fields).          |
+| `HttpMessageNotReadableException`                     | 400 Bad Request                 | JSON cannot be deserialized (e.g. malformed JSON or wrong type).   |
+| `HttpRequestMethodNotSupportedException`              | 405 Method Not Allowed          | HTTP verb (e.g. POST, GET) is not supported on a route.            |
+| `MissingServletRequestParameterException`             | 400 Bad Request                 | Missing required query or form parameter.                          |
+| `ConstraintViolationException`                        | 400 Bad Request                 | Violated field constraints (e.g. `@Size`, `@Email` in path/query). |
+| `MethodArgumentTypeMismatchException`                 | 400 Bad Request                 | Invalid enum/type in path variable or request param.               |
+| `AccessDeniedException`                               | 403 Forbidden                   | Authenticated user lacks proper role/authority.                    |
+| `AuthenticationException` (Spring Security)           | 401 Unauthorized                | When user is **not authenticated** or token is invalid/missing.    |
+| `EntityNotFoundException` or `NoSuchElementException` | 404 Not Found                   | Entity (e.g. DocumentRequest or User) not found.                   |
+| `IllegalStateException` / `IllegalArgumentException`  | 400 Bad Request or 409 Conflict | Logic errors like bad status transitions or conflicting data.      |
+| `DataIntegrityViolationException`                     | 409 Conflict                    | Violates database constraints (e.g. unique email).                 |

@@ -16,3 +16,7 @@ Other domains:
 - Scheduling
 
 // do cleanup refactoring
+POST	/api/notifications/send-email	Send email manually
+POST	/api/notifications/send-sms	Send SMS manually
+GET	/api/notifications/logs	View sent logs
+

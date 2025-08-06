@@ -1,5 +1,9 @@
 package com.academix.academix.security.service.implementation;
 
+import com.academix.academix.exception.types.BadRequestException;
+import com.academix.academix.exception.types.ConflictException;
+import com.academix.academix.exception.types.ResourceNotFoundException;
+import com.academix.academix.exception.types.TokenExpiredException;
 import com.academix.academix.security.dto.LoginRequestDTO;
 import com.academix.academix.security.dto.LoginResponseDTO;
 import com.academix.academix.security.dto.RegisterRequestDTO;
@@ -58,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException {
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
-            return "Email Already Exists";
+            throw new ConflictException("User already exist!");
         }
 
         String hashedPassword = bCryptPasswordEncoder.encode(registerRequestDTO.getPassword());
@@ -71,7 +75,7 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = registerRequestDTO.getRoles().stream()
                                             .map(roleName -> roleRepository.findByName(roleName)
-                                                                           .orElseThrow(() -> new RuntimeException("Role not found: " + roleName)))
+                                                                           .orElseThrow(() -> new BadRequestException("Role not found: " + roleName)))
                                             .collect(Collectors.toSet());
 
         User user = User.builder()
@@ -102,7 +106,7 @@ public class AuthServiceImpl implements AuthService {
         if (verificationToken.getExpiryDate().isBefore(LocalDateTime.now())) {
             tokenService.deleteToken(verificationToken);
             System.out.println("Token Expired");
-            throw new RuntimeException("Token Expired"); // throw new TokenExpiredException("Verification token has expired."); @Transactional(REQUIRES_NEW) tokenService.delete(token)
+            throw new TokenExpiredException("Verification token has expired."); //Note: @Transactional(REQUIRES_NEW) tokenService.delete(token)
         }
         User user = verificationToken.getUser();        //maybe find user by token,
         user.setVerified(true);
@@ -122,7 +126,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new RuntimeException("User not found"));
+                                  .orElseThrow(() -> new ResourceNotFoundException("User not found"));
         VerificationToken verificationToken = tokenService.generateToken(user);
 
         authEmailService.sendVerification(user, baseUrl, verificationToken);

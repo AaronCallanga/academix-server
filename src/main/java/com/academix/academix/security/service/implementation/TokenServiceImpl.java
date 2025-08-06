@@ -1,5 +1,6 @@
 package com.academix.academix.security.service.implementation;
 
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.security.entity.VerificationToken;
 import com.academix.academix.security.repository.VerificationTokenRepository;
 import com.academix.academix.security.service.api.TokenService;
@@ -51,7 +52,7 @@ public class TokenServiceImpl implements TokenService {
     @Override
     public VerificationToken getToken(String token) {
         return verificationTokenRepository.findByToken(token)
-                                   .orElseThrow(() -> new RuntimeException("Token not found"));
+                                   .orElseThrow(() -> new ResourceNotFoundException("Token not found"));
     }
 
     @Override

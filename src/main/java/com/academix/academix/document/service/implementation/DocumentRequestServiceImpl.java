@@ -9,11 +9,13 @@ import com.academix.academix.document.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.entity.DocumentRemark;
 import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.enums.ActionPermission;
 import com.academix.academix.document.enums.DocumentStatus;
 import com.academix.academix.document.mapper.DocumentRequestMapper;
 import com.academix.academix.document.repository.DocumentRequestRepository;
 import com.academix.academix.document.service.api.DocumentRemarkService;
 import com.academix.academix.document.service.api.DocumentRequestService;
+import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
@@ -39,7 +41,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class DocumentRequestServiceImpl implements DocumentRequestService {
-
+// throw exceptions for wrong status state
+    // check for other exceptions to throw
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
     private final UserRepository userRepository;
@@ -182,6 +185,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.APPROVE);
+
         // Update the status to APPROVED
         documentRequest.setStatus(DocumentStatus.APPROVED);
 
@@ -209,6 +215,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.REJECT);
+
         // Update the status to REJECTED
         documentRequest.setStatus(DocumentStatus.REJECTED);
 
@@ -235,6 +244,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
+
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.RELEASE);
 
         // Update the status to RELEASED
         documentRequest.setStatus(DocumentStatus.RELEASED);
@@ -267,6 +279,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.CANCEL);
+
         // Set the status to CANCELLED
         documentRequest.setStatus(DocumentStatus.CANCELLED);
 
@@ -295,6 +310,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.SET_READY_FOR_PICKUP);
+
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.READY_FOR_PICKUP);
 
@@ -322,6 +340,9 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
+
+        // Validate if changing the status is allowed based on the current status
+        validateAction(documentRequest, ActionPermission.SET_IN_PROGRESS);
 
         // Update the status to READY_FOR_PICKUP
         documentRequest.setStatus(DocumentStatus.IN_PROGRESS);
@@ -418,5 +439,11 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return ActorRole.USER; // You can add UNKNOWN in your enum if not already there
     }
 
+    private void validateAction(DocumentRequest request, ActionPermission action) {
+        if (!action.isAllowed(request.getStatus())) {
+            throw new ConflictException("Cannot " + action.name().toLowerCase().replace("_", " ")
+                    + " when status is " + request.getStatus());
+        }
+    }
 
 }

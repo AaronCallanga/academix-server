@@ -1,5 +1,6 @@
 package com.academix.academix.email;
 
+import com.academix.academix.exception.types.EmailSendFailureException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
@@ -33,7 +34,7 @@ public abstract class BaseEmailServiceImpl implements EmailService {
             log.info("Email sent to {}", toAddress);
         } catch (MessagingException | UnsupportedEncodingException ex) {
             log.error("Failed to send email to {}: {}", toAddress, ex.getMessage());
-            throw new RuntimeException("Failed to send email", ex);     //EmailSendingException
+            throw new EmailSendFailureException("Failed to send email", ex);
         }
     }
 

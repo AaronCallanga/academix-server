@@ -1,2 +1,4 @@
 1. Maybe many to one with DocumentRequest (unidirectional)
 2. Websocket or no
+
+POST	/api/feedback/{requestId}	Submit feedback after claim
