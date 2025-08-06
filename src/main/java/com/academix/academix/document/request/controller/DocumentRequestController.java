@@ -40,38 +40,38 @@ public class DocumentRequestController {
             @RequestParam(defaultValue = "requestDate") String sortField
                                                                                          ) {
         Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getOwnDocumentRequests(authentication, page, size, sortField, sortDirection);
+                documentRequestFacade.getOwnDocumentRequests(authentication, page, size, sortField, sortDirection);
 
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
     @GetMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.getDocumentRequestById(requestId);
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.getDocumentRequestById(requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@Valid @RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.createDocumentRequest(createDocumentRequestDTO, authentication);
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.createDocumentRequest(createDocumentRequestDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
 
     @PatchMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.updateDocumentRequest(updateDocumentRequestDTO, requestId, authentication);
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.updateDocumentRequest(updateDocumentRequestDTO, requestId, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{requestId}")
     public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
-        documentRequestService.deleteDocumentRequest(requestId, authentication, reasonDto);
+        documentRequestFacade.deleteDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("/{requestId}/cancel")
     public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId, authentication, reasonDto);
+        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.cancelDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
