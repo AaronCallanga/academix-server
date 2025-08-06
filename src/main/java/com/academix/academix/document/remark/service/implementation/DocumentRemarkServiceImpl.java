@@ -71,27 +71,27 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     @Override
-    public DocumentRemark addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication) {
-        // Fetch the document request
-        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+    public DocumentRemark addRemark(DocumentRequest documentRequest, DocumentRemarkRequestDTO remarkRequestDTO, User user) {
+//        // Fetch the document request
+//        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
         // Extract the content from the DTO
         String content = remarkRequestDTO.getContent();
 
-        // Extract the author from the Authentication object
-        String email = authentication.getName();
-        // Fetch the user from the database based on the email
-        User user = userRepository.findByEmail(email)
-                                  .orElseThrow(() -> new ResourceNotFoundException("User not found with the email : " + email));
+//        // Extract the author from the Authentication object
+//        String email = authentication.getName();
+//        // Fetch the user from the database based on the email
+//        User user = userRepository.findByEmail(email)
+//                                  .orElseThrow(() -> new ResourceNotFoundException("User not found with the email : " + email));
 
         // Create the remark entity
         DocumentRemark newRemark = buildDocumentRemark(content, user, documentRequest);
         documentRequest.addRemark(newRemark);  // Optional, this only affects the memory
 
         // Persist the new remark to the database
-        DocumentRemark savedRemark = documentRemarkRepository.save(newRemark);
+        return documentRemarkRepository.save(newRemark);
 
-        return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
+//        return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
     @Override

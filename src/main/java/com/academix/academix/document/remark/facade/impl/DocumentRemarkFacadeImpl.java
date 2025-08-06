@@ -9,6 +9,7 @@ import com.academix.academix.document.remark.repository.DocumentRemarkRepository
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
+import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
@@ -61,11 +62,16 @@ public class DocumentRemarkFacadeImpl implements DocumentRemarkFacade {
     public DocumentRemarkResponseDTO addRemark(Long documentRequestId,
                                                DocumentRemarkRequestDTO remarkRequestDTO,
                                                Authentication authentication) {
-        return null;
+        // Fetch the document request
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+        User user = userService.getUserFromAuthentication(authentication);
+        DocumentRemark savedRemark = documentRemarkService.addRemark(documentRequest, remarkRequestDTO, user);
+        return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
+
 
     }
 }
