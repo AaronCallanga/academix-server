@@ -101,41 +101,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{requestId}/approve")
-    public ResponseEntity<DocumentRequestResponseDTO> approveDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.approveDocumentRequest(requestId, authentication);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
 
-    @PatchMapping("/{requestId}/reject")
-    public ResponseEntity<DocumentRequestResponseDTO> rejectDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.rejectDocumentRequest(requestId, authentication, reasonDto);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
-
-    @PatchMapping("/{requestId}/release")
-    public ResponseEntity<DocumentRequestResponseDTO> releaseDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.releaseDocumentRequest(requestId, authentication);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
-
-    @PatchMapping("/{requestId}/ready-pickup")
-    public ResponseEntity<DocumentRequestResponseDTO> setToReadyForPickupDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToReadyForPickup(requestId, authentication);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
-
-    @PatchMapping("/{requestId}/in-progress")
-    public ResponseEntity<DocumentRequestResponseDTO> setToInProgressDocumentRequest(@PathVariable Long requestId, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.setDocumentRequestStatusToInProgress(requestId, authentication);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
-
-    @PatchMapping("/{requestId}/admin")
-    public ResponseEntity<DocumentRequestResponseDTO> adminUpdateDocumentRequest(@PathVariable Long requestId, @Valid @RequestBody DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication) {
-        DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.adminUpdateDocumentRequest(requestId, documentRequestAdminUpdateDTO, authentication);
-        return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
-    }
 
 
 }
