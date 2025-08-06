@@ -7,6 +7,7 @@ import com.academix.academix.document.remark.facade.api.DocumentRemarkFacade;
 import com.academix.academix.document.remark.mapper.DocumentRemarkMapper;
 import com.academix.academix.document.remark.repository.DocumentRemarkRepository;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
+import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.user.repository.UserRepository;
 import com.academix.academix.user.service.api.UserService;
@@ -38,6 +39,8 @@ public class DocumentRemarkFacadeImpl implements DocumentRemarkFacade {
         // Define the page requeest object
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         Page<DocumentRemark> documentRemarkPage = documentRemarkService.getAllDocumentRemarksByRequestId(documentRequestId, pageRequest);
+
+        // Map the paged content (list of document remarks) to DTOs
         List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
                 documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkPage.getContent());
 
@@ -49,7 +52,9 @@ public class DocumentRemarkFacadeImpl implements DocumentRemarkFacade {
     public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO,
                                                   Long documentRemarkId,
                                                   Long documentRequestId) {
-        return null;
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+        DocumentRemark updatedRemark = documentRemarkService.updateRemark(documentRemarkRequestDTO, documentRemarkId, documentRequest);
+        return documentRemarkMapper.toDocumentRemarkResponseDTO(updatedRemark);
     }
 
     @Override
