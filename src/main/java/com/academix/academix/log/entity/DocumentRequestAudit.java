@@ -1,6 +1,6 @@
 package com.academix.academix.log.entity;
 
-import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.user.entity.User;
