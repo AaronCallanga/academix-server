@@ -6,6 +6,7 @@ import com.academix.academix.document.request.dto.request.ReasonDTO;
 import com.academix.academix.document.request.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.request.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.request.dto.response.DocumentRequestResponseListDTO;
+import com.academix.academix.document.request.facade.api.DocumentRequestFacade;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,34 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DocumentRequestController {
 
-    private final DocumentRequestService documentRequestService;
-
-    @GetMapping
-    public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllDocumentRequests(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortDirection,
-            @RequestParam(defaultValue = "requestDate") String sortField
-                                                                                      ) {
-        Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getAllDocumentRequests(page, size, sortField, sortDirection);
-
-        return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
-    }
-
-    @GetMapping("/users/{userId}")
-    public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllUserDocumentRequests(
-            @PathVariable Long userId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "ASC") String sortDirection,
-            @RequestParam(defaultValue = "requestDate") String sortField
-                                                                                          ) {
-        Page<DocumentRequestResponseListDTO> documentRequestResponseListDTOS =
-                documentRequestService.getUserDocumentRequests(userId, page, size, sortField, sortDirection);
-
-        return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
-    }
+    private final DocumentRequestFacade documentRequestFacade;
 
     @GetMapping("/own")
     public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllOwnDocumentRequests(
@@ -100,9 +74,6 @@ public class DocumentRequestController {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestService.cancelDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
-
-
-
 
 }
 
