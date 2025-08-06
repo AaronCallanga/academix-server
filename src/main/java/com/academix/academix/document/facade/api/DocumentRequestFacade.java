@@ -19,7 +19,4 @@ public interface DocumentRequestFacade {
     DocumentRequestResponseDTO updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId, Authentication authentication);
     DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto); // set status to cancelled
     void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
-
-    // === UTILS ====
-    DocumentRequest fetchDocumentRequestById(Long documentRequestId);
 }

@@ -140,9 +140,4 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
                 user
                                                       );
     }
-
-    @Override
-    public DocumentRequest fetchDocumentRequestById(Long documentRequestId) {
-        return null;
-    }
 }

@@ -175,19 +175,19 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         documentRequestMapper.updateDocumentRequestEntityFromDTO(documentRequestDTO, documentRequest);
 
         // Save the changes to the database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+        return documentRequestRepository.save(documentRequest);
 
-        // Log the created request
-        documentRequestAuditService.logDocumentRequest(
-                savedRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.UPDATED,
-                "User Request Updated",
-                user
-                                                      );
-
-        // Return the savedRequest and mapped it to response DTO
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+//        // Log the created request
+//        documentRequestAuditService.logDocumentRequest(
+//                savedRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.UPDATED,
+//                "User Request Updated",
+//                user
+//                                                      );
+//
+//        // Return the savedRequest and mapped it to response DTO
+//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
