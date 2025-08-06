@@ -280,7 +280,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 //        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
-    public DocumentRequest cancelDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
+    public DocumentRequest cancelDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         /**
          * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
          *         - And admin/registrar can see it that the user changed/updated the request in log section
@@ -289,8 +289,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Fetch the Document Request Entity
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
-        // Get the User from the Authentication Object
-        User user = userService.getUserFromAuthentication(authentication);
+//        // Get the User from the Authentication Object
+//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.CANCEL);
@@ -299,19 +299,19 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         documentRequest.setStatus(DocumentStatus.CANCELLED);
 
         // Save to database
-        DocumentRequest savedRequest = documentRequestRepository.save(documentRequest);
+        return documentRequestRepository.save(documentRequest);
 
-        // Log the update
-        documentRequestAuditService.logDocumentRequest(
-                savedRequest,
-                determineActorType(user.getRoles()),
-                DocumentAction.CANCELLED,
-                reasonDto.getReason(),
-                user
-                                                      );
+//        // Log the update
+//        documentRequestAuditService.logDocumentRequest(
+//                savedRequest,
+//                determineActorType(user.getRoles()),
+//                DocumentAction.CANCELLED,
+//                reasonDto.getReason(),
+//                user
+//                                                      );
 
-        // Mapped savedReqyest to DTO then return it as a response
-        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
+//        // Mapped savedReqyest to DTO then return it as a response
+//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override

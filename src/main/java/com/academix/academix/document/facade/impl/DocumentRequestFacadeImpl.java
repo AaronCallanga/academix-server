@@ -108,7 +108,22 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
     public DocumentRequestResponseDTO cancelDocumentRequest(Long documentRequestId,
                                                             Authentication authentication,
                                                             ReasonDTO reasonDto) {
-        return null;
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+
+        DocumentRequest savedRequest = documentRequestService.cancelDocumentRequest(documentRequestId, reasonDto);
+
+        // Log the update
+        documentRequestAuditService.logDocumentRequest(
+                savedRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.CANCELLED,
+                reasonDto.getReason(),
+                user
+                                                      );
+
+        // Mapped savedReqyest to DTO then return it as a response
+        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
