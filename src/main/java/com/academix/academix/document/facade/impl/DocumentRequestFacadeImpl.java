@@ -128,7 +128,17 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
 
     @Override
     public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
-
+        // Get the User from the Authentication Object
+        User user = userService.getUserFromAuthentication(authentication);
+        DocumentRequest documentRequest = documentRequestService.deleteDocumentRequest(documentRequestId, reasonDto);
+        // Log the action
+        documentRequestAuditService.logDocumentRequest(
+                documentRequest,
+                documentRequestService.determineActorType(user.getRoles()),
+                DocumentAction.DELETED,
+                reasonDto.getReason(),
+                user
+                                                      );
     }
 
     @Override

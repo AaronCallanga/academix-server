@@ -38,7 +38,7 @@ public interface DocumentRequestService {
     //DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, User user);
     DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId);
     DocumentRequest cancelDocumentRequest(Long documentRequestId, ReasonDTO reasonDto); // set status to cancelled
-    void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto);
+    DocumentRequest deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto);
 
     // === UTILS ====
     DocumentRequest fetchDocumentRequestById(Long documentRequestId);
