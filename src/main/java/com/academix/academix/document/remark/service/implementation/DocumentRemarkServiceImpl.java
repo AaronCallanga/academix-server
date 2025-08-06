@@ -35,25 +35,24 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     private final UserRepository userRepository;
 
     @Override
-    public Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int page, int size, String sortField, String sortDirection) {
-        // Define the page requeest object
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+    public Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest) {
+//        // Define the page requeest object
+//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
 
         // Fetch the paged data by ID
-        Page<DocumentRemark> documentRemarkList =
-                documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
+        return documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
                 //documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId, pageRequest);
 
         // Map the paged content (list of document remarks) to DTOs
-        List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
-                documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkList.getContent());
-
-        // Return the paged data
-        return new PageImpl<>(documentRemarkResponseDTOList, pageRequest, documentRemarkList.getTotalElements());
+//        List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
+//                documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkList.getContent());
+//
+//        // Return the paged data
+//        return new PageImpl<>(documentRemarkResponseDTOList, pageRequest, documentRemarkList.getTotalElements());
     }
 
     @Override
-    public DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId) {
+    public DocumentRemark updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId) {
 
         DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
@@ -72,7 +71,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     @Override
-    public DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication) {
+    public DocumentRemark addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication) {
         // Fetch the document request
         DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 

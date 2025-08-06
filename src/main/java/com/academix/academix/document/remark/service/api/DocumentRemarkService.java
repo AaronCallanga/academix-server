@@ -7,16 +7,17 @@ import com.academix.academix.document.remark.entity.DocumentRemark;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.user.entity.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 
 public interface DocumentRemarkService {
     // GENERAL
-    Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int size, int page, String sortField, String sortDirection);
+    Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest);
 
-    DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId);
+    DocumentRemark updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId);
 
     // ==== REMARKS ====
-    DocumentRemarkResponseDTO addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication);
+    DocumentRemark addRemark(Long documentRequestId, DocumentRemarkRequestDTO remarkRequestDTO, Authentication authentication);
     void deleteRemark(Long documentRequestId, Long documentRemarkId);
 
     DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest);
