@@ -95,9 +95,9 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
     }
 
     @Override
-    public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
-        // Fetch the document request
-        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+    public void deleteRemark(DocumentRequest documentRequest, Long documentRemarkId) {
+//        // Fetch the document request
+//        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
         // Fetch the remark
         DocumentRemark documentRemark = documentRemarkRepository.findById(documentRemarkId)

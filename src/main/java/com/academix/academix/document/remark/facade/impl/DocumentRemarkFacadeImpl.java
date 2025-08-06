@@ -71,7 +71,9 @@ public class DocumentRemarkFacadeImpl implements DocumentRemarkFacade {
 
     @Override
     public void deleteRemark(Long documentRequestId, Long documentRemarkId) {
+        // Fetch the document request
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
 
-
+        documentRemarkService.deleteRemark(documentRequest, documentRemarkId);
     }
 }

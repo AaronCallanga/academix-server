@@ -18,7 +18,7 @@ public interface DocumentRemarkService {
 
     // ==== REMARKS ====
     DocumentRemark addRemark(DocumentRequest documentRequest, DocumentRemarkRequestDTO remarkRequestDTO, User user);
-    void deleteRemark(Long documentRequestId, Long documentRemarkId);
+    void deleteRemark(DocumentRequest documentRequest, Long documentRemarkId);
 
     DocumentRemark buildDocumentRemark(String content, User user, DocumentRequest documentRequest);
     DocumentRemark buildDocumentRemark(String content, User user);
