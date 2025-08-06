@@ -2,7 +2,9 @@ package com.academix.academix.document.remark.controller;
 
 import com.academix.academix.document.remark.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.remark.dto.response.DocumentRemarkResponseDTO;
+import com.academix.academix.document.remark.facade.api.DocumentRemarkFacade;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
+import com.academix.academix.document.request.facade.api.DocumentRequestFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class DocumentRemarkController {
 
-    private final DocumentRemarkService documentRemarkService;
+    private final DocumentRemarkFacade documentRemarkFacade;
 
     @GetMapping("/{requestId}")
     public ResponseEntity<Page<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(
@@ -34,25 +36,25 @@ public class DocumentRemarkController {
             @RequestParam(defaultValue = "DESC") String sortDirection,
             @RequestParam(defaultValue = "timeStamp") String sortField
                                                                                            ) {
-        Page<DocumentRemarkResponseDTO> documentRemarks = documentRemarkService.getAllDocumentRemarksByRequestId(requestId, page, size, sortField, sortDirection);
+        Page<DocumentRemarkResponseDTO> documentRemarks = documentRemarkFacade.getAllDocumentRemarksByRequestId(requestId, page, size, sortField, sortDirection);
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 
     @PatchMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
-        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
+        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> addDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long requestId, Authentication authentication) {
-        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkService.addRemark(requestId, documentRemarkRequestDTO, authentication);
+        DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.addRemark(requestId, documentRemarkRequestDTO, authentication);
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
     @DeleteMapping("/{remarksId}/documents/{reqeustId}")
     public ResponseEntity<Void> deleteDocumentRemark(@PathVariable Long remarksId, @PathVariable Long reqeustId) {
-        documentRemarkService.deleteRemark(reqeustId, remarksId);
+        documentRemarkFacade.deleteRemark(reqeustId, remarksId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

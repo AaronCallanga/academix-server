@@ -30,9 +30,6 @@ import java.util.Set;
 public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     private final DocumentRemarkRepository documentRemarkRepository;
-    private final DocumentRemarkMapper documentRemarkMapper;
-    private final DocumentRequestService documentRequestService;
-    private final UserRepository userRepository;
 
     @Override
     public Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest) {
