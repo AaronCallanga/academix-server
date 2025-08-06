@@ -1,6 +1,6 @@
 package com.academix.academix.user.entity;
 
-import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.security.entity.Role;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -18,7 +18,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;

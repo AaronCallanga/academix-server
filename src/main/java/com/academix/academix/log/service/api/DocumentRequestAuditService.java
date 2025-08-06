@@ -1,7 +1,7 @@
 package com.academix.academix.log.service.api;
 
 
-import com.academix.academix.document.entity.DocumentRequest;
+import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.log.dto.response.DocumentRequestAuditResponseDTO;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
