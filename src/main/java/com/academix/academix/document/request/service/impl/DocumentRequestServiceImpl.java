@@ -35,9 +35,6 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     // check for other exceptions to throw
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
-    private final DocumentRemarkService documentRemarkService;
-    private final UserService userService;
-    private final DocumentRequestAuditService documentRequestAuditService;
 
     @Override
     public Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest) {

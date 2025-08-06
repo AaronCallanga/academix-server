@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/admin/document-requests")
+@RequestMapping("/api/v1/admin/documents")
 @RequiredArgsConstructor
 public class AdminDocumentRequestController {
     private final AdminDocumentRequestFacade adminDocumentRequestFacade;
