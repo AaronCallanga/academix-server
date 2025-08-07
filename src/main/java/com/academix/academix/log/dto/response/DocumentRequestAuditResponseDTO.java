@@ -22,7 +22,7 @@ public class DocumentRequestAuditResponseDTO {
     private String performedByName; // optional: to avoid frontend joining user names
 
     private String action;
-    private String actorType;
+    private String actorRole;
     private String remark;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime performedAt;
