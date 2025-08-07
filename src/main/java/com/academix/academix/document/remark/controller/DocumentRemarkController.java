@@ -52,9 +52,9 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
-    @DeleteMapping("/{remarksId}/documents/{reqeustId}")
-    public ResponseEntity<Void> deleteDocumentRemark(@PathVariable Long remarksId, @PathVariable Long reqeustId) {
-        documentRemarkFacade.deleteRemark(reqeustId, remarksId);
+    @DeleteMapping("/{remarksId}/documents/{requestId}")
+    public ResponseEntity<Void> deleteDocumentRemark(@PathVariable Long remarksId, @PathVariable Long requestId) {
+        documentRemarkFacade.deleteRemark(requestId, remarksId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
