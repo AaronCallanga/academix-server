@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class DocumentRequestAuditListDTO {
+public class DocumentRequestAuditListResponseDTO {
     private Long auditId;
     private Long documentRequestId;
     private String action;

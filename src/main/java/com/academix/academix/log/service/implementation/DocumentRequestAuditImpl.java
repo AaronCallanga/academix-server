@@ -1,7 +1,7 @@
 package com.academix.academix.log.service.implementation;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
-import com.academix.academix.log.dto.response.DocumentRequestAuditResponseDTO;
+import com.academix.academix.log.dto.response.DocumentRequestAuditDetailResponseDTO;
 import com.academix.academix.log.entity.DocumentRequestAudit;
 import com.academix.academix.log.enums.ActorRole;
 import com.academix.academix.log.enums.DocumentAction;
@@ -55,12 +55,12 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     }
 
     @Override
-    public Page<DocumentRequestAuditResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField) {
+    public Page<DocumentRequestAuditDetailResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField) {
         // Build the PageRequest object
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         Page<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
-        List<DocumentRequestAuditResponseDTO> documentRequestAuditResponseDTOList = documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList.getContent());
-        return new PageImpl<>(documentRequestAuditResponseDTOList, pageRequest, documentRequestAuditList.getTotalElements());
+        List<DocumentRequestAuditDetailResponseDTO> documentRequestAuditDetailResponseDTOList = documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList.getContent());
+        return new PageImpl<>(documentRequestAuditDetailResponseDTOList, pageRequest, documentRequestAuditList.getTotalElements());
     }
 
 }
