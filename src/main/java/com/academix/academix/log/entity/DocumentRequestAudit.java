@@ -33,7 +33,7 @@ public class DocumentRequestAudit {
     @GeneratedValue
     private Long auditId;
 
-    private Long requestedById;
+    private Long requesterId;
 
     private String requestedByName;
 
