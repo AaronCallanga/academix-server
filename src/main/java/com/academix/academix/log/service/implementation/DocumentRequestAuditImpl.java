@@ -10,6 +10,10 @@ import com.academix.academix.log.repository.DocumentRequestAuditRepository;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -42,9 +46,12 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     }
 
     @Override
-    public List<DocumentRequestAuditResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId) {
-        List<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentRequestId(documentRequestId);
-        return documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList);
+    public Page<DocumentRequestAuditResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField) {
+        // Build the PageRequest object
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        Page<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
+        List<DocumentRequestAuditResponseDTO> documentRequestAuditResponseDTOList = documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList.getContent());
+        return new PageImpl<>(documentRequestAuditResponseDTOList, pageRequest, documentRequestAuditList.getTotalElements());
     }
 
 }
