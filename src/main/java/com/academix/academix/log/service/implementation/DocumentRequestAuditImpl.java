@@ -9,12 +9,15 @@ import com.academix.academix.log.mapper.DocumentRequestAuditMapper;
 import com.academix.academix.log.repository.DocumentRequestAuditRepository;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.entity.User;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,13 +28,19 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
 
     private final DocumentRequestAuditRepository documentRequestAuditRepository;
     private final DocumentRequestAuditMapper documentRequestAuditMapper;
+    @PersistenceContext
+    private EntityManager entityManager;
 
+    @Transactional
     @Override
     public void logDocumentRequest(DocumentRequest documentRequest,
                                                               ActorRole actorRole,
                                                               DocumentAction documentAction,
                                                               String remark,
                                                               User userOptional) {
+        if (!entityManager.contains(documentRequest)) {
+            documentRequest = entityManager.merge(documentRequest);
+        }
         DocumentRequestAudit audit = DocumentRequestAudit.builder()
                                                          .documentRequest(documentRequest)
                                                          .performedBy(userOptional) // null if SYSTEM
