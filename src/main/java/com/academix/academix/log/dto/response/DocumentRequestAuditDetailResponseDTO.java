@@ -24,28 +24,14 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class DocumentRequestAuditDetailResponseDTO {
-    private Long auditId;
-
-    private Long documentRequestId;
+public class DocumentRequestAuditDetailResponseDTO extends BaseDocumentRequestAuditDTO{
     private String purpose;
-    @Enumerated(EnumType.STRING)
     private DocumentType documentType;
-    @Enumerated(EnumType.STRING)
     private DocumentStatus status;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime requestedAt;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime pickUpDate;
 
     private Long requesterId;
     private String requestedByName;
     private String requestedByEmail;
-
-    private LocalDateTime performedAt;
-    @Enumerated(EnumType.STRING)
-    private DocumentAction action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"
-    @Enumerated(EnumType.STRING)
-    private ActorRole actorRole;
-    private String remark; // optional: reason, comment, etc.
 }

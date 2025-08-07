@@ -14,7 +14,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-public class DocumentRequestAuditListResponseDTO extends BaseDocumentRequestAuditDTO{
-    private Long performedById;
-    private String performedByName;
+public class BaseDocumentRequestAuditDTO {
+    private Long auditId;
+    private Long documentRequestId;
+    private String action;
+    private String actorRole;
+    private String remark;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
+    private LocalDateTime performedAt;
 }
