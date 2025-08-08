@@ -1,5 +1,7 @@
 package com.academix.academix.log.facade.impl;
 
+import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.log.dto.response.DocumentRequestAuditDetailResponseDTO;
 import com.academix.academix.log.dto.response.DocumentRequestAuditListResponseDTO;
 import com.academix.academix.log.entity.DocumentRequestAudit;
@@ -21,6 +23,7 @@ public class DocumentRequestAuditFacadeImpl implements DocumentRequestAuditFacad
 
     private final DocumentRequestAuditService documentRequestAuditService;
     private final DocumentRequestAuditMapper documentRequestAuditMapper;
+    private final DocumentRequestService documentRequestService;
 
     @Override
     public Page<DocumentRequestAuditListResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId,
@@ -37,6 +40,8 @@ public class DocumentRequestAuditFacadeImpl implements DocumentRequestAuditFacad
 
     @Override
     public DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetails(Long documentRequestId, Long auditId) {
-        return null;
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+        DocumentRequestAudit documentRequestAudit = documentRequestAuditService.getDocumentRequestAuditDetails(documentRequest, auditId);
+        return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(documentRequestAudit);
     }
 }
