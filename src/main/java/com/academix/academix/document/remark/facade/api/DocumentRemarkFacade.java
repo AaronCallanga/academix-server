@@ -11,7 +11,7 @@ import org.springframework.security.core.Authentication;
 
 public interface DocumentRemarkFacade {
     // GENERAL
-    Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int size, int page, String sortField, String sortDirection);
+    Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId, int page, int size, String sortField, String sortDirection);
     DocumentRemarkResponseDTO updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, Long documentRequestId);
 
     // ==== REMARKS ====

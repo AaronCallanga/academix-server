@@ -33,8 +33,8 @@ public class DocumentRemarkFacadeImpl implements DocumentRemarkFacade {
 
     @Override
     public Page<DocumentRemarkResponseDTO> getAllDocumentRemarksByRequestId(Long documentRequestId,
-                                                                            int size,
                                                                             int page,
+                                                                            int size,
                                                                             String sortField,
                                                                             String sortDirection) {
         // Define the page requeest object
