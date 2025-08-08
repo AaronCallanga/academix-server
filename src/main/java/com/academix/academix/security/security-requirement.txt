@@ -1,5 +1,6 @@
  TODO:
  1. Implement PreAuthorize, RBAC
+ 2. Only allow specific method for unverified users;
 
 
 Entity - User, VerificationToken(one to one with user unidirectional rel)

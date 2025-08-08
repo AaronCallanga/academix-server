@@ -21,6 +21,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -126,11 +127,14 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
         return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
+    @Transactional
     @Override
     public void deleteDocumentRequest(Long documentRequestId, Authentication authentication, ReasonDTO reasonDto) {
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
-        DocumentRequest documentRequest = documentRequestService.deleteDocumentRequest(documentRequestId, reasonDto);
+
+        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
+
         // Log the action
         documentRequestAuditService.logDocumentRequest(
                 documentRequest,
@@ -139,5 +143,8 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
                 reasonDto.getReason(),
                 user
                                                       );
+
+        //DocumentRequest documentRequest2 =
+                documentRequestService.deleteDocumentRequest(documentRequestId, reasonDto);
     }
 }

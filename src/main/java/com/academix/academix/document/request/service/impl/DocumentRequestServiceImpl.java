@@ -391,7 +391,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     }
 
     @Override
-    public DocumentRequest deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
+    public void deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
 //        // Get the User from the Authentication Object
 //        User user = userService.getUserFromAuthentication(authentication);
 
@@ -401,7 +401,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
 
-        return documentRequest;
+        //return documentRequest;
 
 //        // Log the action
 //        documentRequestAuditService.logDocumentRequest(
