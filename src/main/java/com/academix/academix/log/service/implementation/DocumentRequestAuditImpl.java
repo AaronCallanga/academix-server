@@ -69,12 +69,8 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     }
 
     @Override
-    public Page<DocumentRequestAudit> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField) {
-        // Build the PageRequest object
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        Page<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
-        List<DocumentRequestAuditListResponseDTO> documentRequestAuditDetailResponseDTOList = documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList.getContent());
-        return new PageImpl<>(documentRequestAuditDetailResponseDTOList, pageRequest, documentRequestAuditList.getTotalElements());
+    public Page<DocumentRequestAudit> getAllDocumentRequestsByRequestId(Long documentRequestId, PageRequest pageRequest) {
+        return documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
     }
 
     @Override
