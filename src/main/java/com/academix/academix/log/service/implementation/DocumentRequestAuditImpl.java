@@ -30,7 +30,6 @@ import java.util.List;
 public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
 
     private final DocumentRequestAuditRepository documentRequestAuditRepository;
-    private final DocumentRequestAuditMapper documentRequestAuditMapper;
     @PersistenceContext
     private EntityManager entityManager;
 
