@@ -42,13 +42,24 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
             documentRequest = entityManager.merge(documentRequest);
         }
         DocumentRequestAudit audit = DocumentRequestAudit.builder()
-                                                         .documentRequest(documentRequest)
+                                                         // Snapshot from DocumentRequest
+                                                         .requesterId(documentRequest.getRequestedBy().getId())
+                                                         .requestedByName(documentRequest.getRequestedBy().getName()) // assuming you have getFullName()
+                                                         .documentRequestId(documentRequest.getId())
+                                                         .purpose(documentRequest.getPurpose())
+                                                         .documentType(documentRequest.getDocumentType())
+                                                         .status(documentRequest.getStatus())
+                                                         .requestedAt(documentRequest.getRequestDate())
+                                                         .pickUpDate(documentRequest.getPickUpDate())
+
+                                                         // Actor info
                                                          .performedBy(userOptional) // null if SYSTEM
                                                          .performedAt(LocalDateTime.now())
                                                          .action(documentAction)
                                                          .actorRole(actorRole)
-                                                         .remark(remark)
+                                                         .remark(remark != null ? remark.trim() : null)
                                                          .build();
+
 
         DocumentRequestAudit savedAudit = documentRequestAuditRepository.save(audit);
         //return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(savedAudit);

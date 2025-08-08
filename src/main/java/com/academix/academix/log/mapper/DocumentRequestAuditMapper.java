@@ -9,9 +9,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface DocumentRequestAuditMapper {
-    @Mapping(source = "documentRequestId", target = "documentRequestId")
     DocumentRequestAuditDetailResponseDTO toDocumentRequestAuditResponseDTO(DocumentRequestAudit documentRequestAudit);
-
 
     List<DocumentRequestAuditDetailResponseDTO> toDocumentRequestAuditResponseDTOList(List<DocumentRequestAudit> documentRequestAuditList);
 }
