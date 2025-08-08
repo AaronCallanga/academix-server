@@ -11,7 +11,6 @@ import lombok.experimental.SuperBuilder;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 @SuperBuilder

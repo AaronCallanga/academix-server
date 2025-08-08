@@ -1,6 +1,7 @@
 package com.academix.academix.log.controller;
 
 import com.academix.academix.log.dto.response.DocumentRequestAuditDetailResponseDTO;
+import com.academix.academix.log.dto.response.DocumentRequestAuditListResponseDTO;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,11 +18,11 @@ public class DocumentRequestAuditController {
    private final DocumentRequestAuditService documentRequestAuditService;
 
     @GetMapping("/{requestId}")
-    public Page<DocumentRequestAuditDetailResponseDTO> getAllAuditLogsByRequestId(@PathVariable Long requestId,
-                                                                                  @RequestParam(defaultValue = "0") int page,
-                                                                                  @RequestParam(defaultValue = "10") int size,
-                                                                                  @RequestParam(defaultValue = "DESC") String sortDirection,
-                                                                                  @RequestParam(defaultValue = "performedAt") String sortField) {
+    public Page<DocumentRequestAuditListResponseDTO> getAllAuditLogsByRequestId(@PathVariable Long requestId,
+                                                                                @RequestParam(defaultValue = "0") int page,
+                                                                                @RequestParam(defaultValue = "10") int size,
+                                                                                @RequestParam(defaultValue = "DESC") String sortDirection,
+                                                                                @RequestParam(defaultValue = "performedAt") String sortField) {
         return documentRequestAuditService.getAllDocumentRequestsByRequestId(requestId, page, size, sortDirection, sortField);
     }
 
