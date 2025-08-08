@@ -3,7 +3,6 @@
 3. Maybe implement list of logs + detailed log(detailed user info, and maybe changes for what have been updated)
 4. Create method for every action, and use it in your DocumentRequestService
 5. Allow logs to exist even request is deleted/remove
-6. Implement oop design for classes to make it cleaner
 
 /api/admin/audit	View audit trail
 /api/admin/export	Export report (PDF, Excel)

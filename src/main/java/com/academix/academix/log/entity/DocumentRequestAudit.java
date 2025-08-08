@@ -34,34 +34,24 @@ public class DocumentRequestAudit {
     private Long auditId;
 
     private Long requesterId;
-
     private String requestedByName;
-
     private Long documentRequestId;
     // snapshot of important fields at time of action
     private String purpose;
-
     @Enumerated(EnumType.STRING)
     private DocumentType documentType;
-
     @Enumerated(EnumType.STRING)
     private DocumentStatus status;
-
     private LocalDateTime requestedAt;
-
     private LocalDateTime pickUpDate;
 
     @ManyToOne
     private User performedBy;
-
     private LocalDateTime performedAt;
-
     @Enumerated(EnumType.STRING)
     private DocumentAction action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"
-
     @Enumerated(EnumType.STRING)
     private ActorRole actorRole;
-
     private String remark; // optional: reason, comment, etc.
 
 }

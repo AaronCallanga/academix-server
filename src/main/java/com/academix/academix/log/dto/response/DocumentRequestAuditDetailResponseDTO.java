@@ -26,9 +26,11 @@ import java.time.LocalDateTime;
 @Builder
 public class DocumentRequestAuditDetailResponseDTO extends BaseDocumentRequestAuditDTO{
     private String purpose;
-    private DocumentType documentType;
-    private DocumentStatus status;
+    private String documentType;
+    private String status;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime requestedAt;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime pickUpDate;
 
     private Long requesterId;

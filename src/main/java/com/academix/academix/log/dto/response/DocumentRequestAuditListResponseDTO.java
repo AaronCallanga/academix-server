@@ -15,6 +15,4 @@ import java.time.LocalDateTime;
 @Setter
 @Builder
 public class DocumentRequestAuditListResponseDTO extends BaseDocumentRequestAuditDTO{
-    private Long performedById;
-    private String performedByName;
 }
