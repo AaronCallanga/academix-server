@@ -16,14 +16,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class DocumentRequestAuditDetailResponseDTO extends BaseDocumentRequestAuditDTO{
     private String purpose;
     private String documentType;
@@ -35,5 +35,4 @@ public class DocumentRequestAuditDetailResponseDTO extends BaseDocumentRequestAu
 
     private Long requesterId;
     private String requestedByName;
-    private String requestedByEmail;
 }
