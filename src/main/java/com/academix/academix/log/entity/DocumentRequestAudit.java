@@ -45,8 +45,8 @@ public class DocumentRequestAudit {
     private LocalDateTime requestedAt;
     private LocalDateTime pickUpDate;
 
-    @ManyToOne
-    private User performedBy;
+    private Long performedById;
+    private String performedByName;
     private LocalDateTime performedAt;
     @Enumerated(EnumType.STRING)
     private DocumentAction action; // e.g. "APPROVED", "REJECTED", "CANCELLED", "SET_TO_READY"

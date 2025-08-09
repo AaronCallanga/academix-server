@@ -1,6 +1,8 @@
 package com.academix.academix.log.service.implementation;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.exception.types.BadRequestException;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.dto.response.DocumentRequestAuditDetailResponseDTO;
 import com.academix.academix.log.dto.response.DocumentRequestAuditListResponseDTO;
 import com.academix.academix.log.entity.DocumentRequestAudit;
@@ -28,7 +30,6 @@ import java.util.List;
 public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
 
     private final DocumentRequestAuditRepository documentRequestAuditRepository;
-    private final DocumentRequestAuditMapper documentRequestAuditMapper;
     @PersistenceContext
     private EntityManager entityManager;
 
@@ -54,7 +55,8 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
                                                          .pickUpDate(documentRequest.getPickUpDate())
 
                                                          // Actor info
-                                                         .performedBy(userOptional) // null if SYSTEM
+                                                         .performedById(userOptional.getId()) // null if SYSTEM
+                                                         .performedByName(userOptional.getName())
                                                          .performedAt(LocalDateTime.now())
                                                          .action(documentAction)
                                                          .actorRole(actorRole)
@@ -67,12 +69,20 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     }
 
     @Override
-    public Page<DocumentRequestAuditListResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField) {
-        // Build the PageRequest object
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-        Page<DocumentRequestAudit> documentRequestAuditList = documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
-        List<DocumentRequestAuditListResponseDTO> documentRequestAuditDetailResponseDTOList = documentRequestAuditMapper.toDocumentRequestAuditResponseDTOList(documentRequestAuditList.getContent());
-        return new PageImpl<>(documentRequestAuditDetailResponseDTOList, pageRequest, documentRequestAuditList.getTotalElements());
+    public Page<DocumentRequestAudit> getAllDocumentRequestsByRequestId(Long documentRequestId, PageRequest pageRequest) {
+        return documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
+    }
+
+    @Override
+    public DocumentRequestAudit getDocumentRequestAuditDetails(DocumentRequest documentRequest, Long auditId) {
+        DocumentRequestAudit documentRequestAudit = documentRequestAuditRepository.findById(auditId)
+                .orElseThrow(() -> new ResourceNotFoundException("Document request audit not found with the id: " + auditId));
+
+        if (!documentRequest.getId().equals(documentRequestAudit.getDocumentRequestId())) {
+            throw new BadRequestException("Audit ID " + auditId + " does not belong to Document Request ID " + documentRequest.getId());
+        }
+
+        return documentRequestAudit;
     }
 
 }
