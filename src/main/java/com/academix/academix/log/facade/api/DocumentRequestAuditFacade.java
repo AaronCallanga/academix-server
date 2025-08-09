@@ -11,5 +11,5 @@ import org.springframework.data.domain.Page;
 
 public interface DocumentRequestAuditFacade {
     Page<DocumentRequestAuditListResponseDTO> getAllDocumentRequestsByRequestId(Long documentRequestId, int page, int size, String sortDirection, String sortField); // Should be paged by timeStamp latest as default
-    DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetails(Long documentRequestId, Long auditId);
+    DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetails(Long auditId, Long documentRequestId);
 }

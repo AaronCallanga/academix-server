@@ -29,8 +29,8 @@ public class DocumentRequestAuditController {
     }
 
     @GetMapping("/{auditId}/request/{requestId}/")
-    public DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetailsById(@PathVariable Long auditID, @PathVariable Long requestID) {
-        return documentRequestAuditFacade.getDocumentRequestAuditDetails(auditID, requestID);
+    public DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetailsById(@PathVariable Long auditId, @PathVariable Long requestId) {
+        return documentRequestAuditFacade.getDocumentRequestAuditDetails(auditId, requestId);
     }
 
 }

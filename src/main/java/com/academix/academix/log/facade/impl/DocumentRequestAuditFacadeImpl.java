@@ -39,7 +39,7 @@ public class DocumentRequestAuditFacadeImpl implements DocumentRequestAuditFacad
     }
 
     @Override
-    public DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetails(Long documentRequestId, Long auditId) {
+    public DocumentRequestAuditDetailResponseDTO getDocumentRequestAuditDetails(Long auditId, Long documentRequestId) {
         DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
         DocumentRequestAudit documentRequestAudit = documentRequestAuditService.getDocumentRequestAuditDetails(documentRequest, auditId);
         return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(documentRequestAudit);
