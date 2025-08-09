@@ -55,7 +55,8 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
                                                          .pickUpDate(documentRequest.getPickUpDate())
 
                                                          // Actor info
-                                                         .performedBy(userOptional) // null if SYSTEM
+                                                         .performedById(userOptional.getId()) // null if SYSTEM
+                                                         .performedByName(userOptional.getName())
                                                          .performedAt(LocalDateTime.now())
                                                          .action(documentAction)
                                                          .actorRole(actorRole)

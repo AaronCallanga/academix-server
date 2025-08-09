@@ -12,11 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface DocumentRequestAuditMapper {
 
-    @Mapping(source = "performedBy.id", target = "performedById")
-    @Mapping(source = "performedBy.name", target = "performedByName")
     DocumentRequestAuditDetailResponseDTO toDocumentRequestAuditResponseDTO(DocumentRequestAudit documentRequestAudit);
 
-    @Mapping(source = "performedBy.id", target = "performedById")
-    @Mapping(source = "performedBy.name", target = "performedByName")
     List<DocumentRequestAuditListResponseDTO> toDocumentRequestAuditResponseDTOList(List<DocumentRequestAudit> documentRequestAuditList);
 }
