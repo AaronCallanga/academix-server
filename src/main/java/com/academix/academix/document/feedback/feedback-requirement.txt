@@ -4,9 +4,18 @@
 4. implement soft-delete, Usually paired with a cleanup policy (e.g., permanently delete after 2 years)
     @Builder.Default
     private boolean archived = false; // Soft delete flag
-
-
+5. findByRating
 POST	/api/feedback/{requestId}	Submit feedback after claim
+
+
+
+Logging feedback submissions (successful + failed attempts)
+Archiving old feedback for performance
+Export to CSV/PDF for reports
+Automatic email to admin when feedback is below a threshold (e.g., 2 stars)
+Pagination & Sorting for feedback listing
+Filter by Date Range, Rating, Request Type in API
+
 
 Business Rules
 Eligibility to Provide Feedback
