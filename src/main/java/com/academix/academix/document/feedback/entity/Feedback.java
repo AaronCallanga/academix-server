@@ -1,4 +1,4 @@
-package com.academix.academix.feedback.entity;
+package com.academix.academix.document.feedback.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
