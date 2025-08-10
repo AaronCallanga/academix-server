@@ -1,5 +1,10 @@
 1. Maybe many to one with DocumentRequest (unidirectional)
 2. Websocket or no
+3. implement filtering
+4. implement soft-delete, Usually paired with a cleanup policy (e.g., permanently delete after 2 years)
+    @Builder.Default
+    private boolean archived = false; // Soft delete flag
+
 
 POST	/api/feedback/{requestId}	Submit feedback after claim
 
