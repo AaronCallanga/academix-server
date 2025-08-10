@@ -1,6 +1,7 @@
 package com.academix.academix.document.feedback.entity;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -31,13 +32,15 @@ public class Feedback {
     @JoinColumn(name = "document_request_id", nullable = false)
     private DocumentRequest documentRequest;
 
+    @Column(nullable = false) //add validation 1-5 only
     private int rating;
 
+    @Column(length = 500)
     private String comment;
 
+    @Column(nullable = false)
     private boolean anonymous;
 
+    @Column(nullable = false)
     private LocalDateTime submittedAt;
-
-
 }
