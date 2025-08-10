@@ -1,6 +1,7 @@
 package com.academix.academix.document.feedback.dto.response;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.user.dto.UserInfoDTO;
 import jakarta.persistence.Column;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -32,4 +33,6 @@ public class FeedbackResponseDTO {
     private boolean anonymous;
 
     private LocalDateTime submittedAt;
+
+    private UserInfoDTO userInfoDTO;        // only shows if anonymous == false
 }
