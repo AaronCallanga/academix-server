@@ -47,7 +47,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Page<Feedback> getAllFeedbacks(PageRequest pageRequest) {
-        return null;
+        return feedbackRepository.findAll(pageRequest);
     }
 
     @Override
