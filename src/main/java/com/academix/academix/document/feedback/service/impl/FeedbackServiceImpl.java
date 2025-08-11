@@ -52,6 +52,6 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Page<Feedback> getFeedbacksByRating(int rating, PageRequest pageRequest) {
-        return null;
+        return feedbackRepository.findByRating(rating, pageRequest);
     }
 }
