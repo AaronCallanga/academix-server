@@ -14,4 +14,5 @@ import java.util.Optional;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     // _Id lets Spring Data know you want to match on the foreign key column (document_request_id)
     Optional<Feedback> findByDocumentRequest_Id(Long id);
+    Page<Feedback> findByRating(int rating, Pageable pageable);
 }
