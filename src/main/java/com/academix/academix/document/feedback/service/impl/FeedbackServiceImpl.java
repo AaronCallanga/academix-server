@@ -9,6 +9,7 @@ import com.academix.academix.document.feedback.service.api.FeedbackService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.enums.DocumentStatus;
 import com.academix.academix.exception.types.BadRequestException;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,8 +40,8 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedbackByRequestId(Long requestId) {
-
-        return null;
+        return feedbackRepository.findByDocumentRequest_Id(requestId)
+                                 .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for request ID: " + requestId));
     }
 
     @Override
