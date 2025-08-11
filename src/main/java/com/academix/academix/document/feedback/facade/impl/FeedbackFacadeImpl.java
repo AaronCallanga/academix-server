@@ -1,6 +1,8 @@
 package com.academix.academix.document.feedback.facade.impl;
 
+import com.academix.academix.document.feedback.dto.request.FeedbackRequestDTO;
 import com.academix.academix.document.feedback.entity.Feedback;
+import com.academix.academix.document.feedback.facade.api.FeedbackFacade;
 import com.academix.academix.document.feedback.mapper.FeedbackMapper;
 import com.academix.academix.document.feedback.service.api.FeedbackService;
 import com.academix.academix.document.request.entity.DocumentRequest;
@@ -13,15 +15,16 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class FeedbackServiceImpl implements FeedbackService {
+public class FeedbackFacadeImpl implements FeedbackFacade {
 
     private final FeedbackService feedbackService;
     private final FeedbackMapper feedbackMapper;
     private final UserService userService; //for logs
     private final DocumentRequestAuditService documentRequestAuditService;
 
+
     @Override
-    public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest) {
+    public Feedback submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO) {
         return null;
     }
 
@@ -31,12 +34,12 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public Page<Feedback> getAllFeedbacks(PageRequest pageRequest) {
+    public Page<Feedback> getAllFeedbacks(int page, int size, String sortField, String sortDirection) {
         return null;
     }
 
     @Override
-    public Page<Feedback> getFeedbacksByRating(int rating, PageRequest pageRequest) {
+    public Page<Feedback> getFeedbacksByRating(int rating, int page, int size, String sortField, String sortDirection) {
         return null;
     }
 }
