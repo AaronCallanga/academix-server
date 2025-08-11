@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -25,17 +26,15 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest, Authentication authentication) {
-
         if (!documentRequest.getStatus().equals(DocumentStatus.RELEASED) || !documentRequest.getStatus().equals(DocumentStatus.CANCELLED)) {
             throw new BadRequestException("Request is not yet completed");
         }
 
         // FeedbackRequest mapped by mapper in facade has rating, comment, anonymous
+        feedbackRequest.setSubmittedAt(LocalDateTime.now());
+        feedbackRequest.setDocumentRequest(documentRequest);
 
-
-
-
-        return null;
+        return feedbackRepository.save(feedbackRequest);
     }
 
     @Override
