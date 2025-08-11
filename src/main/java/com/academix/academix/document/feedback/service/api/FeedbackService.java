@@ -12,7 +12,7 @@ import java.util.List;
 
 public interface FeedbackService {
     // Common
-    Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest, Authentication authentication);
+    Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest);
     Feedback getFeedbackByRequestId(Long requestId);
     List<FeedbackResponseDTO> getOwnFeedbacks(Authentication authentication);
 

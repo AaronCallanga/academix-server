@@ -25,7 +25,7 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final FeedbackRepository feedbackRepository;
 
     @Override
-    public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest, Authentication authentication) {
+    public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest) {
         if (!documentRequest.getStatus().equals(DocumentStatus.RELEASED) || !documentRequest.getStatus().equals(DocumentStatus.CANCELLED)) {
             throw new BadRequestException("Request is not yet completed");
         }
@@ -39,6 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback getFeedbackByRequestId(Long requestId) {
+
         return null;
     }
 
