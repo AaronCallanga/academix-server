@@ -14,7 +14,6 @@ public interface FeedbackService {
     // Common
     Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest);
     Feedback getFeedbackByRequestId(Long requestId);
-    List<FeedbackResponseDTO> getOwnFeedbacks(Authentication authentication);
 
     // Admin
     Page<Feedback> getAllFeedbacks(PageRequest pageRequest);

@@ -18,6 +18,7 @@ TODO:
 22. use validateAction in request service impl, validateAction(documentRequest, ActionPermission.APPROVE);
 23. implement clean up every 2 years, archive request
 24. put the mapper to facade not in service
+25. implement sending email after status changed/ request submitted/ request completed (to send feedback form) etc
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
 

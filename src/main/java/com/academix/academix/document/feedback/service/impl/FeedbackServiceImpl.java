@@ -44,10 +44,6 @@ public class FeedbackServiceImpl implements FeedbackService {
                                  .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for request ID: " + requestId));
     }
 
-    @Override
-    public List<FeedbackResponseDTO> getOwnFeedbacks(Authentication authentication) {
-        return List.of();
-    }
 
     @Override
     public Page<Feedback> getAllFeedbacks(PageRequest pageRequest) {
