@@ -16,16 +16,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AdminFeedbackController {
 
-    private final FeedbackFacade facade;
+    private final FeedbackFacade feedbackFacade;
 
-    @GetMapping()
+    @GetMapping
     public ResponseEntity<Page<FeedbackResponseDTO>> getAllFeedbacks(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "DESC") String sortDirection,
             @RequestParam(defaultValue = "submittedAt") String sortBy
                                                                     ) {
-        Page<FeedbackResponseDTO> feedbacksPageDTO = facade.getAllFeedbacks(page, size, sortDirection, sortBy);
+        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getAllFeedbacks(page, size, sortDirection, sortBy);
+        return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/rating")
+    public ResponseEntity<Page<FeedbackResponseDTO>> getAllFeedbacksByRating(
+            @RequestParam(defaultValue = "5") int rating,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "DESC") String sortDirection,
+            @RequestParam(defaultValue = "submittedAt") String sortBy
+                                                                            ) {
+        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getFeedbacksByRating(rating, page, size, sortDirection, sortBy);
         return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
     }
 }
