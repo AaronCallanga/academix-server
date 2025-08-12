@@ -12,8 +12,12 @@ import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +48,10 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Override
     public Page<FeedbackResponseDTO> getAllFeedbacks(int page, int size, String sortField, String sortDirection) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        Page<Feedback> feedbacks = feedbackService.getAllFeedbacks(pageRequest);
+        List<FeedbackResponseDTO> feedbackResponseDTOList = feedbackMapper.toFeedbackResponseListDTO(feedbacks.getContent());
+        return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
     }
 
     @Override
