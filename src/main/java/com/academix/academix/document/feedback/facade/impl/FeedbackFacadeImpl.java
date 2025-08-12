@@ -38,7 +38,8 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Override
     public FeedbackResponseDTO getFeedbackByRequestId(Long requestId) {
-        return null;
+        Feedback feedback = feedbackService.getFeedbackByRequestId(requestId);
+        return feedbackMapper.toFeedbackResponseDTO(feedback);
     }
 
     @Override
