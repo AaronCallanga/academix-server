@@ -56,6 +56,9 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
 
     @Override
     public Page<FeedbackResponseDTO> getFeedbacksByRating(int rating, int page, int size, String sortField, String sortDirection) {
-        return null;
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
+        Page<Feedback> feedbacks = feedbackService.getFeedbacksByRating(rating, pageRequest);
+        List<FeedbackResponseDTO> feedbackResponseDTOList = feedbackMapper.toFeedbackResponseListDTO(feedbacks.getContent());
+        return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
     }
 }
