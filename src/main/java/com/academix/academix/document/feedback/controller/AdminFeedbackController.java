@@ -1,9 +1,31 @@
 package com.academix.academix.document.feedback.controller;
 
+import com.academix.academix.document.feedback.dto.response.FeedbackResponseDTO;
+import com.academix.academix.document.feedback.facade.api.FeedbackFacade;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/admin/feedbacks")
+@RequiredArgsConstructor
 public class AdminFeedbackController {
+
+    private final FeedbackFacade facade;
+
+    @GetMapping()
+    public ResponseEntity<Page<FeedbackResponseDTO>> getAllFeedbacks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "DESC") String sortDirection,
+            @RequestParam(defaultValue = "submittedAt") String sortBy
+                                                                    ) {
+        Page<FeedbackResponseDTO> feedbacksPageDTO = facade.getAllFeedbacks(page, size, sortDirection, sortBy);
+        return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
+    }
 }
