@@ -42,15 +42,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         // logs, make it AOP
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
-        if (!savedFeedback.isAnonymous()) {
-            User user = documentRequest.getRequestedBy();
-            UserInfoDTO userInfoDTO = UserInfoDTO.builder()
-                    .id(user.getId())
-                    .name(user.getName())
-                    .email(user.getEmail())
-                    .build();
-            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
-        }
+
 
         return feedbackResponseDTO;
     }
@@ -75,5 +67,13 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         Page<Feedback> feedbacks = feedbackService.getFeedbacksByRating(rating, pageRequest);
         List<FeedbackResponseDTO> feedbackResponseDTOList = feedbackMapper.toFeedbackResponseListDTO(feedbacks.getContent());
         return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
+    }
+
+    private UserInfoDTO setUserInfoDTO(User user) {
+        return UserInfoDTO.builder()
+                          .id(user.getId())
+                          .name(user.getName())
+                          .email(user.getEmail())
+                          .build();
     }
 }
