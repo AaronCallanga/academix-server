@@ -23,9 +23,9 @@ public class AdminFeedbackController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "DESC") String sortDirection,
-            @RequestParam(defaultValue = "submittedAt") String sortBy
+            @RequestParam(defaultValue = "submittedAt") String sortField
                                                                     ) {
-        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getAllFeedbacks(page, size, sortDirection, sortBy);
+        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getAllFeedbacks(page, size, sortField, sortDirection);
         return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
     }
 
@@ -35,9 +35,9 @@ public class AdminFeedbackController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "DESC") String sortDirection,
-            @RequestParam(defaultValue = "submittedAt") String sortBy
+            @RequestParam(defaultValue = "submittedAt") String sortField
                                                                             ) {
-        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getFeedbacksByRating(rating, page, size, sortDirection, sortBy);
+        Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getFeedbacksByRating(rating, page, size, sortField, sortDirection);
         return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
     }
 }

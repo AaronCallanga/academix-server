@@ -44,7 +44,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
         User user = documentRequest.getRequestedBy();
         if (!savedFeedback.isAnonymous()) {
-            UserInfoDTO userInfoDTO = setUserInfoDTO(user);
+            UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
             feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
         }
 
@@ -57,7 +57,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(feedback);
         User user = feedback.getDocumentRequest().getRequestedBy();
         if (!feedback.isAnonymous()) {
-            UserInfoDTO userInfoDTO = setUserInfoDTO(user);
+            UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
             feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
         }
         return feedbackResponseDTO;
@@ -79,7 +79,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
     }
 
-    private UserInfoDTO setUserInfoDTO(User user) {
+    private UserInfoDTO buildUserInfoDTO(User user) {
         return UserInfoDTO.builder()
                           .id(user.getId())
                           .name(user.getName())
