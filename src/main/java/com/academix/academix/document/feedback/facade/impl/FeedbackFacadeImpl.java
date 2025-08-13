@@ -9,6 +9,8 @@ import com.academix.academix.document.feedback.service.api.FeedbackService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
+import com.academix.academix.user.dto.UserInfoDTO;
+import com.academix.academix.user.entity.User;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,9 +37,22 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         Feedback feedback = feedbackMapper.toFeedback(feedbackRequestDTO);
         Feedback savedFeedback = feedbackService.submitFeedback(documentRequest, feedback);
 
+
+
         // logs, make it AOP
 
-        return feedbackMapper.toFeedbackResponseDTO(savedFeedback);
+        FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
+        if (!savedFeedback.isAnonymous()) {
+            User user = documentRequest.getRequestedBy();
+            UserInfoDTO userInfoDTO = UserInfoDTO.builder()
+                    .id(user.getId())
+                    .name(user.getName())
+                    .email(user.getEmail())
+                    .build();
+            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
+        }
+
+        return feedbackResponseDTO;
     }
 
     @Override
