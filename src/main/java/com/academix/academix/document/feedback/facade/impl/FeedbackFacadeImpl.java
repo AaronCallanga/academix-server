@@ -42,7 +42,11 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         // logs, make it AOP
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
-
+        User user = documentRequest.getRequestedBy();
+        if (!savedFeedback.isAnonymous()) {
+            UserInfoDTO userInfoDTO = setUserInfoDTO(user);
+            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
+        }
 
         return feedbackResponseDTO;
     }
