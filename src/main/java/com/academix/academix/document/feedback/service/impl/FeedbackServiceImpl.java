@@ -27,7 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest) {
-        if (!documentRequest.getStatus().equals(DocumentStatus.RELEASED) || !documentRequest.getStatus().equals(DocumentStatus.CANCELLED)) {
+        if (!documentRequest.getStatus().equals(DocumentStatus.RELEASED) && !documentRequest.getStatus().equals(DocumentStatus.CANCELLED)) {
             throw new BadRequestException("Request is not yet completed");
         }
 
