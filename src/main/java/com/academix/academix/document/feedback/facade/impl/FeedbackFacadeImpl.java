@@ -40,11 +40,6 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         // logs, make it AOP
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
-        User user = documentRequest.getRequestedBy();
-        if (!savedFeedback.isAnonymous()) {
-            UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
-            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
-        }
 
         return feedbackResponseDTO;
     }
@@ -91,6 +86,15 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
                           .name(user.getName())
                           .email(user.getEmail())
                           .build();
+    }
+
+    private void fillInUserInfo_IfFeedbackNotAnonymous(FeedbackResponseDTO feedbackResponseDTO, Feedback feedback) {
+        User user = feedback.getDocumentRequest().getRequestedBy();
+        // make this as util
+        if (!feedback.isAnonymous()) {
+            UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
+            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
+        }
     }
 
     private void fillInUserInfo_IfFeedbackNotAnonymous(List<FeedbackResponseDTO> feedbackResponseDTOList, Page<Feedback> feedbacks) {
