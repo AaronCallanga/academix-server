@@ -37,8 +37,6 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         Feedback feedback = feedbackMapper.toFeedback(feedbackRequestDTO);
         Feedback savedFeedback = feedbackService.submitFeedback(documentRequest, feedback);
 
-
-
         // logs, make it AOP
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
@@ -70,20 +68,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         List<FeedbackResponseDTO> feedbackResponseDTOList = feedbackMapper.toFeedbackResponseListDTO(feedbacks.getContent());
 
         // Fill in user info if not anonymous
-        for (int i = 0; i < feedbackResponseDTOList.size(); i++) {
-            FeedbackResponseDTO feedbackDTO = feedbackResponseDTOList.get(i);
-            Feedback feedbackEntity = feedbacks.getContent().get(i);
-
-            if (!feedbackDTO.isAnonymous()) {
-                // Get the user from entity
-                User user = feedbackEntity.getDocumentRequest().getRequestedBy();
-
-                if (user != null) {
-                    UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
-                    feedbackDTO.setUserInfoDTO(userInfoDTO);
-                }
-            }
-        }
+        fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTOList, feedbacks);
 
         return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
     }
@@ -102,5 +87,23 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
                           .name(user.getName())
                           .email(user.getEmail())
                           .build();
+    }
+
+    private void fillInUserInfo_IfFeedbackNotAnonymous(List<FeedbackResponseDTO> feedbackResponseDTOList, Page<Feedback> feedbacks) {
+        // Fill in user info if not anonymous
+        for (int i = 0; i < feedbackResponseDTOList.size(); i++) {
+            FeedbackResponseDTO feedbackDTO = feedbackResponseDTOList.get(i);
+            Feedback feedbackEntity = feedbacks.getContent().get(i);
+
+            if (!feedbackDTO.isAnonymous()) {
+                // Get the user from entity
+                User user = feedbackEntity.getDocumentRequest().getRequestedBy();
+
+                if (user != null) {
+                    UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
+                    feedbackDTO.setUserInfoDTO(userInfoDTO);
+                }
+            }
+        }
     }
 }
