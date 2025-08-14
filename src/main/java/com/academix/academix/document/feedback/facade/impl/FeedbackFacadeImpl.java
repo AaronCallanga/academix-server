@@ -78,6 +78,10 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
         Page<Feedback> feedbacks = feedbackService.getFeedbacksByRating(rating, pageRequest);
         List<FeedbackResponseDTO> feedbackResponseDTOList = feedbackMapper.toFeedbackResponseListDTO(feedbacks.getContent());
+
+        // Fill in user info if not anonymous
+        fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTOList, feedbacks);
+
         return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
     }
 
