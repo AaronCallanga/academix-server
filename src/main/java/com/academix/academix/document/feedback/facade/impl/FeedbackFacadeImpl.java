@@ -49,11 +49,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     public FeedbackResponseDTO getFeedbackByRequestId(Long requestId) {
         Feedback feedback = feedbackService.getFeedbackByRequestId(requestId);
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(feedback);
-        User user = feedback.getDocumentRequest().getRequestedBy();
-        if (!feedback.isAnonymous()) {
-            UserInfoDTO userInfoDTO = buildUserInfoDTO(user);
-            feedbackResponseDTO.setUserInfoDTO(userInfoDTO);
-        }
+        fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTO, feedback);
         return feedbackResponseDTO;
     }
 
