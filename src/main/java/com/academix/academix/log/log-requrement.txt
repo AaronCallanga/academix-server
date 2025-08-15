@@ -1,6 +1,7 @@
 1. Implement clean up for expired request // No action taken after x days, the request should be deleted if requestedBy > x days
 2. Implement async logging, and AOP
 3. Batch insert logs instead of per-request inserts if high volume.
+4. implement filtering
 5. Allow logs to exist even request is deleted/remove
 
 /api/admin/audit	View audit trail

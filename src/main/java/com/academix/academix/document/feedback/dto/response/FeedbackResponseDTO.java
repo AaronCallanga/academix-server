@@ -1,47 +1,38 @@
-package com.academix.academix.document.feedback.entity;
+package com.academix.academix.document.feedback.dto.response;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.user.dto.UserInfoDTO;
 import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 
-@Entity
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 @Builder
-public class Feedback {
-    @Id
-    @GeneratedValue
+public class FeedbackResponseDTO {
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "document_request_id", nullable = false, unique = true)
-    private DocumentRequest documentRequest;
+    private Long documentRequestId;
 
-    @Column(nullable = false) //add validation 1-5 only
     private int rating;
 
-    @Column(length = 500)
     private String comment;
 
-    @Column(nullable = false)
     private boolean anonymous;
 
-    @Column(nullable = false)
     private LocalDateTime submittedAt;
+
+    private UserInfoDTO userInfoDTO;        // only shows if anonymous == false
 }

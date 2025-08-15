@@ -1,4 +1,54 @@
 1. Maybe many to one with DocumentRequest (unidirectional)
 2. Websocket or no
-
+3. implement filtering
+4. implement soft-delete, Usually paired with a cleanup policy (e.g., permanently delete after 2 years)
+    @Builder.Default
+    private boolean archived = false; // Soft delete flag
+5. findByRating
 POST	/api/feedback/{requestId}	Submit feedback after claim
+
+
+
+Logging feedback submissions (successful + failed attempts)
+Archiving old feedback for performance
+Export to CSV/PDF for reports
+Automatic email to admin when feedback is below a threshold (e.g., 2 stars)
+Pagination & Sorting for feedback listing
+Filter by Date Range, Rating, Request Type in API
+
+
+Business Rules
+Eligibility to Provide Feedback
+    Feedback can only be submitted after the document request is marked as “Completed” or “Released.”
+    Only the requester who made the document request can provide feedback.
+
+Feedback Content
+    Rating (1–5 stars or 1–10 scale) for overall experience.
+    Optional comments for additional remarks.
+    Feedback type/category (optional dropdown) such as:
+        Speed of processing
+        Accuracy of document
+        Staff assistance
+        System usability
+
+Submission Rules
+    Feedback can be submitted only once per request.
+    Feedback can be edited within 24 hours after submission.
+    Once the feedback is locked, only administrators can modify or delete it.
+
+Feedback Visibility
+    For Admins: All feedback entries, including ratings and comments, are visible for analytics and reporting.
+    For Users: Only their own feedback is visible to them.
+
+Feedback Analytics
+    Admin dashboard should show:
+        Average rating per month
+        Top issues (from category counts)
+        Number of feedback submissions vs. total requests
+
+Functional Requirements
+    FR-1: System must display a feedback prompt after request completion.
+    FR-2: System must store rating, comments, category, and timestamp in a feedback table linked to the document request.
+    FR-3: System must prevent duplicate feedback submissions for the same request.
+    FR-4: Admins must have a search and filter interface for feedback records.
+    FR-5: System must generate reports summarizing ratings and feedback categories.
