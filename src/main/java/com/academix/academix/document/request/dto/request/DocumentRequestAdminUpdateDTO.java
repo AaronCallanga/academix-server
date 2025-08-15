@@ -27,5 +27,4 @@ public class DocumentRequestAdminUpdateDTO {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     private LocalDateTime pickUpDate;
 
-//    private List<DocumentRemarkRequestDTO> remarks;
 }
