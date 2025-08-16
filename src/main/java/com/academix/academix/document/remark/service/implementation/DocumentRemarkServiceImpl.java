@@ -2,23 +2,16 @@ package com.academix.academix.document.remark.service.implementation;
 
 import com.academix.academix.document.request.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.remark.dto.request.DocumentRemarkRequestDTO;
-import com.academix.academix.document.remark.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.remark.entity.DocumentRemark;
 import com.academix.academix.document.request.entity.DocumentRequest;
-import com.academix.academix.document.remark.mapper.DocumentRemarkMapper;
 import com.academix.academix.document.remark.repository.DocumentRemarkRepository;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
-import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
-import com.academix.academix.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,26 +26,12 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     @Override
     public Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest) {
-//        // Define the page requeest object
-//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-
         // Fetch the paged data by ID
         return documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
-                //documentRemarkRepository.findByDocumentRequestIdOrderByTimeStampAsc(documentRequestId, pageRequest);
-
-        // Map the paged content (list of document remarks) to DTOs
-//        List<DocumentRemarkResponseDTO> documentRemarkResponseDTOList =
-//                documentRemarkMapper.toDocumentRemarkResponseDTOList(documentRemarkList.getContent());
-//
-//        // Return the paged data
-//        return new PageImpl<>(documentRemarkResponseDTOList, pageRequest, documentRemarkList.getTotalElements());
     }
 
     @Override
     public DocumentRemark updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, DocumentRequest documentRequest) {
-
-//        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
-
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
                 .orElseThrow(() -> new ResourceNotFoundException("Document remark does not exist with the id : " + documentRemarkId));
 
@@ -63,23 +42,12 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         String updatedContent = documentRemarkRequestDTO.getContent();
         remark.setContent(updatedContent);
         return documentRemarkRepository.save(remark);
-
-//        return documentRemarkMapper.toDocumentRemarkResponseDTO(updatedRemark);
     }
 
     @Override
     public DocumentRemark addRemark(DocumentRequest documentRequest, DocumentRemarkRequestDTO remarkRequestDTO, User user) {
-//        // Fetch the document request
-//        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
-
         // Extract the content from the DTO
         String content = remarkRequestDTO.getContent();
-
-//        // Extract the author from the Authentication object
-//        String email = authentication.getName();
-//        // Fetch the user from the database based on the email
-//        User user = userRepository.findByEmail(email)
-//                                  .orElseThrow(() -> new ResourceNotFoundException("User not found with the email : " + email));
 
         // Create the remark entity
         DocumentRemark newRemark = buildDocumentRemark(content, user, documentRequest);
@@ -87,15 +55,10 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
         // Persist the new remark to the database
         return documentRemarkRepository.save(newRemark);
-
-//        return documentRemarkMapper.toDocumentRemarkResponseDTO(savedRemark);
     }
 
     @Override
     public void deleteRemark(DocumentRequest documentRequest, Long documentRemarkId) {
-//        // Fetch the document request
-//        DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
-
         // Fetch the remark
         DocumentRemark documentRemark = documentRemarkRepository.findById(documentRemarkId)
                                                                 .orElseThrow(() -> new ResourceNotFoundException("Document remark not found with id: " + documentRemarkId));

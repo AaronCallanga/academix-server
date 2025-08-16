@@ -1,13 +1,11 @@
 package com.academix.academix.document.request.controller;
 
 import com.academix.academix.document.request.dto.request.CreateDocumentRequestDTO;
-import com.academix.academix.document.request.dto.request.DocumentRequestAdminUpdateDTO;
 import com.academix.academix.document.request.dto.request.ReasonDTO;
 import com.academix.academix.document.request.dto.request.UpdateDocumentRequestDTO;
 import com.academix.academix.document.request.dto.response.DocumentRequestResponseDTO;
 import com.academix.academix.document.request.dto.response.DocumentRequestResponseListDTO;
 import com.academix.academix.document.request.facade.api.DocumentRequestFacade;
-import com.academix.academix.document.request.service.api.DocumentRequestService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

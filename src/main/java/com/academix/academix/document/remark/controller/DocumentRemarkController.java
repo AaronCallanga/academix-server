@@ -3,8 +3,6 @@ package com.academix.academix.document.remark.controller;
 import com.academix.academix.document.remark.dto.request.DocumentRemarkRequestDTO;
 import com.academix.academix.document.remark.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.remark.facade.api.DocumentRemarkFacade;
-import com.academix.academix.document.remark.service.api.DocumentRemarkService;
-import com.academix.academix.document.request.facade.api.DocumentRequestFacade;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -9,15 +9,12 @@ import com.academix.academix.document.request.enums.ActionPermission;
 import com.academix.academix.document.request.enums.DocumentStatus;
 import com.academix.academix.document.request.mapper.DocumentRequestMapper;
 import com.academix.academix.document.request.repository.DocumentRequestRepository;
-import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.exception.types.ConflictException;
 import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.log.enums.ActorRole;
-import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.security.entity.Role;
 import com.academix.academix.user.entity.User;
-import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -31,40 +28,19 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class DocumentRequestServiceImpl implements DocumentRequestService {
-// throw exceptions for wrong status state
-    // check for other exceptions to throw
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
 
     @Override
     public Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest) {
-//        // Build the PageRequest object
-//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-
         // Fetch all the document request
         return documentRequestRepository.findAll(pageRequest);
-
-//        // Convert the paged document requests to List of DTOs (total of 10 by default)
-//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-//
-//        // Re-build the page object to return the items with mapped to dtos
-//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
     public Page<DocumentRequest> getUserDocumentRequests(Long userId, PageRequest pageRequest) {
-//        // Build the PageRequest object
-//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-
         // Fetch the document request of the user by its ID
         return documentRequestRepository.findByRequestedById(userId, pageRequest);
-
-
-//        // Map the list to List of DTOs
-//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-//
-//        // Re-build the page object to return the items with mapped to dtos
-//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
@@ -72,63 +48,15 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Extract the email from the authenticaiton object
         String email = authentication.getName();
 
-//        // Build the Page Request
-//        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.fromString(sortDirection), sortField));
-
         // Fetch the list of document request by user's email
         return documentRequestRepository.findByRequestedByEmail(email, pageRequest);
-
-//        // Map the document requests to list of DTOs and return it
-//        List<DocumentRequestResponseListDTO> documentRequestResponseListDTOS = documentRequestMapper.toDocumentRequestResponseListDTO(documentRequests.getContent());
-//
-//        // Re-build the page object to return the items with mapped to dtos
-//        return new PageImpl<>(documentRequestResponseListDTOS, pageRequest, documentRequests.getTotalElements());
     }
 
     @Override
     public DocumentRequest getDocumentRequestById(Long documentRequestId) {
         // Fetch the document request by its ID
         return fetchDocumentRequestById(documentRequestId);
-
-//        // Map the document request to DTO then return it
-//        return documentRequestMapper.toDocumentRequestResponseDTO(documentRequest);
     }
-
-//    @Override
-//    public DocumentRequest createDocumentRequest(CreateDocumentRequestDTO documentRequestDTO, User user) {
-//
-////        // Fetch the authenticated user
-////        User user = userService.getUserFromAuthentication(authentication);
-//
-//        // User mapper to map all the available fields from the DTO to document request entity
-//        // This map the DocumentType, Purpose, and PickupDate
-//        DocumentRequest newDocumentRequest = documentRequestMapper.toDocumentRequestEntity(documentRequestDTO);
-//
-//        // Modify or fill all the remaining fields excluding remarks
-//        newDocumentRequest.setStatus(DocumentStatus.REQUESTED);
-//        newDocumentRequest.setRequestDate(LocalDateTime.now());
-//        newDocumentRequest.setRequestedBy(user);
-//
-//        // Now, per each remark's content in the documentRequestDTO, create a DocumentRemark entity and add it to the request
-//        for (DocumentRemarkRequestDTO documentRemarkRequestDTO : documentRequestDTO.getRemarks()) {
-//            DocumentRemark documentRemark = documentRemarkService.buildDocumentRemark(documentRemarkRequestDTO.getContent(), user);
-//            newDocumentRequest.addRemark(documentRemark);  // handle the remark.setRequest(), so setting it to null initially is fine
-//        }
-//
-//        // Save the newDocumentRequest without setting the remarks entity
-//        DocumentRequest savedDocumentRequest = documentRequestRepository.save(newDocumentRequest);
-//
-//        // Log the created request
-//        documentRequestAuditService.logDocumentRequest(
-//                savedDocumentRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.CREATED,
-//                "Request Submitted",
-//                user
-//                                                      );
-//
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedDocumentRequest);
-//    }
 
     @Override
     public DocumentRequest buildDocumentRequest(CreateDocumentRequestDTO dto, User user) {
@@ -146,44 +74,20 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     @Override
     public DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
-        /**
-         * @NOTE: After updating, maybe log it in database? just many to one with the document request
-         *         - And admin/registrar can see it that the user changed/updated the request in log section
-         *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
-         * */
-
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Update the fields of DocumentRequest entity with the available fields in the DTO using mapper
         documentRequestMapper.updateDocumentRequestEntityFromDTO(documentRequestDTO, documentRequest);
 
         // Save the changes to the database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the created request
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.UPDATED,
-//                "User Request Updated",
-//                user
-//                                                      );
-//
-//        // Return the savedRequest and mapped it to response DTO
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequest approveDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.APPROVE);
@@ -193,27 +97,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Save to database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.APPROVED,
-//                "Request Approved",
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.REJECT);
@@ -223,27 +112,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Save to database
        return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.REJECTED,
-//                reasonDto.getReason(),
-//                user
-//                                                      );
-
-        // Mapped savedReqyest to DTO then return it as a response
-       // return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequest releaseDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.RELEASE);
@@ -253,31 +127,11 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Save to database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.RELEASED,
-//                "Document Released",
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
     @Override
     public DocumentRequest cancelDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
-        /**
-         * @NOTE: After cancelling, maybe log it in database? just many to one with the document request
-         *         - And admin/registrar can see it that the user changed/updated the request in log section
-         *         - Or saved the log as remarks, or maybe remarks can have LOG TYPE (other than user/registrar/admin)
-         * */
         // Fetch the Document Request Entity
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.CANCEL);
@@ -287,27 +141,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Save to database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.CANCELLED,
-//                reasonDto.getReason(),
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.SET_READY_FOR_PICKUP);
@@ -317,27 +156,12 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
         // Save to database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.READY_FOR_PICKUP,
-//                "Ready for Pickup",
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId) {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
 
         // Validate if changing the status is allowed based on the current status
         validateAction(documentRequest, ActionPermission.SET_IN_PROGRESS);
@@ -348,17 +172,6 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save to database
         return documentRequestRepository.save(documentRequest);
 
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.IN_PROGRESS,
-//                "Marked as In Progress",
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
@@ -367,50 +180,21 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Fetch the document request by ID
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
-
         // Update the fields
         documentRequest.setStatus(documentRequestAdminUpdateDTO.getStatus());
         documentRequest.setPickUpDate(documentRequestAdminUpdateDTO.getPickUpDate());
 
         // Save to database
         return documentRequestRepository.save(documentRequest);
-
-//        // Log the update
-//        documentRequestAuditService.logDocumentRequest(
-//                savedRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.UPDATED,
-//                "Admin Forced Updated",
-//                user
-//                                                      );
-
-//        // Mapped savedReqyest to DTO then return it as a response
-//        return documentRequestMapper.toDocumentRequestResponseDTO(savedRequest);
     }
 
     @Override
     public void deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
-//        // Get the User from the Authentication Object
-//        User user = userService.getUserFromAuthentication(authentication);
-
         // Retrieve the document request before deleting it (so you can still log it)
         DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
 
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
-
-        //return documentRequest;
-
-//        // Log the action
-//        documentRequestAuditService.logDocumentRequest(
-//                documentRequest,
-//                determineActorType(user.getRoles()),
-//                DocumentAction.DELETED,
-//                reasonDto.getReason(),
-//                user
-//                                                      );
     }
 
     @Override
