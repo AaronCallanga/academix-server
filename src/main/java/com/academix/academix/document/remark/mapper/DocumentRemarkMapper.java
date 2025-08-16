@@ -10,10 +10,6 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface DocumentRemarkMapper {
 
-    //DocumentRemark toDocumentRemarkEntity(DocumentRemarkRequestDTO documentRemarkRequestDTO);
-
-    //List<DocumentRemark> toDocumentRemarkListEntity(List<DocumentRemarkRequestDTO> documentRemarkRequestDTOList);
-
     DocumentRemarkResponseDTO toDocumentRemarkResponseDTO(DocumentRemark documentRemark);
 
     List<DocumentRemarkResponseDTO> toDocumentRemarkResponseDTOList(List<DocumentRemark> documentRemarkList);
