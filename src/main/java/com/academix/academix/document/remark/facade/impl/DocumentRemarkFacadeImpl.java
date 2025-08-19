@@ -5,12 +5,10 @@ import com.academix.academix.document.remark.dto.response.DocumentRemarkResponse
 import com.academix.academix.document.remark.entity.DocumentRemark;
 import com.academix.academix.document.remark.facade.api.DocumentRemarkFacade;
 import com.academix.academix.document.remark.mapper.DocumentRemarkMapper;
-import com.academix.academix.document.remark.repository.DocumentRemarkRepository;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.user.entity.User;
-import com.academix.academix.user.repository.UserRepository;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;

@@ -2,13 +2,11 @@ package com.academix.academix.document.remark.service.api;
 
 import com.academix.academix.document.request.dto.request.CreateDocumentRequestDTO;
 import com.academix.academix.document.remark.dto.request.DocumentRemarkRequestDTO;
-import com.academix.academix.document.remark.dto.response.DocumentRemarkResponseDTO;
 import com.academix.academix.document.remark.entity.DocumentRemark;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.user.entity.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.core.Authentication;
 
 public interface DocumentRemarkService {
     // GENERAL

@@ -9,6 +9,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DocumentRemarkRepository extends JpaRepository<DocumentRemark, Long> {
-    //Page<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentRequestId, Pageable pageable);
+    //Page<DocumentRemark> findByDocumentRequestIdOrderByTimeStampAsc(Long documentRequestId, Pageable pageable);  can't do it because we want it to be sorted by pageaRequest
     Page<DocumentRemark> findByDocumentRequestId(Long documentId, Pageable pageable);
 }

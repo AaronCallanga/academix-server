@@ -16,20 +16,17 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {DocumentRemarkMapper.class, UserMapper.class})
 public interface DocumentRequestMapper {
 
-    //@Mapping(source = "userDetailedInfo", target = "requestedBy")
     // For Creation
     @Mapping(target = "remarks", ignore = true)
     DocumentRequest toDocumentRequestEntity(CreateDocumentRequestDTO documentRequestDTO);
 
-    //@Mapping(target = "requestedBy" , expression = "java(documentRequest.getRequestedBy().getName())")
-//    @Mapping(source = "requestedBy", target = "userDetailedInfo")
     DocumentRequestResponseDTO toDocumentRequestResponseDTO(DocumentRequest documentRequest);
 
     // For admin/registrar to see all the document request in detailed format
     List<DocumentRequestResponseDTO> toListOfDocumentRequestResponseDTO(List<DocumentRequest> documentRequestList);
 
-    @Mapping(source = "requestedBy", target = "requestedBy")
     // For listing document request
+    @Mapping(source = "requestedBy", target = "requestedBy")
     DocumentRequestResponseListDTO toDocumentRequestResponseListDTO(DocumentRequest documentRequest);
 
     List<DocumentRequestResponseListDTO> toDocumentRequestResponseListDTO(List<DocumentRequest> documentRequestList);
