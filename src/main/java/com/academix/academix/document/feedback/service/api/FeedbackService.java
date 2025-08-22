@@ -20,8 +20,6 @@ public interface FeedbackService {
 
     /* make this private?
     // Utility / Management
-    double getAverageRating();
-    Map<Integer, Long> getRatingDistribution(); // e.g., {1: 3, 2: 5, 5: 10}    count nubmer of response per rating level
     boolean hasUserSubmittedFeedback(Long requestId, Authentication authentication);
      */
 }

@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -49,5 +50,16 @@ public class FeedbackServiceImpl implements FeedbackService {
     @Override
     public Page<Feedback> getFeedbacksByRating(int rating, PageRequest pageRequest) {
         return feedbackRepository.findByRating(rating, pageRequest);
+    }
+
+    @Override
+    public Double getAverageRating() {
+        Double averageRating = feedbackRepository.findAverageRating();
+        return averageRating != null ? averageRating : 0.0;
+    }
+
+    @Override
+    public Map<Integer, Long> getRatingDistribution() {
+        return Map.of();
     }
 }
