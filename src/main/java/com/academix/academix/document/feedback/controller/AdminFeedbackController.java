@@ -47,4 +47,9 @@ public class AdminFeedbackController {
     public ResponseEntity<Map<String, Double>> getAlRatingAverage() {
         return new ResponseEntity<>(feedbackFacade.getAverageRatings(), HttpStatus.OK);
     }
+
+    @GetMapping("/rating/distribution")
+    public ResponseEntity<Map<Integer, Long>> getAlRatingDistribution() {
+        return new ResponseEntity<>(feedbackFacade.getRatingDistribution(), HttpStatus.OK);
+    }
 }
