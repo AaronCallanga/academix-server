@@ -16,6 +16,9 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     Optional<Feedback> findByDocumentRequest_Id(Long id);
     Page<Feedback> findByRating(int rating, Pageable pageable);
 
+    @Query("SELECT f.rating from Feedback f")
+    List<Integer> findAllRatings();
+
     @Query("SELECT AVG(f.rating) FROM Feedback f")
     Double findAverageRating();
 }
