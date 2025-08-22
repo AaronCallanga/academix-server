@@ -15,5 +15,5 @@ public interface FeedbackFacade {
     Page<FeedbackResponseDTO> getAllFeedbacks(int page, int size, String sortField, String sortDirection);
     Page<FeedbackResponseDTO> getFeedbacksByRating(int rating, int page, int size, String sortField, String sortDirection);
     Map<String, Double> getAverageRatings();
-    Map<Integer, Double> getRatingDistribution();
+    Map<Integer, Long> getRatingDistribution();
 }

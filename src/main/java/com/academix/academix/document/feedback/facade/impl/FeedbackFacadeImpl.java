@@ -85,8 +85,8 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     }
 
     @Override
-    public Map<Integer, Double> getRatingDistribution() {
-        return Map.of();
+    public Map<Integer, Long> getRatingDistribution() {
+        return feedbackService.getRatingDistribution();
     }
 
     private UserInfoDTO buildUserInfoDTO(User user) {
