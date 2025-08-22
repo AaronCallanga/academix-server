@@ -13,7 +13,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -60,6 +63,16 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public Map<Integer, Long> getRatingDistribution() {
-        return Map.of();
+        List<Integer> ratings = feedbackRepository.findAllRatings();
+
+        // Count how many per rating 1–5
+        Map<Integer, Long> distribution = ratings.stream()
+                                                 .collect(Collectors.groupingBy(r -> r, Collectors.counting()));
+
+        // Ensure 1–5 always appear, even if count = 0
+        IntStream.rangeClosed(1, 5).forEach(r ->
+                        distribution.putIfAbsent(r, 0L)
+                                           );
+        return distribution;
     }
 }
