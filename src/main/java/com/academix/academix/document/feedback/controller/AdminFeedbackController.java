@@ -43,8 +43,8 @@ public class AdminFeedbackController {
         return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
     }
 
-//    @GetMapping("/rating/average")
-//    public ResponseEntity<Map<String, Double>> getAlRatingAverage() {
-//        Double average
-//    }
+    @GetMapping("/rating/average")
+    public ResponseEntity<Map<String, Double>> getAlRatingAverage() {
+        return new ResponseEntity<>(feedbackFacade.getAverageRatings(), HttpStatus.OK);
+    }
 }
