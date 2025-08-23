@@ -4,6 +4,8 @@ import com.academix.academix.document.feedback.dto.request.FeedbackRequestDTO;
 import com.academix.academix.document.feedback.dto.response.FeedbackResponseDTO;
 import org.springframework.data.domain.Page;
 
+import java.util.Map;
+
 public interface FeedbackFacade {
     // Common
     FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO);
@@ -12,5 +14,6 @@ public interface FeedbackFacade {
     // Admin
     Page<FeedbackResponseDTO> getAllFeedbacks(int page, int size, String sortField, String sortDirection);
     Page<FeedbackResponseDTO> getFeedbacksByRating(int rating, int page, int size, String sortField, String sortDirection);
-
+    Map<String, Double> getAverageRatings();
+    Map<Integer, Long> getRatingDistribution();
 }

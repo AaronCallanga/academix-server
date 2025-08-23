@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/admin/feedbacks")
 @RequiredArgsConstructor
@@ -39,5 +41,15 @@ public class AdminFeedbackController {
                                                                             ) {
         Page<FeedbackResponseDTO> feedbacksPageDTO = feedbackFacade.getFeedbacksByRating(rating, page, size, sortField, sortDirection);
         return new ResponseEntity<>(feedbacksPageDTO, HttpStatus.OK);
+    }
+
+    @GetMapping("/rating/average")
+    public ResponseEntity<Map<String, Double>> getAlRatingAverage() {
+        return new ResponseEntity<>(feedbackFacade.getAverageRatings(), HttpStatus.OK);
+    }
+
+    @GetMapping("/rating/distribution")
+    public ResponseEntity<Map<Integer, Long>> getAlRatingDistribution() {
+        return new ResponseEntity<>(feedbackFacade.getRatingDistribution(), HttpStatus.OK);
     }
 }

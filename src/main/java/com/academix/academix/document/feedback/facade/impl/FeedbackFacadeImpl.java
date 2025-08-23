@@ -20,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -75,6 +76,17 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTOList, feedbacks);
 
         return new PageImpl<>(feedbackResponseDTOList, pageRequest, feedbacks.getTotalElements());
+    }
+
+    @Override
+    public Map<String, Double> getAverageRatings() {
+        Double average = feedbackService.getAverageRating();
+        return Map.of("Average", average);
+    }
+
+    @Override
+    public Map<Integer, Long> getRatingDistribution() {
+        return feedbackService.getRatingDistribution();
     }
 
     private UserInfoDTO buildUserInfoDTO(User user) {
