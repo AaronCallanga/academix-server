@@ -12,6 +12,8 @@
        boolean hasUserSubmittedFeedback(Long requestId, Authentication authentication);
         */
 7. Implement DTO for feedback request
+8. try implement scheduled weekly report, and other nitty gritty
+9. MAke sure that user can only give feedback once per request. no duplicate request
 
 POST	/api/feedback/{requestId}	Submit feedback after claim
 
