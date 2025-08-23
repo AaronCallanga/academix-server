@@ -21,4 +21,6 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
     @Query("SELECT AVG(f.rating) FROM Feedback f")
     Double findAverageRating();
+
+    boolean existsByDocumentRequest_Id(Long documentRequestId);
 }

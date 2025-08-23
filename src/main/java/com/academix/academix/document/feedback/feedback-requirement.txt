@@ -6,12 +6,10 @@
     private boolean archived = false; // Soft delete flag
 5. findByRating
 6. /* make this private?            - check Feedback Service
-       // Utility / Management
-       double getAverageRating();
-       Map<Integer, Long> getRatingDistribution(); // e.g., {1: 3, 2: 5, 5: 10}    count nubmer of response per rating level
        boolean hasUserSubmittedFeedback(Long requestId, Authentication authentication);
         */
-7. Implement DTO for feedback request
+8. try implement scheduled weekly report, and other nitty gritty
+9. MAke sure that user can only give feedback once per request. no duplicate request
 
 POST	/api/feedback/{requestId}	Submit feedback after claim
 
