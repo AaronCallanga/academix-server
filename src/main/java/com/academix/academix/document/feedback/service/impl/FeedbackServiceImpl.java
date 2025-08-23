@@ -31,6 +31,10 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new BadRequestException("Request is not yet completed");
         }
 
+        if (feedbackRepository.existsByDocumentRequest_Id(documentRequest.getId())) {
+            throw new BadRequestException("Feedback already exists for this document request");
+        }
+
         // FeedbackRequest mapped by mapper in facade has rating, comment, anonymous
         feedbackRequest.setSubmittedAt(LocalDateTime.now());
         feedbackRequest.setDocumentRequest(documentRequest);
