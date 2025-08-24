@@ -25,6 +25,7 @@ Send email when:
     - request is submitted
     - request status change
     - request expired
+    - request completed, remind them to answer feedback
 
 Scheduled Job
     - clean up of expried request
