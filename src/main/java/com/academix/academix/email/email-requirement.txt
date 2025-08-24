@@ -26,7 +26,10 @@ Send email when:
     - request status change
     - request expired
     - request completed, remind them to answer feedback
+    - feedback is completed (send support contact for poor ratings) (send appreciation)
+    - feedback reminder if not answered in x days
 
 Scheduled Job
     - clean up of expried request
     - clean up of completed request (per 2 year?)
+
