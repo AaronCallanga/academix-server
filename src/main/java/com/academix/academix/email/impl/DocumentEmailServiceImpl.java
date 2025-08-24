@@ -43,6 +43,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
         sendEmail(toAddress, subject, content);
     }
 
+    @Async("emailExecutor")
     @Override
     public void sendDocumentComplete(User user,
                                      DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
@@ -53,7 +54,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
                 + "Please don’t forget to provide us with feedback to help improve our services.<br>"
                 + "<br><a href=\"[[feedbackURL]]\">Leave Feedback</a><br><br>"  // sample url, if you got frontend
                 + "Thank you,<br>"
-                + "<b>Academix Team</b>";
+                + "Academix Team";
 
         content = content.replace("[[name]]", user.getName())
                          .replace("[[requestId]]", documentRequest.getId().toString())
@@ -62,9 +63,22 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
         sendEmail(toAddress, subject, content);
     }
 
+    @Async("emailExecutor")
     @Override
     public void sendDocumentRequestSubmitted(User user,
                                              DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+        String toAddress = user.getEmail();
+        String subject = "Your Document Request Has Been Submitted";
+        String content = "Dear [[name]],<br>"
+                + "We have received your document request (ID: [[requestId]]).<br>"
+                + "Our team will review it shortly and keep you updated.<br>"
+                + "<br>You can always track the status by logging in to Academix.<br>"
+                + "<br>Thank you,<br>"
+                + "Academix Team";
 
+        content = content.replace("[[name]]", user.getName())
+                         .replace("[[requestId]]", documentRequest.getId().toString());
+
+        sendEmail(toAddress, subject, content);
     }
 }
