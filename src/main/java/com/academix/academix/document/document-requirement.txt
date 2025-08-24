@@ -2,23 +2,17 @@ TODO:
 1. Implement web-socket for real time notification of remarks and live shown of remarks
 2. Add file handling for authorization letter, or more verification process(sending id, pic, bio-data)
 3. Implement messaging/event per document request. So admin/registrar can see it
-4. Add a type field to DocumentRemark (USER, SYSTEM, LOG, etc.) and roles too (user, documetn remark)
-7. Implement Pagination for lists (for remark/user)
-8. Implement AOP logging or SLF4J
+8. Implement AOP logging or SLF4J or emailing
 9. Make things transactional
-11. Implement logging in (console and database) updating request, see notes in update method DocumentRequestServiceImpl - updateDocumentRequest - even cancel request
-12. Refactor code base/ clean up - use userService.getUserFromAuth, in remark/request too
+19. Transanction propagation = new for logs even if the operation is rollback?
 13. Implement PrePersist or EnableJpaAuditing
-15. Add remark logging/audit per STATUS changed in document request. Custom remark(reason) for CANCELLED/REJECTED. Just create an object of remark/log, Authentication for author
 16. Make request STATUS to EXPIRED after x days if status does not change to REQUESTED
 17. Update to status should only be change if the condition is true such as, REQUESTED to IN_PROGRESS and not IN_PROGRESS to REQUESTED (this should be change in forceAdminUpdate)
-19. Transanction propagation = new for logs even if the operation is rollback?
-20. Implement custom exceptions, for ex if updating status and fails condition (REQUESTED to IN_PROGRESS) throw exception
 21. Maybe make the logging(persistence to DB) as AOP
 22. use validateAction in request service impl, validateAction(documentRequest, ActionPermission.APPROVE);
 23. implement clean up every 2 years, archive request
 24. put the mapper to facade not in service
-25. implement sending email after status changed/ request submitted/ request completed (to send feedback form) etc
+26. Implement filtering specially for request status
 // For admin update - approve, reject, complete, revert
 // After doing those particular actions, it should logged as a remark/or literal log
 
