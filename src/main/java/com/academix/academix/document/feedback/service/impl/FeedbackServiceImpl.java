@@ -31,6 +31,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             throw new BadRequestException("Request is not yet completed");
         }
 
+        // Check if user has already submmited a feedback
         if (feedbackRepository.existsByDocumentRequest_Id(documentRequest.getId())) {
             throw new BadRequestException("Feedback already exists for this document request");
         }
