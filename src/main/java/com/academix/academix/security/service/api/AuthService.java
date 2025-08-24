@@ -11,9 +11,9 @@ import java.io.UnsupportedEncodingException;
 
 public interface AuthService {
     LoginResponseDTO login(LoginRequestDTO loginRequestDTO);
-    String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException;
+    String register(RegisterRequestDTO registerRequestDTO, String baseUrl);
     String verify(String token);
-    String resendVerification(Authentication authentication, String baseUrl) throws MessagingException, UnsupportedEncodingException;
+    String resendVerification(Authentication authentication, String baseUrl);
     // /api/auth/request-password-reset
     // /api/auth/reset-password
 }
