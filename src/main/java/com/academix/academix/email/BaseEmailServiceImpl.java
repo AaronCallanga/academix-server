@@ -19,7 +19,7 @@ public abstract class BaseEmailServiceImpl implements EmailService {
     protected final JavaMailSender mailSender;      //private does not allow subclasses to access it
 
     @Override
-    public void sendEmail(String toAddress, String subject, String body) throws MessagingException, UnsupportedEncodingException {
+    public void sendEmail(String toAddress, String subject, String body) {
         try {
             String fromAddress = "aaroncallanga01@gmail.com";
             String senderName = "Academix";

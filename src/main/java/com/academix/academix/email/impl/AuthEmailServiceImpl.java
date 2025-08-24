@@ -26,7 +26,7 @@ public class AuthEmailServiceImpl extends BaseEmailServiceImpl implements AuthEm
 
     @Async("emailExecutor")
     @Override
-    public void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException {
+    public void sendVerification(User user, String link, VerificationToken token){
         String toAddress = user.getEmail();
         String subject = "Please verify your registration";
         String content = "Dear [[name]],<br>"

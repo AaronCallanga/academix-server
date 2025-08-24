@@ -6,6 +6,7 @@ import com.academix.academix.email.api.DocumentEmailService;
 import com.academix.academix.user.entity.User;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 
 @Service
+@Slf4j
 public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements DocumentEmailService {
 
     public DocumentEmailServiceImpl(JavaMailSender mailSender) {
@@ -21,7 +23,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentUpdate(User user, DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+    public void sendDocumentUpdate(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Document Request Update";
         String content = "Dear [[name]],<br><br>"
@@ -40,13 +42,12 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
             .replace("[[status]]", documentRequest.getStatus().name()) // assuming Enum status
             .replace("[[documentType]]", documentRequest.getDocumentType().name());
 
-        sendEmail(toAddress, subject, content);
+       sendEmail(toAddress, subject, content);
     }
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentComplete(User user,
-                                     DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+    public void sendDocumentComplete(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Your Document Request is Ready";
         String content = "Dear [[name]],<br>"
@@ -65,8 +66,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentRequestSubmitted(User user,
-                                             DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+    public void sendDocumentRequestSubmitted(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Your Document Request Has Been Submitted";
         String content = "Dear [[name]],<br>"

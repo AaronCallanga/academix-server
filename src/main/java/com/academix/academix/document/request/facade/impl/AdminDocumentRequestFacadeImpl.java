@@ -9,6 +9,7 @@ import com.academix.academix.document.request.facade.api.AdminDocumentRequestFac
 import com.academix.academix.document.request.mapper.DocumentRequestMapper;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
+import com.academix.academix.email.api.DocumentEmailService;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.entity.User;
@@ -28,10 +29,10 @@ import java.util.List;
 public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacade {
 
     private final DocumentRequestService documentRequestService;
-    private final DocumentRemarkService documentRemarkService;
     private final UserService userService;
     private final DocumentRequestAuditService documentRequestAuditService;
     private final DocumentRequestMapper documentRequestMapper;
+    private final DocumentEmailService documentEmailService;
 
     @Override
     public Page<DocumentRequestResponseListDTO> getAllDocumentRequests(int page,
@@ -73,6 +74,10 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         DocumentRequest savedRequest = documentRequestService.approveDocumentRequest(documentRequestId);
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
+
+        // Send update email
+        documentEmailService.sendDocumentUpdate(user, savedRequest);
+
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
                 documentRequestService.determineActorType(user.getRoles()),     //Maybe make it helper/util

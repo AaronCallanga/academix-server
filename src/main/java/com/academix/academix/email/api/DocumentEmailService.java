@@ -10,11 +10,11 @@ import java.io.UnsupportedEncodingException;
 public interface DocumentEmailService extends EmailService {
 
     // Status changed
-    void sendDocumentUpdate(User user, DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException;
+    void sendDocumentUpdate(User user, DocumentRequest documentRequest);
 
     // Request claimed, send feedback reminder
-    void sendDocumentComplete(User user, DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException;
+    void sendDocumentComplete(User user, DocumentRequest documentRequest);
 
     // Request has been submitted
-    void sendDocumentRequestSubmitted(User user, DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException;
+    void sendDocumentRequestSubmitted(User user, DocumentRequest documentRequest);
 }
