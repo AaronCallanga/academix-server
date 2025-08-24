@@ -119,6 +119,9 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
 
         DocumentRequest savedRequest = documentRequestService.cancelDocumentRequest(documentRequestId, reasonDto);
 
+        // Send email update
+        documentEmailService.sendDocumentUpdate(user, savedRequest);
+
         // Log the update
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
