@@ -20,3 +20,12 @@ POST	/api/notifications/send-email	Send email manually
 POST	/api/notifications/send-sms	Send SMS manually
 GET	/api/notifications/logs	View sent logs
 
+
+Send email when:
+    - request is submitted
+    - request status change
+    - request expired
+
+Scheduled Job
+    - clean up of expried request
+    - clean up of completed request (per 2 year?)
