@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.io.UnsupportedEncodingException;
 
 @Service
-@Slf4j
 public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements DocumentEmailService {
 
     public DocumentEmailServiceImpl(JavaMailSender mailSender) {

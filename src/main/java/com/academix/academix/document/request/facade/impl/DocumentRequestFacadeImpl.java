@@ -10,6 +10,7 @@ import com.academix.academix.document.request.facade.api.DocumentRequestFacade;
 import com.academix.academix.document.request.mapper.DocumentRequestMapper;
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
+import com.academix.academix.email.api.DocumentEmailService;
 import com.academix.academix.log.enums.DocumentAction;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.entity.User;
@@ -34,6 +35,7 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
     private final UserService userService;
     private final DocumentRequestAuditService documentRequestAuditService;
     private final DocumentRequestMapper documentRequestMapper;
+    private final DocumentEmailService documentEmailService;
 
     @Override
     public Page<DocumentRequestResponseListDTO> getOwnDocumentRequests(Authentication authentication,
@@ -70,6 +72,9 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
         documentRemarkService.buildDocumentRemarkList(documentRequestDTO, newDocumentRequest, user);
 
         DocumentRequest savedDocumentRequest = documentRequestService.save(newDocumentRequest);
+
+        // Send email
+        documentEmailService.sendDocumentRequestSubmitted(user, savedDocumentRequest);
 
         // Log the created request
         documentRequestAuditService.logDocumentRequest(
