@@ -118,7 +118,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
 
-        // Send update email
+        // Send email to remind for feedback
         documentEmailService.sendDocumentComplete(user, savedRequest);
 
         // Log the update
@@ -139,6 +139,10 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         DocumentRequest savedRequest = documentRequestService.setDocumentRequestStatusToReadyForPickup(documentRequestId);
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
+
+        // Send update email
+        documentEmailService.sendDocumentUpdate(user, savedRequest);
+
         // Log the update
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
