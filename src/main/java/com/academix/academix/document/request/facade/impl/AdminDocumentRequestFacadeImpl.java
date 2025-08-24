@@ -185,6 +185,10 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         DocumentRequest savedRequest = documentRequestService.adminUpdateDocumentRequest(documentRequestId, documentRequestAdminUpdateDTO);
         // Get the User from the Authentication Object
         User user = userService.getUserFromAuthentication(authentication);
+
+        // Send update email
+        documentEmailService.sendDocumentUpdate(user, savedRequest);
+
         // Log the update
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
