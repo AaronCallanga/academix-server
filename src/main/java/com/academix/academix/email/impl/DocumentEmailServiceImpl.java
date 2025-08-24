@@ -33,11 +33,23 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
                 + "<b>Academix Team</b>";
 
         // Replace placeholders
-        content = content.replace("[[name]]", user.getName());
-        content = content.replace("[[requestId]]", String.valueOf(documentRequest.getId()));
-        content = content.replace("[[status]]", documentRequest.getStatus().name()); // assuming Enum status
-        content = content.replace("[[documentType]]", documentRequest.getDocumentType().name());
+        content = content.replace("[[name]]", user.getName())
+            .replace("[[requestId]]", String.valueOf(documentRequest.getId()))
+            .replace("[[status]]", documentRequest.getStatus().name()) // assuming Enum status
+            .replace("[[documentType]]", documentRequest.getDocumentType().name());
 
         sendEmail(toAddress, subject, content);
+    }
+
+    @Override
+    public void sendDocumentComplete(User user,
+                                     DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+
+    }
+
+    @Override
+    public void sendDocumentRequestSubmitted(User user,
+                                             DocumentRequest documentRequest) throws MessagingException, UnsupportedEncodingException {
+
     }
 }
