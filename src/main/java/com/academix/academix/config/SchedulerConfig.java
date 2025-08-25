@@ -32,6 +32,15 @@ public class SchedulerConfig implements SchedulingConfigurer {
         return scheduler;
     }
 
+    @Bean(name = "feedbackScheduler")
+    public TaskScheduler feedbackScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(10);
+        scheduler.setThreadNamePrefix("feedbackScheduler-");
+        scheduler.initialize();
+        return scheduler;
+    }
+
     @Override
     public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
             taskRegistrar.setTaskScheduler(defaultScheduler());
