@@ -18,6 +18,7 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
     @Query("""
     SELECT dr 
     FROM DocumentRequest dr
+    JOIN FETCH dr.requestedBy
     WHERE dr.status = 'RELEASED'
       AND dr.pickUpDate < :cutoffDate
       AND NOT EXISTS (

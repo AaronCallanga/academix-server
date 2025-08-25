@@ -48,7 +48,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
     @Override
     public void notifyDocumentComplete(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
-        String subject = "Your Document Request is Ready";
+        String subject = "Your Document Request is Picked Up!";
         String content = "Dear [[name]],<br>"
                 + "Good news! Your document request (ID: [[requestId]]) has been completed.<br>"
                 + "Please don’t forget to provide us with feedback to help improve our services.<br>"

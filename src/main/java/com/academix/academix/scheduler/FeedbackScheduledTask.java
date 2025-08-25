@@ -36,7 +36,7 @@ public class FeedbackScheduledTask {
 
     @PostConstruct
     public void init() {
-        feedbackScheduler.scheduleAtFixedRate(this::sendFeedbackEmailReminder, Duration.ofDays(3));
+        feedbackScheduler.scheduleAtFixedRate(this::sendFeedbackEmailReminder, Duration.ofDays(3)); // 24 hours or 2/3 days
     }
 
     private void sendFeedbackEmailReminder() {
@@ -48,6 +48,7 @@ public class FeedbackScheduledTask {
             User user = documentRequest.getRequestedBy();
             feedbackEmailService.notifyFeedbackReminder(user, documentRequest);
             log.info("Sending feedback reminder to {}", user.getEmail());
+            log.info("Running scheduled feedback reminder at {}", LocalDateTime.now());
         }
 
     }
