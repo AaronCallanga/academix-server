@@ -1,6 +1,7 @@
 package com.academix.academix.email.impl;
 
 import com.academix.academix.document.feedback.entity.Feedback;
+import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.email.BaseEmailServiceImpl;
 import com.academix.academix.email.api.FeedbackEmailService;
 import com.academix.academix.user.entity.User;
@@ -75,7 +76,7 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
     }
 
     @Override
-    public void notifyFeedbackReminder(User user, Feedback feedback) {
+    public void notifyFeedbackReminder(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Reminder: Please Share Your Feedback";
         String content = "Dear [[name]],<br><br>"
@@ -88,8 +89,8 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
                 + "<b>Academix Team</b>";
 
         content = content.replace("[[name]]", user.getName())
-                         .replace("[[requestId]]", feedback.getDocumentRequest().getId().toString())
-                         .replace("[[feedbackURL]]", "https://academix.com/feedback/" + feedback.getDocumentRequest().getId());
+                         .replace("[[requestId]]", documentRequest.getId().toString())
+                         .replace("[[feedbackURL]]", "https://academix.com/feedback/" + documentRequest.getId());
 
         sendEmail(toAddress, subject, content);
     }

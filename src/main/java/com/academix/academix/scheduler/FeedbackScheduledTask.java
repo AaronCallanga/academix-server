@@ -35,7 +35,7 @@ public class FeedbackScheduledTask {
     }
 
     private void sendFeedbackEmailReminder() {
-        List<Feedback> feedbacks = feedbackRepository.findAll();
+
         feedbackEmailService.notifyFeedbackReminder(user, feedback);
     }
 }
