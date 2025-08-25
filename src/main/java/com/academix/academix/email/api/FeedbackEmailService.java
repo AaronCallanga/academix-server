@@ -6,7 +6,7 @@ import com.academix.academix.user.entity.User;
 
 public interface FeedbackEmailService extends EmailService {
     void sendLowRatingSupport(User user, Feedback feedback);
-    void sendAppreciation(User user, Feedback feedback);
-    void sendNeutralAcknowledgement(User user, Feedback feedback);
-    void sendFeedbackReminder(User user, Feedback feedback);
+    void notifyAppreciation(User user, Feedback feedback);
+    void notifyNeutralAcknowledgement(User user, Feedback feedback);
+    void notifyFeedbackReminder(User user, Feedback feedback);
 }

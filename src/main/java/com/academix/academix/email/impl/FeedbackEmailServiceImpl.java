@@ -37,7 +37,7 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
     }
 
     @Override
-    public void sendAppreciation(User user, Feedback feedback) {
+    public void notifyAppreciation(User user, Feedback feedback) {
         String toAddress = user.getEmail();
         String subject = "Thank You for Your Feedback!";
         String content = "Dear [[name]],<br><br>"
@@ -55,7 +55,7 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
     }
 
     @Override
-    public void sendNeutralAcknowledgement(User user, Feedback feedback) {
+    public void notifyNeutralAcknowledgement(User user, Feedback feedback) {
         String toAddress = user.getEmail();
         String subject = "Thank You for Sharing Your Thoughts";
         String content = "Dear [[name]],<br><br>"
@@ -73,7 +73,7 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
     }
 
     @Override
-    public void sendFeedbackReminder(User user, Feedback feedback) {
+    public void notifyFeedbackReminder(User user, Feedback feedback) {
         String toAddress = user.getEmail();
         String subject = "Reminder: Please Share Your Feedback";
         String content = "Dear [[name]],<br><br>"
