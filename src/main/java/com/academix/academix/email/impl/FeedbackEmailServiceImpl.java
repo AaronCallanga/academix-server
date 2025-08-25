@@ -5,6 +5,7 @@ import com.academix.academix.email.BaseEmailServiceImpl;
 import com.academix.academix.email.api.FeedbackEmailService;
 import com.academix.academix.user.entity.User;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 
 public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements FeedbackEmailService {
 
@@ -12,6 +13,7 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
         super(mailSender);
     }
 
+    @Async("emailExecutor")
     @Override
     public void sendLowRatingSupport(User user, Feedback feedback) {
 

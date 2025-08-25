@@ -76,7 +76,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send update email
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         documentRequestAuditService.logDocumentRequest(
                 savedRequest,
@@ -98,7 +98,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send update email
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
@@ -119,7 +119,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send email to remind for feedback
-        documentEmailService.sendDocumentComplete(user, savedRequest);
+        documentEmailService.notifyDocumentComplete(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
@@ -141,7 +141,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send update email
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
@@ -163,7 +163,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send update email
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
@@ -187,7 +187,7 @@ public class AdminDocumentRequestFacadeImpl implements AdminDocumentRequestFacad
         User user = userService.getUserFromAuthentication(authentication);
 
         // Send update email
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
