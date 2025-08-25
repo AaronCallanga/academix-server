@@ -74,6 +74,21 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
 
     @Override
     public void sendFeedbackReminder(User user, Feedback feedback) {
+        String toAddress = user.getEmail();
+        String subject = "Reminder: Please Share Your Feedback";
+        String content = "Dear [[name]],<br><br>"
+                + "We noticed that you haven’t provided feedback for your document request (ID: [[requestId]]).<br>"
+                + "Your input is very important to us and helps us improve our services.<br><br>"
+                + "Please take a moment to complete your feedback by clicking the link below:<br>"
+                + "<a href=\"[[feedbackURL]]\">Submit Feedback</a><br><br>"
+                + "Thank you for helping us grow.<br><br>"
+                + "Best regards,<br>"
+                + "<b>Academix Team</b>";
 
+        content = content.replace("[[name]]", user.getName())
+                         .replace("[[requestId]]", feedback.getDocumentRequest().getId().toString())
+                         .replace("[[feedbackURL]]", "https://academix.com/feedback/" + feedback.getDocumentRequest().getId());
+
+        sendEmail(toAddress, subject, content);
     }
 }
