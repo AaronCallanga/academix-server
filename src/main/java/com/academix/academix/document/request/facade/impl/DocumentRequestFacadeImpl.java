@@ -74,7 +74,7 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
         DocumentRequest savedDocumentRequest = documentRequestService.save(newDocumentRequest);
 
         // Send email
-        documentEmailService.sendDocumentRequestSubmitted(user, savedDocumentRequest);
+        documentEmailService.notifyDocumentRequestSubmitted(user, savedDocumentRequest);
 
         // Log the created request
         documentRequestAuditService.logDocumentRequest(
@@ -120,7 +120,7 @@ public class DocumentRequestFacadeImpl implements DocumentRequestFacade {
         DocumentRequest savedRequest = documentRequestService.cancelDocumentRequest(documentRequestId, reasonDto);
 
         // Send email update
-        documentEmailService.sendDocumentUpdate(user, savedRequest);
+        documentEmailService.notifyDocumentUpdate(user, savedRequest);
 
         // Log the update
         documentRequestAuditService.logDocumentRequest(
