@@ -9,4 +9,5 @@ public interface FeedbackEmailService extends EmailService {
     void notifyAppreciation(User user, Feedback feedback);
     void notifyNeutralAcknowledgement(User user, Feedback feedback);
     void notifyFeedbackReminder(User user, Feedback feedback);
+    void sendEmailBaseOnRating(User user, Feedback feedback);
 }

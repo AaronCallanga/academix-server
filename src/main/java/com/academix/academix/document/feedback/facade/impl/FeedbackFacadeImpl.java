@@ -32,6 +32,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     private final DocumentRequestAuditService documentRequestAuditService;
     private final DocumentRequestService documentRequestService;
 
+
     @Override
     public FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO) {
         DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
@@ -39,6 +40,8 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         Feedback savedFeedback = feedbackService.submitFeedback(documentRequest, feedback);
 
         // logs, make it AOP
+
+        // Send email
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
         fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTO, savedFeedback);

@@ -6,7 +6,9 @@ import com.academix.academix.email.api.FeedbackEmailService;
 import com.academix.academix.user.entity.User;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements FeedbackEmailService {
 
     public FeedbackEmailServiceImpl(JavaMailSender mailSender) {
@@ -90,5 +92,18 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
                          .replace("[[feedbackURL]]", "https://academix.com/feedback/" + feedback.getDocumentRequest().getId());
 
         sendEmail(toAddress, subject, content);
+    }
+
+    @Override
+    public void sendEmailBaseOnRating(User user, Feedback feedback) {
+        int rating = feedback.getRating();
+
+        if (rating <= 2) {
+            sendLowRatingSupport(user, feedback);
+        } else if (rating >= 4) {
+            notifyAppreciation(user, feedback);
+        } else {
+            notifyNeutralAcknowledgement(user, feedback);
+        }
     }
 }
