@@ -3,12 +3,13 @@ package com.academix.academix.document.feedback.facade.api;
 import com.academix.academix.document.feedback.dto.request.FeedbackRequestDTO;
 import com.academix.academix.document.feedback.dto.response.FeedbackResponseDTO;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 
 import java.util.Map;
 
 public interface FeedbackFacade {
     // Common
-    FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO);
+    FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO, Authentication authentication);
     FeedbackResponseDTO getFeedbackByRequestId(Long requestId);
 
     // Admin

@@ -8,6 +8,7 @@ import com.academix.academix.document.feedback.mapper.FeedbackMapper;
 import com.academix.academix.document.feedback.service.api.FeedbackService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
+import com.academix.academix.email.api.FeedbackEmailService;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import com.academix.academix.user.dto.UserInfoDTO;
 import com.academix.academix.user.entity.User;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,10 +33,11 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
     private final UserService userService; //for logs
     private final DocumentRequestAuditService documentRequestAuditService;
     private final DocumentRequestService documentRequestService;
-
+    private final FeedbackEmailService feedbackEmailService;
 
     @Override
-    public FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO) {
+    public FeedbackResponseDTO submitFeedback(Long documentRequestId, FeedbackRequestDTO feedbackRequestDTO, Authentication authentication) {
+        User user = userService.getUserFromAuthentication(authentication);
         DocumentRequest documentRequest = documentRequestService.fetchDocumentRequestById(documentRequestId);
         Feedback feedback = feedbackMapper.toFeedback(feedbackRequestDTO);
         Feedback savedFeedback = feedbackService.submitFeedback(documentRequest, feedback);
@@ -42,6 +45,7 @@ public class FeedbackFacadeImpl implements FeedbackFacade {
         // logs, make it AOP
 
         // Send email
+        feedbackEmailService.sendEmailBaseOnRating(user, feedback);
 
         FeedbackResponseDTO feedbackResponseDTO = feedbackMapper.toFeedbackResponseDTO(savedFeedback);
         fillInUserInfo_IfFeedbackNotAnonymous(feedbackResponseDTO, savedFeedback);
