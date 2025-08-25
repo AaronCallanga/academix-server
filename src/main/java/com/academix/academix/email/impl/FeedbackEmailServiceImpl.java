@@ -56,7 +56,20 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
 
     @Override
     public void sendNeutralAcknowledgement(User user, Feedback feedback) {
+        String toAddress = user.getEmail();
+        String subject = "Thank You for Sharing Your Thoughts";
+        String content = "Dear [[name]],<br><br>"
+                + "Thank you for taking the time to rate your recent document request (ID: [[requestId]]) with a score of <b>[[rating]]</b>.<br>"
+                + "Your input helps us understand how we can serve you better in the future.<br><br>"
+                + "We appreciate your honest feedback.<br><br>"
+                + "Sincerely,<br>"
+                + "<b>Academix Team</b>";
 
+        content = content.replace("[[name]]", user.getName())
+                         .replace("[[requestId]]", feedback.getDocumentRequest().getId().toString())
+                         .replace("[[rating]]", String.valueOf(feedback.getRating()));
+
+        sendEmail(toAddress, subject, content);
     }
 
     @Override
