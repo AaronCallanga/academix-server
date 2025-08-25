@@ -26,4 +26,9 @@ public class FeedbackEmailServiceImpl extends BaseEmailServiceImpl implements Fe
     public void sendNeutralAcknowledgement(User user, Feedback feedback) {
 
     }
+
+    @Override
+    public void sendFeedbackReminder(User user, Feedback feedback) {
+
+    }
 }
