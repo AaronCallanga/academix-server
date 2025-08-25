@@ -22,10 +22,7 @@ GET	/api/notifications/logs	View sent logs
 
 
 Send email when:
-    - request is submitted
-    - request status change
     - request expired
-    - request completed, remind them to answer feedback
     - feedback is completed (send support contact for poor ratings) (send appreciation)
     - feedback reminder if not answered in x days
 

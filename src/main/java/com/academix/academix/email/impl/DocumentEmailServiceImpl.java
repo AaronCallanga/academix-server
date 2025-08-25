@@ -22,7 +22,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentUpdate(User user, DocumentRequest documentRequest) {
+    public void notifyDocumentUpdate(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Document Request Update";
         String content = "Dear [[name]],<br><br>"
@@ -46,7 +46,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentComplete(User user, DocumentRequest documentRequest) {
+    public void notifyDocumentComplete(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Your Document Request is Ready";
         String content = "Dear [[name]],<br>"
@@ -65,7 +65,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
     @Async("emailExecutor")
     @Override
-    public void sendDocumentRequestSubmitted(User user, DocumentRequest documentRequest) {
+    public void notifyDocumentRequestSubmitted(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Your Document Request Has Been Submitted";
         String content = "Dear [[name]],<br>"
