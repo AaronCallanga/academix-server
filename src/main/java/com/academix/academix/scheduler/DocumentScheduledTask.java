@@ -37,10 +37,10 @@ public class DocumentScheduledTask {
 
     @PostConstruct
     public void init() {
-        documentScheduler.scheduleAtFixedRate(this::sendPickupReminders, Duration.ofDays(1)); // 1 day
+        documentScheduler.scheduleAtFixedRate(this::sendPickupReminders, Duration.ofDays(1));
         documentScheduler.scheduleAtFixedRate(this::expireOldRequest, Duration.ofDays(1));
-        documentScheduler.scheduleAtFixedRate(this::cleanUpRejectedAndExpiredRequest, Duration.ofSeconds(10)); // 30 days
-        documentScheduler.scheduleAtFixedRate(this::cleanUpReleasedRequest, Duration.ofSeconds(10));
+        documentScheduler.scheduleAtFixedRate(this::cleanUpRejectedAndExpiredRequest, Duration.ofDays(30));
+        documentScheduler.scheduleAtFixedRate(this::cleanUpReleasedRequest, Duration.ofDays(30));
     }
 
     // Send email reminder for request that is ready to pick up before 3 or 1 day of pick up

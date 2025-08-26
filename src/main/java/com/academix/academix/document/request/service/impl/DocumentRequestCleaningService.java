@@ -30,7 +30,7 @@ public class DocumentRequestCleaningService {
 
     @Transactional
     public void cleanUpReleasedRequest() {
-        LocalDateTime threshold = LocalDateTime.now().minusNanos(3);
+        LocalDateTime threshold = LocalDateTime.now().minusYears(3);
 
         int deleted = documentRequestRepository
                 .deleteByStatusInAndRequestDateBefore(

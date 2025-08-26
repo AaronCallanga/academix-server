@@ -23,12 +23,27 @@ GET	/api/notifications/logs	View sent logs
 
 Send email when:
     - request expired
-    - DocumentScheduledTask = send email 3 days, and 1 day before the confirmed pick up date (status is READY_FOR_PICKUP and
-        pick up date is 3 days before or 1 day before) send also after updating status to READYFORPICKUP
 
 Scheduled Job
-    - setting request status to EXPIRED after 30 days if status is still pending/requested  - test
-    - clean up of expried request (after 1 year?) and rejected request(delete)  - test
     - clean up of completed request (per 2 year?) (status is RELEASED) - test
+
+
+    1. Create a archive_request table and archive_feedback
+    2. every time you delete a request, put the feedback and request to the the archive table
+    3. then delete the original request and feedback data in the request/feedback table
+
+
+
+2. Manually delete feedback first (controlled cleanup)
+If you want more control (e.g., archive feedback before deleting request):
+Create a cleaning service:
+java
+Copy
+Edit
+@Transactional
+public void deleteRequestAndFeedback(Long requestId) {
+    feedbackRepository.deleteByDocumentRequestId(requestId);
+    documentRequestRepository.deleteById(requestId);
+}
 
 
