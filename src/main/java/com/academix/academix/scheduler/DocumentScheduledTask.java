@@ -38,6 +38,8 @@ public class DocumentScheduledTask {
     public void init() {
         documentScheduler.scheduleAtFixedRate(this::sendPickupReminders, Duration.ofDays(1));
         documentScheduler.scheduleAtFixedRate(this::expireOldRequest, Duration.ofDays(1));
+        documentScheduler.scheduleAtFixedRate(this::cleanUpRejectedAndExpiredRequest, Duration.ofDays(30));
+        documentScheduler.scheduleAtFixedRate(this::cleanUpReleasedRequest, Duration.ofDays(30));
     }
 
     // Send email reminder for request that is ready to pick up before 3 or 1 day of pick up
@@ -71,6 +73,12 @@ public class DocumentScheduledTask {
         LocalDateTime threshold = LocalDateTime.now().minusYears(1);
 
         documentRequestRepository.deleteByStatusAndRequestDate(Set.of(DocumentStatus.REJECTED, DocumentStatus.EXPIRED), threshold);
+    }
+
+    private void cleanUpReleasedRequest() {
+        LocalDateTime threshold = LocalDateTime.now().minusYears(3);
+
+        documentRequestRepository.deleteByStatusAndRequestDate(Set.of(DocumentStatus.RELEASED), threshold);
     }
 
 
