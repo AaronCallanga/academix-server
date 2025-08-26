@@ -41,10 +41,10 @@ public class DocumentScheduledTask {
         LocalDateTime threeDaysLater = now.plusDays(3).toLocalDate().atStartOfDay();
         LocalDateTime oneDayLater = now.plusDays(1).toLocalDate().atStartOfDay();
 
-        List<DocumentRequest> reminders = documentRequestRepository
+        List<DocumentRequest> requests = documentRequestRepository
                 .findReadyForPickupByPickupDate(threeDaysLater, oneDayLater);
 
-        for (DocumentRequest request : reminders) {
+        for (DocumentRequest request : requests) {
             documentEmailService.sendReminder(request.getRequestedBy(), request);
         }
     }

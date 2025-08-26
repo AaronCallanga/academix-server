@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -25,5 +26,12 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
           SELECT f FROM Feedback f WHERE f.documentRequest = dr
       )
     """)
-    List<DocumentRequest> findRequestCompletedWithoutFeedback(LocalDateTime cutoffDate);
+    List<DocumentRequest> findRequestCompletedWithoutFeedback(@Param("cutoffDate") LocalDateTime cutoffDate);
+
+    @Query("SELECT dr FROM DocumentRequest dr " +
+            "WHERE dr.status = 'READY_FOR_PICKUP' " +
+            "AND (dr.pickUpDate = :threeDaysLater OR dr.pickUpDate = :oneDayLater)")
+    List<DocumentRequest> findReadyForPickupByPickupDate(
+            @Param("threeDaysLater") LocalDateTime threeDaysLater,
+            @Param("oneDayLater") LocalDateTime oneDayLater);
 }
