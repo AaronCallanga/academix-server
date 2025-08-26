@@ -27,6 +27,8 @@ Send email when:
         pick up date is 3 days before or 1 day before) send also after updating status to READYFORPICKUP
 
 Scheduled Job
-    - clean up of expried request
+    - setting request status to EXPIRED after 30 days if status is still pending/requested
+    - clean up of expried request (after 1 year?)
     - clean up of completed request (per 2 year?)
+
 

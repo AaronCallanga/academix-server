@@ -80,4 +80,27 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
 
         sendEmail(toAddress, subject, content);
     }
+
+    @Override
+    public void sendReminder(User user, DocumentRequest documentRequest) {
+        String toAddress = user.getEmail();
+        String subject = "Reminder: Your Document is Ready for Pickup";
+        String content = "Dear [[name]],<br><br>"
+                + "This is a friendly reminder that your requested document "
+                + "(<b>Request ID: [[requestId]]</b>, [[documentType]]) "
+                + "is scheduled for pickup on <b>[[pickUpDate]]</b>.<br><br>"
+                + "Current Status: <b>[[status]]</b><br><br>"
+                + "Please make sure to pick it up at the registrar’s office.<br><br>"
+                + "Thank you,<br>"
+                + "<b>Academix Team</b>";
+
+        // Replace placeholders
+        content = content.replace("[[name]]", user.getName())
+                         .replace("[[requestId]]", String.valueOf(documentRequest.getId()))
+                         .replace("[[status]]", documentRequest.getStatus().name())
+                         .replace("[[documentType]]", documentRequest.getDocumentType().name())
+                         .replace("[[pickUpDate]]", documentRequest.getPickUpDate().toLocalDate().toString());
+
+        sendEmail(toAddress, subject, content);
+    }
 }

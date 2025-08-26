@@ -17,4 +17,7 @@ public interface DocumentEmailService extends EmailService {
 
     // Request has been submitted
     void notifyDocumentRequestSubmitted(User user, DocumentRequest documentRequest);
+
+    // Send Reminder
+    void sendReminder(User user, DocumentRequest documentRequest);
 }
