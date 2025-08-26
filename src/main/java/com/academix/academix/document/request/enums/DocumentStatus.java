@@ -7,5 +7,6 @@ public enum DocumentStatus {
     READY_FOR_PICKUP,
     RELEASED,
     CANCELLED,
-    REJECTED
+    REJECTED,
+    EXPIRED
 }

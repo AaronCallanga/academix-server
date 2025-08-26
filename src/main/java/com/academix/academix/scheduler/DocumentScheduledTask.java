@@ -1,6 +1,7 @@
 package com.academix.academix.scheduler;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.document.request.enums.DocumentStatus;
 import com.academix.academix.document.request.repository.DocumentRequestRepository;
 import com.academix.academix.email.api.DocumentEmailService;
 import jakarta.annotation.PostConstruct;
@@ -10,6 +11,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.stereotype.Component;
 
+import javax.print.Doc;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,6 +48,16 @@ public class DocumentScheduledTask {
 
         for (DocumentRequest request : requests) {
             documentEmailService.sendReminder(request.getRequestedBy(), request);
+        }
+    }
+
+    private void expireOldRequest() {
+        LocalDateTime threshold = LocalDateTime.now().minusDays(30);
+
+        List<DocumentRequest> requests = documentRequestRepository.findByStatusAndRequestDate(DocumentStatus.REQUESTED, threshold);
+
+        for (DocumentRequest request : requests) {
+            request.setStatus();
         }
     }
 
