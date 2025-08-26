@@ -12,6 +12,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements DocumentEmailService {
@@ -85,6 +86,12 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
     public void sendReminder(User user, DocumentRequest documentRequest) {
         String toAddress = user.getEmail();
         String subject = "Reminder: Your Document is Ready for Pickup";
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM dd, yyyy");
+        String formattedPickUpDate = documentRequest.getPickUpDate()
+                                                    .toLocalDate()
+                                                    .format(formatter);
+
         String content = "Dear [[name]],<br><br>"
                 + "This is a friendly reminder that your requested document "
                 + "(<b>Request ID: [[requestId]]</b>, [[documentType]]) "
@@ -99,7 +106,7 @@ public class DocumentEmailServiceImpl extends BaseEmailServiceImpl implements Do
                          .replace("[[requestId]]", String.valueOf(documentRequest.getId()))
                          .replace("[[status]]", documentRequest.getStatus().name())
                          .replace("[[documentType]]", documentRequest.getDocumentType().name())
-                         .replace("[[pickUpDate]]", documentRequest.getPickUpDate().toLocalDate().toString());
+                         .replace("[[pickUpDate]]", formattedPickUpDate);
 
         sendEmail(toAddress, subject, content);
     }
