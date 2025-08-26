@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface DocumentRequestRepository extends JpaRepository<DocumentRequest, Long> {
@@ -40,4 +41,5 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
             @Param("oneDayLater") LocalDateTime oneDayLater);
 
     List<DocumentRequest> findByStatusAndRequestDate(DocumentStatus status, LocalDateTime requestDate);
+    void deleteByStatusAndRequestDate(Set<DocumentStatus> status, LocalDateTime requestDate);
 }

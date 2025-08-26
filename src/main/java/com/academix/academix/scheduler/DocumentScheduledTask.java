@@ -15,6 +15,7 @@ import javax.print.Doc;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Component
 @Slf4j
@@ -39,6 +40,7 @@ public class DocumentScheduledTask {
         documentScheduler.scheduleAtFixedRate(this::expireOldRequest, Duration.ofDays(1));
     }
 
+    // Send email reminder for request that is ready to pick up before 3 or 1 day of pick up
     private void sendPickupReminders() {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime threeDaysLater = now.plusDays(3).toLocalDate().atStartOfDay();
@@ -52,6 +54,7 @@ public class DocumentScheduledTask {
         }
     }
 
+    // Set request status to EXPIRED if not acted in 30 days
     private void expireOldRequest() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(30);
 
@@ -64,6 +67,11 @@ public class DocumentScheduledTask {
         documentRequestRepository.saveAll(oldRequests);
     }
 
+    private void cleanUpRejectedAndExpiredRequest() {
+        LocalDateTime threshold = LocalDateTime.now().minusYears(1);
+
+        documentRequestRepository.deleteByStatusAndRequestDate(Set.of(DocumentStatus.REJECTED, DocumentStatus.EXPIRED), threshold);
+    }
 
 
 
