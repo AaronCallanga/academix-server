@@ -40,6 +40,6 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
             @Param("threeDaysLater") LocalDateTime threeDaysLater,
             @Param("oneDayLater") LocalDateTime oneDayLater);
 
-    List<DocumentRequest> findByStatusAndRequestDate(DocumentStatus status, LocalDateTime requestDate);
-    void deleteByStatusAndRequestDate(Set<DocumentStatus> status, LocalDateTime requestDate);
+    List<DocumentRequest> findByStatusAndRequestDateBefore(DocumentStatus status, LocalDateTime requestDate);
+    int deleteByStatusInAndRequestDateBefore(Set<DocumentStatus> statuses, LocalDateTime requestDate);
 }

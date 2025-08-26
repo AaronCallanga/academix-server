@@ -53,6 +53,7 @@ public class DocumentScheduledTask {
 
         for (DocumentRequest request : requests) {
             documentEmailService.sendReminder(request.getRequestedBy(), request);
+            log.debug("Sending reminder for requestId={}, pickUpDate={}", request.getId(), request.getPickUpDate());
         }
     }
 
@@ -60,10 +61,11 @@ public class DocumentScheduledTask {
     private void expireOldRequest() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(30);
 
-        List<DocumentRequest> oldRequests = documentRequestRepository.findByStatusAndRequestDate(DocumentStatus.REQUESTED, threshold);
+        List<DocumentRequest> oldRequests = documentRequestRepository.findByStatusAndRequestDateBefore(DocumentStatus.REQUESTED, threshold);
 
         for (DocumentRequest request : oldRequests) {
             request.setStatus(DocumentStatus.EXPIRED);
+            log.debug("Expiring requestId={} requestedAt={}", request.getId(), request.getRequestDate());
         }
 
         documentRequestRepository.saveAll(oldRequests);
@@ -72,13 +74,23 @@ public class DocumentScheduledTask {
     private void cleanUpRejectedAndExpiredRequest() {
         LocalDateTime threshold = LocalDateTime.now().minusYears(1);
 
-        documentRequestRepository.deleteByStatusAndRequestDate(Set.of(DocumentStatus.REJECTED, DocumentStatus.EXPIRED), threshold);
+        int deleted = documentRequestRepository
+                .deleteByStatusInAndRequestDateBefore(
+                        Set.of(DocumentStatus.REJECTED, DocumentStatus.EXPIRED),
+                        threshold
+                                                     );
+        log.info("Deleted {} REJECTED/EXPIRED document requests older than {}", deleted, threshold);
     }
 
     private void cleanUpReleasedRequest() {
         LocalDateTime threshold = LocalDateTime.now().minusYears(3);
 
-        documentRequestRepository.deleteByStatusAndRequestDate(Set.of(DocumentStatus.RELEASED), threshold);
+        int deleted = documentRequestRepository
+                .deleteByStatusInAndRequestDateBefore(
+                        Set.of(DocumentStatus.RELEASED),
+                        threshold
+                                                     );
+        log.info("Deleted {} RELEASED document requests older than {}", deleted, threshold);
     }
 
 
