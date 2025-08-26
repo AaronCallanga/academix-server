@@ -1,6 +1,7 @@
 package com.academix.academix.document.request.repository;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import com.academix.academix.document.request.enums.DocumentStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -37,4 +38,6 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
     List<DocumentRequest> findReadyForPickupByPickupDate(
             @Param("threeDaysLater") LocalDateTime threeDaysLater,
             @Param("oneDayLater") LocalDateTime oneDayLater);
+
+    List<DocumentRequest> findByStatusAndRequestDate(DocumentStatus status, LocalDateTime requestDate);
 }

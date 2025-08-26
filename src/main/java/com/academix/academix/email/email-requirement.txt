@@ -24,11 +24,11 @@ GET	/api/notifications/logs	View sent logs
 Send email when:
     - request expired
     - DocumentScheduledTask = send email 3 days, and 1 day before the confirmed pick up date (status is READY_FOR_PICKUP and
-        pick up date is 3 days before or 1 day before) send also after updating status to READYFORPICKUP
+        pick up date is 3 days before or 1 day before) send also after updating status to READYFORPICKUP        -  test
 
 Scheduled Job
     - setting request status to EXPIRED after 30 days if status is still pending/requested
-    - clean up of expried request (after 1 year?)
-    - clean up of completed request (per 2 year?)
+    - clean up of expried request (after 1 year?) and rejected request(delete)
+    - clean up of completed request (per 2 year?) (status is RELEASED)
 
 

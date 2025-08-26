@@ -32,7 +32,7 @@ public class VerificationTokenScheduledTask {
         tokenScheduler.scheduleAtFixedRate(this::deleteAllExpiredTokens, Duration.ofHours(1));
     }
 
-    public void deleteAllExpiredTokens() {
+    private void deleteAllExpiredTokens() {
         log.info("Running token cleanup at {}", LocalDateTime.now());
         int deleted = tokenService.deleteExpiredTokens();
         log.info("Cleaning up expired tokens on thread {}", Thread.currentThread().getName());     // For testing
