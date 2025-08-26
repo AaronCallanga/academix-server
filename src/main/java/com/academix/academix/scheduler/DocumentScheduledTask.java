@@ -36,6 +36,7 @@ public class DocumentScheduledTask {
     @PostConstruct
     public void init() {
         documentScheduler.scheduleAtFixedRate(this::sendPickupReminders, Duration.ofDays(1));
+        documentScheduler.scheduleAtFixedRate(this::expireOldRequest, Duration.ofDays(1));
     }
 
     private void sendPickupReminders() {
@@ -54,11 +55,13 @@ public class DocumentScheduledTask {
     private void expireOldRequest() {
         LocalDateTime threshold = LocalDateTime.now().minusDays(30);
 
-        List<DocumentRequest> requests = documentRequestRepository.findByStatusAndRequestDate(DocumentStatus.REQUESTED, threshold);
+        List<DocumentRequest> oldRequests = documentRequestRepository.findByStatusAndRequestDate(DocumentStatus.REQUESTED, threshold);
 
-        for (DocumentRequest request : requests) {
-            request.setStatus();
+        for (DocumentRequest request : oldRequests) {
+            request.setStatus(DocumentStatus.EXPIRED);
         }
+
+        documentRequestRepository.saveAll(oldRequests);
     }
 
 
