@@ -31,15 +31,16 @@ public interface DocumentRequestRepository extends JpaRepository<DocumentRequest
     List<DocumentRequest> findRequestCompletedWithoutFeedback(@Param("cutoffDate") LocalDateTime cutoffDate);
 
     @Query("""
-        SELECT dr 
-        FROM DocumentRequest dr 
-        WHERE dr.status = 'READY_FOR_PICKUP' 
-        AND (dr.pickUpDate = :threeDaysLater OR dr.pickUpDate = :oneDayLater)
-          """)
+    SELECT dr 
+    FROM DocumentRequest dr
+    JOIN FETCH dr.requestedBy u
+    WHERE dr.status = 'READY_FOR_PICKUP'
+      AND dr.pickUpDate BETWEEN :oneDayLater AND :threeDaysLater
+    """)
     List<DocumentRequest> findReadyForPickupByPickupDate(
             @Param("threeDaysLater") LocalDateTime threeDaysLater,
             @Param("oneDayLater") LocalDateTime oneDayLater);
 
-    List<DocumentRequest> findByStatusAndRequestDateBefore(DocumentStatus status, LocalDateTime requestDate);
-    int deleteByStatusInAndRequestDateBefore(Set<DocumentStatus> statuses, LocalDateTime requestDate);
+    List<DocumentRequest> findByStatusAndRequestDateBefore(DocumentStatus status, LocalDateTime threshold);
+    int deleteByStatusInAndRequestDateBefore(Set<DocumentStatus> statuses, LocalDateTime threshold);
 }
