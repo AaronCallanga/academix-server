@@ -4,12 +4,7 @@
 4. implement soft-delete, Usually paired with a cleanup policy (e.g., permanently delete after 2 years)
     @Builder.Default
     private boolean archived = false; // Soft delete flag
-5. findByRating
-6. /* make this private?            - check Feedback Service
-       boolean hasUserSubmittedFeedback(Long requestId, Authentication authentication);
-        */
 8. try implement scheduled weekly report, and other nitty gritty
-9. MAke sure that user can only give feedback once per request. no duplicate request
 
 POST	/api/feedback/{requestId}	Submit feedback after claim
 
