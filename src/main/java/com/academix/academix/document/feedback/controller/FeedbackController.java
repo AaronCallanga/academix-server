@@ -3,6 +3,7 @@ package com.academix.academix.document.feedback.controller;
 import com.academix.academix.document.feedback.dto.request.FeedbackRequestDTO;
 import com.academix.academix.document.feedback.dto.response.FeedbackResponseDTO;
 import com.academix.academix.document.feedback.facade.api.FeedbackFacade;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
