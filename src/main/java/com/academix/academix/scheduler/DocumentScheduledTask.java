@@ -66,6 +66,7 @@ public class DocumentScheduledTask {
 
         for (DocumentRequest request : oldRequests) {
             request.setStatus(DocumentStatus.EXPIRED);
+            documentEmailService.notifyDocumentUpdate(request.getRequestedBy(), request);
             log.debug("Expiring requestId={} requestedAt={}", request.getId(), request.getRequestDate());
         }
 
