@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,8 +23,10 @@ public class FeedbackController {
     private final FeedbackFacade feedbackFacade;
 
     @PostMapping("/documents/{documentRequestId}")
-    public ResponseEntity<FeedbackResponseDTO> submitFeedback(@Valid @RequestBody FeedbackRequestDTO feedbackRequestDTO, @PathVariable Long documentRequestId) {
-        FeedbackResponseDTO feedbackResponseDTO = feedbackFacade.submitFeedback(documentRequestId, feedbackRequestDTO);
+    public ResponseEntity<FeedbackResponseDTO> submitFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO,
+                                                              @PathVariable Long documentRequestId,
+                                                              Authentication authentication) {
+        FeedbackResponseDTO feedbackResponseDTO = feedbackFacade.submitFeedback(documentRequestId, feedbackRequestDTO, authentication);
         return new ResponseEntity<>(feedbackResponseDTO, HttpStatus.CREATED);
     }
 

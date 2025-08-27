@@ -20,3 +20,27 @@ POST	/api/notifications/send-email	Send email manually
 POST	/api/notifications/send-sms	Send SMS manually
 GET	/api/notifications/logs	View sent logs
 
+
+Send email when:
+    - request expired
+
+Scheduled Job
+
+
+    1. Create a archive_request table and archive_feedback
+    2. every time you delete a request, put the feedback and request to the the archive table
+    3. then delete the original request and feedback data in the request/feedback table
+
+2. Manually delete feedback first (controlled cleanup)
+If you want more control (e.g., archive feedback before deleting request):
+Create a cleaning service:
+java
+Copy
+Edit
+@Transactional
+public void deleteRequestAndFeedback(Long requestId) {
+    feedbackRepository.deleteByDocumentRequestId(requestId);
+    documentRequestRepository.deleteById(requestId);
+}
+
+

@@ -8,5 +8,5 @@ import jakarta.mail.MessagingException;
 import java.io.UnsupportedEncodingException;
 
 public interface AuthEmailService extends EmailService {
-    void sendVerification(User user, String link, VerificationToken token) throws MessagingException, UnsupportedEncodingException;
+    void sendVerification(User user, String link, VerificationToken token);
 }

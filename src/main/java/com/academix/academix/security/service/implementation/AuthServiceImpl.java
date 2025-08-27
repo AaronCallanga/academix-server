@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Transactional
     @Override
-    public String register(RegisterRequestDTO registerRequestDTO, String baseUrl) throws MessagingException, UnsupportedEncodingException {
+    public String register(RegisterRequestDTO registerRequestDTO, String baseUrl){
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
             throw new ConflictException("User already exist!");
         }
@@ -117,7 +117,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override   // only for logged in
-    public String resendVerification(Authentication authentication, String baseUrl) throws MessagingException, UnsupportedEncodingException {
+    public String resendVerification(Authentication authentication, String baseUrl) {
         String email;
         if (authentication.getPrincipal() instanceof Jwt jwt) {
             email = jwt.getClaim("sub"); // or "email", depending on your JWT structure

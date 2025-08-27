@@ -1,6 +1,7 @@
 package com.academix.academix.document.feedback.entity;
 
 import com.academix.academix.document.request.entity.DocumentRequest;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -13,6 +14,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -29,6 +32,7 @@ public class Feedback {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "document_request_id", nullable = false, unique = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DocumentRequest documentRequest;
 
     @Column(nullable = false) //add validation 1-5 only
