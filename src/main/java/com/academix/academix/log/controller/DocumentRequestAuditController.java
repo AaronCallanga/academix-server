@@ -6,6 +6,7 @@ import com.academix.academix.log.facade.api.DocumentRequestAuditFacade;
 import com.academix.academix.log.service.api.DocumentRequestAuditService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/audit")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR')")
 public class DocumentRequestAuditController {
    private final DocumentRequestAuditFacade documentRequestAuditFacade;
 

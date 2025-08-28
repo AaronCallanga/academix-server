@@ -52,13 +52,13 @@ public class SecurityConfig {
             "/api/v1/admin/feedbacks/**",
     };
     private static final String[] ADMIN_AND_REGISTRAR_ENDPOINTS = {
-            "/api/v1/admin/documents/**"
+            "/api/v1/admin/documents/**",
+            "/api/v1/audit/**"
     };
     private static final String[] COMMON_ENDPOINTS = {
             "/api/v1/feedbacks/**",
             "/api/v1/remarks/**",
             "/api/v1/documents/**",
-            "/api/v1/audit/**"
     };
 
     @Bean
