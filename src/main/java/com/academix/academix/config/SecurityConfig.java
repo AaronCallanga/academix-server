@@ -50,6 +50,8 @@ public class SecurityConfig {
     // === Role-based Endpoints ===
     private static final String[] ADMIN_ENDPOINTS = {
             "/api/v1/admin/feedbacks/**",
+    };
+    private static final String[] ADMIN_AND_REGISTRAR_ENDPOINTS = {
             "/api/v1/admin/documents/**"
     };
     private static final String[] COMMON_ENDPOINTS = {
@@ -110,6 +112,7 @@ public class SecurityConfig {
                                 .requestMatchers(SWAGGER_WHITELIST).permitAll()
                                 .requestMatchers(AUTH_WHITELIST).permitAll()
                                 .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
+                                .requestMatchers(ADMIN_AND_REGISTRAR_ENDPOINTS).hasAnyRole("ADMIN", "REGISTRAR")
                                 .requestMatchers(COMMON_ENDPOINTS).hasAnyRole("ADMIN", "REGISTRAR", "STUDENT")
                                 .anyRequest().authenticated()
                                       )

@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/admin/documents")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR')")
 public class AdminDocumentRequestController {
     private final AdminDocumentRequestFacade adminDocumentRequestFacade;
 
@@ -84,7 +86,7 @@ public class AdminDocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
-    @PatchMapping("/{requestId}/admin")
+    @PatchMapping("/{requestId}/update")
     public ResponseEntity<DocumentRequestResponseDTO> adminUpdateDocumentRequest(@PathVariable Long requestId, @Valid @RequestBody DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = adminDocumentRequestFacade.adminUpdateDocumentRequest(requestId, documentRequestAdminUpdateDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
