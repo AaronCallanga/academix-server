@@ -37,6 +37,28 @@ public class SecurityConfig {
     @Value("${security.jwt.public-key}")
     private RSAPublicKey publicKey;
 
+    // === Public Endpoints ===
+    private static final String[] SWAGGER_WHITELIST = {
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs.yaml"
+    };
+    private static final String[] AUTH_WHITELIST = {
+            "/api/v1/auth/**"
+    };
+    // === Role-based Endpoints ===
+    private static final String[] ADMIN_ENDPOINTS = {
+            "/api/v1/admin/feedbacks/**",
+            "/api/v1/admin/documents/**"
+    };
+    private static final String[] COMMON_ENDPOINTS = {
+            "/api/v1/feedbacks/**",
+            "/api/v1/remarks/**",
+            "/api/v1/documents/**",
+            "/api/v1/audit/**"
+    };
+
     @Bean
     public JwtDecoder jwtDecoder() {
         return NimbusJwtDecoder.withPublicKey(publicKey).build();
@@ -85,9 +107,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2ResourceServer(rs -> rs.jwt(Customizer.withDefaults()))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs.yaml").permitAll()
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .anyRequest().authenticated())
+                                .requestMatchers(SWAGGER_WHITELIST).permitAll()
+                                .requestMatchers(AUTH_WHITELIST).permitAll()
+                                .requestMatchers(ADMIN_ENDPOINTS).hasRole("ADMIN")
+                                .requestMatchers(COMMON_ENDPOINTS).hasAnyRole("ADMIN", "REGISTRAR", "STUDENT")
+                                .anyRequest().authenticated()
+                                      )
                 .build();
     }
 }
