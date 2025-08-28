@@ -40,6 +40,7 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
     @PatchMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
