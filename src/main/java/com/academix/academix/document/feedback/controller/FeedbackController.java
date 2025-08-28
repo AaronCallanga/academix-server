@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class FeedbackController {
     private final FeedbackFacade feedbackFacade;
 
     @PostMapping("/documents/{documentRequestId}")
+    @PreAuthorize("hasRole('STUDENT')")
     public ResponseEntity<FeedbackResponseDTO> submitFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO,
                                                               @PathVariable Long documentRequestId,
                                                               Authentication authentication) {
@@ -30,6 +32,7 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackResponseDTO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
     @GetMapping("/documents/{documentRequestId}")
     public ResponseEntity<FeedbackResponseDTO> getFeedback(@PathVariable Long documentRequestId) {
         FeedbackResponseDTO feedbackResponseDTO = feedbackFacade.getFeedbackByRequestId(documentRequestId);
