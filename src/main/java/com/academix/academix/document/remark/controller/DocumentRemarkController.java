@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/remarks")
 @RequiredArgsConstructor
+@PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
 public class DocumentRemarkController {
 
     private final DocumentRemarkFacade documentRemarkFacade;
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
     @GetMapping("/{requestId}")
     public ResponseEntity<Page<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(
             @PathVariable Long requestId,
@@ -40,7 +40,6 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
     @PatchMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
