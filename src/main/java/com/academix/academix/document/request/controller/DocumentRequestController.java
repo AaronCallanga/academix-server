@@ -60,6 +60,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication)")
     @PatchMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.updateDocumentRequest(updateDocumentRequestDTO, requestId, authentication);
