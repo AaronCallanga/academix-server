@@ -67,6 +67,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication)")
     @DeleteMapping("/{requestId}")
     public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         documentRequestFacade.deleteDocumentRequest(requestId, authentication, reasonDto);
