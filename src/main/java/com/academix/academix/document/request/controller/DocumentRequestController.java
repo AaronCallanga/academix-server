@@ -53,6 +53,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping
     public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@Valid @RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.createDocumentRequest(createDocumentRequestDTO, authentication);
