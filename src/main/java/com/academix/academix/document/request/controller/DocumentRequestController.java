@@ -74,6 +74,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @PatchMapping("/{requestId}/cancel")
     public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.cancelDocumentRequest(requestId, authentication, reasonDto);
