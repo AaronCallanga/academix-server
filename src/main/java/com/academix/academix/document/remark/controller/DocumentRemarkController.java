@@ -55,6 +55,8 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
+    // check if the to delete remarks (fetched by remarkId) author.id is equal to the authenticated.id
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT') and @permissionEvaluator.isOwnerOfRemark(#remarksId, authentication)")
     @DeleteMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<Void> deleteDocumentRemark(@PathVariable Long remarksId, @PathVariable Long requestId) {
         documentRemarkFacade.deleteRemark(requestId, remarksId);
