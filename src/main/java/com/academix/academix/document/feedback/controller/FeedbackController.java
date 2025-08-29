@@ -32,8 +32,7 @@ public class FeedbackController {
         return new ResponseEntity<>(feedbackResponseDTO, HttpStatus.CREATED);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('REGISTRAR') or " +
-            "(hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication))")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication))")
     @GetMapping("/documents/{documentRequestId}")
     public ResponseEntity<FeedbackResponseDTO> getFeedback(@PathVariable Long documentRequestId) {
         FeedbackResponseDTO feedbackResponseDTO = feedbackFacade.getFeedbackByRequestId(documentRequestId);
