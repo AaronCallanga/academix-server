@@ -48,6 +48,7 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarkResponseDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @PostMapping("/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> addDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long requestId, Authentication authentication) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.addRemark(requestId, documentRemarkRequestDTO, authentication);
