@@ -46,6 +46,7 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @GetMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.getDocumentRequestById(requestId);
