@@ -41,6 +41,8 @@ public class DocumentRemarkController {
         return new ResponseEntity<>(documentRemarks, HttpStatus.OK);
     }
 
+    // check if the to update remarks (fetched by remarkId) author.id is equal to the authenticated.id
+
     @PatchMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.updateRemark(documentRemarkRequestDTO, remarksId, requestId);
