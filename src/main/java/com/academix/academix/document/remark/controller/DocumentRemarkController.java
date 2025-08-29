@@ -23,11 +23,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/remarks")
 @RequiredArgsConstructor
-@PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT')")
 public class DocumentRemarkController {
 
     private final DocumentRemarkFacade documentRemarkFacade;
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('REGISTRAR') or " +
+            "(hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @GetMapping("/{requestId}")
     public ResponseEntity<Page<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(
             @PathVariable Long requestId,

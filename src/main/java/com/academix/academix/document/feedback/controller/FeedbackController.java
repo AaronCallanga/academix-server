@@ -24,7 +24,7 @@ public class FeedbackController {
     private final FeedbackFacade feedbackFacade;
 
     @PostMapping("/documents/{documentRequestId}")
-    @PreAuthorize("hasRole('STUDENT') and @feedbackPermissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication)")
+    @PreAuthorize("hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication)")
     public ResponseEntity<FeedbackResponseDTO> submitFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO,
                                                               @PathVariable Long documentRequestId,
                                                               Authentication authentication) {
@@ -33,7 +33,7 @@ public class FeedbackController {
     }
 
     @PreAuthorize("hasRole('ADMIN') or hasRole('REGISTRAR') or " +
-            "(hasRole('STUDENT') and @feedbackPermissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication))")
+            "(hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#documentRequestId, authentication))")
     @GetMapping("/documents/{documentRequestId}")
     public ResponseEntity<FeedbackResponseDTO> getFeedback(@PathVariable Long documentRequestId) {
         FeedbackResponseDTO feedbackResponseDTO = feedbackFacade.getFeedbackByRequestId(documentRequestId);

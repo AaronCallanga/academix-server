@@ -1,20 +1,16 @@
 package com.academix.academix.security.util;
 
-import com.academix.academix.document.feedback.entity.Feedback;
-import com.academix.academix.document.feedback.repository.FeedbackRepository;
 import com.academix.academix.document.request.entity.DocumentRequest;
-import com.academix.academix.document.request.repository.DocumentRequestRepository;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Component
-public class FeedbackPermissionEvaluator {
+public class PermissionEvaluator {
 
     private final DocumentRequestService documentRequestService;
     private final UserService userService;
