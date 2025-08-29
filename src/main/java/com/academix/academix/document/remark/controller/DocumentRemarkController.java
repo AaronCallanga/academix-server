@@ -27,8 +27,7 @@ public class DocumentRemarkController {
 
     private final DocumentRemarkFacade documentRemarkFacade;
 
-    @PreAuthorize("hasRole('ADMIN') or hasRole('REGISTRAR') or " +
-            "(hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @GetMapping("/{requestId}")
     public ResponseEntity<Page<DocumentRemarkResponseDTO>> getAllDocumentRemarksByRequestId(
             @PathVariable Long requestId,
@@ -42,7 +41,7 @@ public class DocumentRemarkController {
     }
 
     // check if the to update remarks (fetched by remarkId) author.id is equal to the authenticated.id
-
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR', 'STUDENT') and @permissionEvaluator.isOwnerOfRemark(#remarksId, authentication)")
     @PatchMapping("/{remarksId}/documents/{requestId}")
     public ResponseEntity<DocumentRemarkResponseDTO> updateDocumentRemark(@Valid @RequestBody DocumentRemarkRequestDTO documentRemarkRequestDTO, @PathVariable Long remarksId, @PathVariable Long requestId) {
         DocumentRemarkResponseDTO documentRemarkResponseDTO = documentRemarkFacade.updateRemark(documentRemarkRequestDTO, remarksId, requestId);

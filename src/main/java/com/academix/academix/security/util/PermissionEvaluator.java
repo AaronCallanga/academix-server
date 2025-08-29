@@ -5,6 +5,7 @@ import com.academix.academix.document.remark.repository.DocumentRemarkRepository
 import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
+import com.academix.academix.exception.types.ResourceNotFoundException;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.service.api.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +30,7 @@ public class PermissionEvaluator {
     public boolean isOwnerOfRemark(Long remarksId, Authentication authentication) {
         User authenticatedUser = userService.getUserFromAuthentication(authentication);
         DocumentRemark documentRemark = documentRemarkRepository.findById(remarksId)
-                .orElseThrow(() -> new RuntimeException("Document remark not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Document remark not found"));
         return documentRemark.getAuthor().getId().equals(authenticatedUser.getId());
     }
 }
