@@ -24,7 +24,7 @@ public class FeedbackController {
     private final FeedbackFacade feedbackFacade;
 
     @PostMapping("/documents/{documentRequestId}")
-    @PreAuthorize("hasRole('STUDENT')")
+    @PreAuthorize("hasRole('STUDENT') and @feedbackPermissionEvaluator.isOwner()")
     public ResponseEntity<FeedbackResponseDTO> submitFeedback(@RequestBody FeedbackRequestDTO feedbackRequestDTO,
                                                               @PathVariable Long documentRequestId,
                                                               Authentication authentication) {
