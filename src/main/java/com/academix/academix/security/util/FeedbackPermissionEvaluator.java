@@ -23,6 +23,6 @@ public class FeedbackPermissionEvaluator {
     public boolean isOwnerOfRequest(Long documentRequestId, Authentication authentication) {
         User authenticatedUser = userService.getUserFromAuthentication(authentication);
         DocumentRequest documentRequest = documentRequestService.getDocumentRequestById(documentRequestId);
-        return documentRequest.getRequestedBy().equals(authenticatedUser);
+        return documentRequest.getRequestedBy().getId().equals(authenticatedUser.getId());
     }
 }
