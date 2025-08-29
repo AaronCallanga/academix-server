@@ -1,6 +1,7 @@
  TODO:
  1. Implement PreAuthorize, RBAC
  2. Only allow specific method for unverified users;
+ 3. Create PermissionEvaluator per domain, use in service layer
 
 
 
