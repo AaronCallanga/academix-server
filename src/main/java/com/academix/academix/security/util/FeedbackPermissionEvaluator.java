@@ -20,7 +20,7 @@ public class FeedbackPermissionEvaluator {
     private final UserService userService;
 
     // authenticated user must only be able to send feedback to their own request,
-    boolean isOwner(Long documentRequestId, Authentication authentication) {
+    public boolean isOwnerOfRequest(Long documentRequestId, Authentication authentication) {
         User authenticatedUser = userService.getUserFromAuthentication(authentication);
         DocumentRequest documentRequest = documentRequestService.getDocumentRequestById(documentRequestId);
         return documentRequest.getRequestedBy().equals(authenticatedUser);
