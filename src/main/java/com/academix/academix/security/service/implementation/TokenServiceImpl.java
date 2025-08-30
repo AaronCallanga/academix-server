@@ -50,6 +50,7 @@ public class TokenServiceImpl implements TokenService {
         verificationTokenRepository.delete(token);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public VerificationToken getToken(String token) {
         return verificationTokenRepository.findByToken(token)
