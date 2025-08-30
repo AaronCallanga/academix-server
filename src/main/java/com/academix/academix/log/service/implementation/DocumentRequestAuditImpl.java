@@ -20,6 +20,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -33,7 +35,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
     @Override
     public void logDocumentRequest(DocumentRequest documentRequest,
                                                               ActorRole actorRole,
@@ -67,6 +69,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
         DocumentRequestAudit savedAudit = documentRequestAuditRepository.save(audit);
         //return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(savedAudit);
     }
+
 
     @Override
     public Page<DocumentRequestAudit> getAllDocumentRequestsByRequestId(Long documentRequestId, PageRequest pageRequest) {
