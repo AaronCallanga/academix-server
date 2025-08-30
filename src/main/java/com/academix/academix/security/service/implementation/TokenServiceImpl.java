@@ -19,6 +19,7 @@ import java.util.UUID;
 public class TokenServiceImpl implements TokenService {
     private final VerificationTokenRepository verificationTokenRepository;
 
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public VerificationToken generateToken(User user) {
         // 1. Delete expired tokens

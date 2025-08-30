@@ -3,6 +3,7 @@
 2. also do unit/integration test for custom impl. just test the edge cases
 3. Implement aop for logging, with annotation custom annotation @Logged
 4. Transaction things
+5. make clean up async and any other task to run in background
 
 
 Entity - User, VerificationToken(one to one with user unidirectional rel)
