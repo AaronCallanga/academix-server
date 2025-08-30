@@ -47,6 +47,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthEmailService authEmailService;
     private final TokenService tokenService;
 
+    @Transactional(readOnly = true)
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         // This triggers your UserDetailsService.loadUserByUsername()
