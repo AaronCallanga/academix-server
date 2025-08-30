@@ -76,6 +76,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
         return documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public DocumentRequestAudit getDocumentRequestAuditDetails(DocumentRequest documentRequest, Long auditId) {
         DocumentRequestAudit documentRequestAudit = documentRequestAuditRepository.findById(auditId)
