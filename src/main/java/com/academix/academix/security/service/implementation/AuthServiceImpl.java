@@ -118,6 +118,7 @@ public class AuthServiceImpl implements AuthService {
         return "User verified successfully";
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override   // only for logged in
     public String resendVerification(Authentication authentication, String baseUrl) {
         String email;
@@ -129,6 +130,7 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         VerificationToken verificationToken = tokenService.generateToken(user);
 
         authEmailService.sendVerification(user, baseUrl, verificationToken);
