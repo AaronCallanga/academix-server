@@ -70,7 +70,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
         //return documentRequestAuditMapper.toDocumentRequestAuditResponseDTO(savedAudit);
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public Page<DocumentRequestAudit> getAllDocumentRequestsByRequestId(Long documentRequestId, PageRequest pageRequest) {
         return documentRequestAuditRepository.findByDocumentRequestId(documentRequestId, pageRequest);
