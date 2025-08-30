@@ -99,7 +99,7 @@ public class AuthServiceImpl implements AuthService {
         return "User registered successfully";
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public String verify(String token) {
         VerificationToken verificationToken = tokenService.getToken(token);
