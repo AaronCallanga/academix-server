@@ -17,7 +17,6 @@ import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
 import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +25,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
@@ -58,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponseDTO(token);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public String register(RegisterRequestDTO registerRequestDTO, String baseUrl){
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {

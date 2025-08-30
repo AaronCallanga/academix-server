@@ -1,8 +1,8 @@
  TODO:
- 1. Implement PreAuthorize, RBAC
- 2. Only allow specific method for unverified users;
- 3. Create PermissionEvaluator per domain, use in service layer
-
+1. test security
+2. also do unit/integration test for custom impl. just test the edge cases
+3. Implement aop for logging, with annotation custom annotation @Logged
+4. Transaction things
 
 
 Entity - User, VerificationToken(one to one with user unidirectional rel)
