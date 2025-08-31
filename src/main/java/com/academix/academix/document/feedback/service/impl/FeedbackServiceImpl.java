@@ -71,6 +71,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return averageRating != null ? averageRating : 0.0;
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Map<Integer, Long> getRatingDistribution() {
         List<Integer> ratings = feedbackRepository.findAllRatings();
