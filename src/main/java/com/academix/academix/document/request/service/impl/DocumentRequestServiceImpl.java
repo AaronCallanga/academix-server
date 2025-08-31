@@ -93,6 +93,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest approveDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
@@ -108,6 +109,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the document request by ID
@@ -123,6 +125,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
        return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest releaseDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
@@ -137,6 +140,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save to database
         return documentRequestRepository.save(documentRequest);
     }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest cancelDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the Document Request Entity
@@ -152,6 +157,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId) {
         // Fetch the document request by ID
@@ -167,6 +173,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId) {
         // Fetch the document request by ID
@@ -183,6 +190,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest adminUpdateDocumentRequest(Long documentRequestId,
                                                                  DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO) {
@@ -196,6 +204,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save to database
         return documentRequestRepository.save(documentRequest);
     }
+
 
     @Override
     public void deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
