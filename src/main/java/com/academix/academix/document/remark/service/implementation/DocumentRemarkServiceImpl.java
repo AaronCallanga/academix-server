@@ -49,6 +49,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         return documentRemarkRepository.save(remark);
     }
 
+    @Transactional
     @Override
     public DocumentRemark addRemark(DocumentRequest documentRequest, DocumentRemarkRequestDTO remarkRequestDTO, User user) {
         // Extract the content from the DTO
