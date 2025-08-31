@@ -20,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -79,6 +80,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(request);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
         // Fetch the document request by ID
