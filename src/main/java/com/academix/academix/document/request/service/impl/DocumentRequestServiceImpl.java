@@ -73,6 +73,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return request;
     }
 
+    @Transactional
     @Override
     public DocumentRequest save(DocumentRequest request) {
         return documentRequestRepository.save(request);
