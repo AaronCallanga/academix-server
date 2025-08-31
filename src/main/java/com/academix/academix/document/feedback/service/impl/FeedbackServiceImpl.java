@@ -58,6 +58,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.findAll(pageRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<Feedback> getFeedbacksByRating(int rating, PageRequest pageRequest) {
         return feedbackRepository.findByRating(rating, pageRequest);
