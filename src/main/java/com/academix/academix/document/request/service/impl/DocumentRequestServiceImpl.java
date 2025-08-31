@@ -205,16 +205,13 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
-
+    @Transactional
     @Override
     public void deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
-        // Retrieve the document request before deleting it (so you can still log it)
-        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
     }
-
+    
     @Override
     public DocumentRequest fetchDocumentRequestById(Long documentRequestId) {
         return documentRequestRepository.findById(documentRequestId)
