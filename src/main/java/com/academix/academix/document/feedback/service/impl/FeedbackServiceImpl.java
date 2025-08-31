@@ -52,7 +52,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                                  .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for request ID: " + requestId));
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public Page<Feedback> getAllFeedbacks(PageRequest pageRequest) {
         return feedbackRepository.findAll(pageRequest);
