@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -25,13 +27,14 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     private final DocumentRemarkRepository documentRemarkRepository;
 
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest) {
         // Fetch the paged data by ID
         return documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRemark updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, DocumentRequest documentRequest) {
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
