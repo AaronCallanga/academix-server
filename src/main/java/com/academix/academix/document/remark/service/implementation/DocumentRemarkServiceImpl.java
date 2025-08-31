@@ -63,6 +63,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         return documentRemarkRepository.save(newRemark);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void deleteRemark(DocumentRequest documentRequest, Long documentRemarkId) {
         // Fetch the remark
