@@ -47,6 +47,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.findByRequestedById(userId, pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRequest> getOwnDocumentRequests(Authentication authentication, PageRequest pageRequest) {
         // Extract the email from the authenticaiton object
