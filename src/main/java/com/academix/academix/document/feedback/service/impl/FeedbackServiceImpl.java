@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +25,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
 
+    @Transactional
     @Override
     public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest) {
         // If status is not RELEASED and CANCELLED, throw exception
@@ -43,6 +45,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.save(feedbackRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Feedback getFeedbackByRequestId(Long requestId) {
         return feedbackRepository.findByDocumentRequest_Id(requestId)

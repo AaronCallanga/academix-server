@@ -35,7 +35,7 @@ public class DocumentRequestAuditImpl implements DocumentRequestAuditService {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW, isolation = Isolation.REPEATABLE_READ)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Override
     public void logDocumentRequest(DocumentRequest documentRequest,
                                                               ActorRole actorRole,
