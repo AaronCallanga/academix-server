@@ -64,6 +64,7 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.findByRating(rating, pageRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Double getAverageRating() {
         Double averageRating = feedbackRepository.findAverageRating();
