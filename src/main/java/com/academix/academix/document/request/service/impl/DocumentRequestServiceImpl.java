@@ -40,6 +40,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.findAll(pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRequest> getUserDocumentRequests(Long userId, PageRequest pageRequest) {
         // Fetch the document request of the user by its ID
