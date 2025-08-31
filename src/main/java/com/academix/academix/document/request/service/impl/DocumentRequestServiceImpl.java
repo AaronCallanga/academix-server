@@ -57,6 +57,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.findByRequestedByEmail(email, pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public DocumentRequest getDocumentRequestById(Long documentRequestId) {
         // Fetch the document request by its ID
