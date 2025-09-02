@@ -2,6 +2,8 @@
 1. test security
 2. also do unit/integration test for custom impl. just test the edge cases
 3. Implement aop for logging, with annotation custom annotation @Logged
+4.     // /api/auth/request-password-reset
+       // /api/auth/reset-password
 5. make clean up async and any other task to run in background
 
 
