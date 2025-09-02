@@ -1,7 +1,6 @@
 package com.academix.academix.user.controller;
 
 import com.academix.academix.user.dto.UserDTO;
-import com.academix.academix.user.entity.User;
 import com.academix.academix.user.mapper.UserMapper;
 import com.academix.academix.user.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
