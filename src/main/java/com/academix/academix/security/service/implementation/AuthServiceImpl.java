@@ -16,7 +16,6 @@ import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
-import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,7 +28,6 @@ import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
