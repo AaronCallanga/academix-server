@@ -2,7 +2,6 @@ package com.academix.academix.security.util;
 
 import com.academix.academix.document.remark.entity.DocumentRemark;
 import com.academix.academix.document.remark.repository.DocumentRemarkRepository;
-import com.academix.academix.document.remark.service.api.DocumentRemarkService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.service.api.DocumentRequestService;
 import com.academix.academix.exception.types.ResourceNotFoundException;
