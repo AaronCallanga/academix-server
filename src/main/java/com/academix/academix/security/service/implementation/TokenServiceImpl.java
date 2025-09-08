@@ -7,6 +7,7 @@ import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.UUID;
 public class TokenServiceImpl implements TokenService {
     private final VerificationTokenRepository verificationTokenRepository;
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public VerificationToken generateToken(User user) {
         // 1. Delete expired tokens
@@ -49,6 +51,7 @@ public class TokenServiceImpl implements TokenService {
         verificationTokenRepository.delete(token);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public VerificationToken getToken(String token) {
         return verificationTokenRepository.findByToken(token)

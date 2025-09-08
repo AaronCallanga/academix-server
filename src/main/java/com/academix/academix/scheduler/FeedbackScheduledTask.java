@@ -1,8 +1,5 @@
 package com.academix.academix.scheduler;
 
-import com.academix.academix.document.feedback.entity.Feedback;
-import com.academix.academix.document.feedback.repository.FeedbackRepository;
-import com.academix.academix.document.feedback.service.api.FeedbackService;
 import com.academix.academix.document.request.entity.DocumentRequest;
 import com.academix.academix.document.request.repository.DocumentRequestRepository;
 import com.academix.academix.email.api.FeedbackEmailService;
@@ -15,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalUnit;
 import java.util.List;
 
 @Component

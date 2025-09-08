@@ -13,6 +13,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,12 +27,14 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
 
     private final DocumentRemarkRepository documentRemarkRepository;
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRemark> getAllDocumentRemarksByRequestId(Long documentRequestId, PageRequest pageRequest) {
         // Fetch the paged data by ID
         return documentRemarkRepository.findByDocumentRequestId(documentRequestId, pageRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRemark updateRemark(DocumentRemarkRequestDTO documentRemarkRequestDTO, Long documentRemarkId, DocumentRequest documentRequest) {
         DocumentRemark remark = documentRemarkRepository.findById(documentRemarkId)
@@ -44,6 +49,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         return documentRemarkRepository.save(remark);
     }
 
+    @Transactional
     @Override
     public DocumentRemark addRemark(DocumentRequest documentRequest, DocumentRemarkRequestDTO remarkRequestDTO, User user) {
         // Extract the content from the DTO
@@ -57,6 +63,7 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
         return documentRemarkRepository.save(newRemark);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public void deleteRemark(DocumentRequest documentRequest, Long documentRemarkId) {
         // Fetch the remark
@@ -88,8 +95,8 @@ public class DocumentRemarkServiceImpl implements DocumentRemarkService {
                              .documentRequest(documentRequest)
                              .timeStamp(LocalDateTime.now())
                              .build();
-
-        return documentRemarkRepository.save(documentRemark);
+        return documentRemark;
+        //return documentRemarkRepository.save(documentRemark);
 
     }
 

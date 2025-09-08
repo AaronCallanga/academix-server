@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -24,6 +26,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     private final FeedbackRepository feedbackRepository;
 
+    @Transactional
     @Override
     public Feedback submitFeedback(DocumentRequest documentRequest, Feedback feedbackRequest) {
         // If status is not RELEASED and CANCELLED, throw exception
@@ -43,29 +46,33 @@ public class FeedbackServiceImpl implements FeedbackService {
         return feedbackRepository.save(feedbackRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Feedback getFeedbackByRequestId(Long requestId) {
         return feedbackRepository.findByDocumentRequest_Id(requestId)
                                  .orElseThrow(() -> new ResourceNotFoundException("Feedback not found for request ID: " + requestId));
     }
 
-
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<Feedback> getAllFeedbacks(PageRequest pageRequest) {
         return feedbackRepository.findAll(pageRequest);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Page<Feedback> getFeedbacksByRating(int rating, PageRequest pageRequest) {
         return feedbackRepository.findByRating(rating, pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Double getAverageRating() {
         Double averageRating = feedbackRepository.findAverageRating();
         return averageRating != null ? averageRating : 0.0;
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Map<Integer, Long> getRatingDistribution() {
         List<Integer> ratings = feedbackRepository.findAllRatings();

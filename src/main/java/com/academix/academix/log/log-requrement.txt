@@ -3,6 +3,7 @@
 3. Batch insert logs instead of per-request inserts if high volume.
 4. implement filtering
 5. Allow logs to exist even request is deleted/remove
+6. Make it async to run in parallel
 
 /api/admin/audit	View audit trail
 /api/admin/export	Export report (PDF, Excel)

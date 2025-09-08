@@ -34,6 +34,18 @@ public class AsyncConfig implements AsyncConfigurer {
         return executor;
     }
 
+    @Bean(name = "logExecutor")
+    public Executor logExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setCorePoolSize(10);
+        executor.setMaxPoolSize(20);
+        executor.setQueueCapacity(30);
+        executor.setThreadNamePrefix("logExecutor-");         // thread factory
+        executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
+        executor.initialize();
+        return executor;
+    }
+
     // you can create more executor based on its domain, use @Async("beanName) for using domain-specific executor
 
     // Default executor

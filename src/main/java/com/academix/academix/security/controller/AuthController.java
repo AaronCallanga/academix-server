@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/resend-token")
-    public ResponseEntity<String> resendVerificationToken(Authentication authentication, HttpServletRequest request) throws MessagingException, UnsupportedEncodingException {
+    public ResponseEntity<String> resendVerificationToken(Authentication authentication, HttpServletRequest request) {
         String baseUrl = request.getRequestURL().toString().replace(request.getRequestURI(), "");
         return new ResponseEntity<>(authService.resendVerification(authentication, baseUrl), HttpStatus.OK);
     }

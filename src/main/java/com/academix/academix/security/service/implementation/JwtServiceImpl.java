@@ -2,7 +2,6 @@ package com.academix.academix.security.service.implementation;
 
 import com.academix.academix.security.service.api.JwtService;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;

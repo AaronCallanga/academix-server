@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ public class DocumentRequestController {
 
     private final DocumentRequestFacade documentRequestFacade;
 
+    @PreAuthorize("hasRole('STUDENT')")
     @GetMapping("/own")
     public ResponseEntity<Page<DocumentRequestResponseListDTO>> getAllOwnDocumentRequests(
             Authentication authentication,
@@ -43,30 +46,35 @@ public class DocumentRequestController {
         return new ResponseEntity<>(documentRequestResponseListDTOS, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @GetMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> getDocumentRequestById(@PathVariable Long requestId) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.getDocumentRequestById(requestId);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('STUDENT')")
     @PostMapping
     public ResponseEntity<DocumentRequestResponseDTO> sendDocumentRequest(@Valid @RequestBody CreateDocumentRequestDTO createDocumentRequestDTO, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.createDocumentRequest(createDocumentRequestDTO, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.CREATED);
     }
 
+    @PreAuthorize("hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication)")
     @PatchMapping("/{requestId}")
     public ResponseEntity<DocumentRequestResponseDTO> updateDocumentRequest(@Valid @RequestBody UpdateDocumentRequestDTO updateDocumentRequestDTO, @PathVariable Long requestId, Authentication authentication) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.updateDocumentRequest(updateDocumentRequestDTO, requestId, authentication);
         return new ResponseEntity<>(documentRequestResponseDTO, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication)")
     @DeleteMapping("/{requestId}")
     public ResponseEntity<Void> deleteDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         documentRequestFacade.deleteDocumentRequest(requestId, authentication, reasonDto);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN', 'REGISTRAR') or (hasRole('STUDENT') and @permissionEvaluator.isOwnerOfRequest(#requestId, authentication))")
     @PatchMapping("/{requestId}/cancel")
     public ResponseEntity<DocumentRequestResponseDTO> cancelDocumentRequest(@PathVariable Long requestId, Authentication authentication, @Valid @RequestBody ReasonDTO reasonDto) {
         DocumentRequestResponseDTO documentRequestResponseDTO = documentRequestFacade.cancelDocumentRequest(requestId, authentication, reasonDto);

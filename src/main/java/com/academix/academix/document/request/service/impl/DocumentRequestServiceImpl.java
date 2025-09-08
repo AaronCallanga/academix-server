@@ -20,6 +20,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,18 +34,21 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
     private final DocumentRequestRepository documentRequestRepository;
     private final DocumentRequestMapper documentRequestMapper;
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRequest> getAllDocumentRequests(PageRequest pageRequest) {
         // Fetch all the document request
         return documentRequestRepository.findAll(pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRequest> getUserDocumentRequests(Long userId, PageRequest pageRequest) {
         // Fetch the document request of the user by its ID
         return documentRequestRepository.findByRequestedById(userId, pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public Page<DocumentRequest> getOwnDocumentRequests(Authentication authentication, PageRequest pageRequest) {
         // Extract the email from the authenticaiton object
@@ -52,6 +58,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.findByRequestedByEmail(email, pageRequest);
     }
 
+    @Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
     @Override
     public DocumentRequest getDocumentRequestById(Long documentRequestId) {
         // Fetch the document request by its ID
@@ -67,11 +74,13 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return request;
     }
 
+    @Transactional
     @Override
     public DocumentRequest save(DocumentRequest request) {
         return documentRequestRepository.save(request);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest updateDocumentRequest(UpdateDocumentRequestDTO documentRequestDTO, Long documentRequestId) {
         // Fetch the document request by ID
@@ -84,6 +93,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest approveDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
@@ -99,6 +109,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest rejectDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the document request by ID
@@ -114,6 +125,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
        return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest releaseDocumentRequest(Long documentRequestId) {
         // Fetch the document request by ID
@@ -128,6 +140,8 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         // Save to database
         return documentRequestRepository.save(documentRequest);
     }
+
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest cancelDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
         // Fetch the Document Request Entity
@@ -143,6 +157,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest setDocumentRequestStatusToReadyForPickup(Long documentRequestId) {
         // Fetch the document request by ID
@@ -158,6 +173,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest setDocumentRequestStatusToInProgress(Long documentRequestId) {
         // Fetch the document request by ID
@@ -174,6 +190,7 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
 
     }
 
+    @Transactional(isolation = Isolation.REPEATABLE_READ)
     @Override
     public DocumentRequest adminUpdateDocumentRequest(Long documentRequestId,
                                                                  DocumentRequestAdminUpdateDTO documentRequestAdminUpdateDTO) {
@@ -188,15 +205,13 @@ public class DocumentRequestServiceImpl implements DocumentRequestService {
         return documentRequestRepository.save(documentRequest);
     }
 
+    @Transactional
     @Override
     public void deleteDocumentRequest(Long documentRequestId, ReasonDTO reasonDto) {
-        // Retrieve the document request before deleting it (so you can still log it)
-        DocumentRequest documentRequest = fetchDocumentRequestById(documentRequestId);
-
         // Delete the document request entity by ID
         documentRequestRepository.deleteById(documentRequestId);
     }
-
+    
     @Override
     public DocumentRequest fetchDocumentRequestById(Long documentRequestId) {
         return documentRequestRepository.findById(documentRequestId)

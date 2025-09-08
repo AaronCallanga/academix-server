@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 @Component
 @Slf4j
-//@RequiredArgsConstructor
 public class VerificationTokenScheduledTask {
 
     private final TaskScheduler tokenScheduler;

@@ -16,8 +16,6 @@ import com.academix.academix.security.service.api.JwtService;
 import com.academix.academix.security.service.api.TokenService;
 import com.academix.academix.user.entity.User;
 import com.academix.academix.user.repository.UserRepository;
-import jakarta.mail.MessagingException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,8 +24,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.io.UnsupportedEncodingException;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -45,6 +45,7 @@ public class AuthServiceImpl implements AuthService {
     private final AuthEmailService authEmailService;
     private final TokenService tokenService;
 
+    @Transactional(readOnly = true)
     @Override
     public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) {
         // This triggers your UserDetailsService.loadUserByUsername()
@@ -58,7 +59,7 @@ public class AuthServiceImpl implements AuthService {
         return new LoginResponseDTO(token);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public String register(RegisterRequestDTO registerRequestDTO, String baseUrl){
         if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent()) {
@@ -97,7 +98,7 @@ public class AuthServiceImpl implements AuthService {
         return "User registered successfully";
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     @Override
     public String verify(String token) {
         VerificationToken verificationToken = tokenService.getToken(token);
@@ -116,6 +117,7 @@ public class AuthServiceImpl implements AuthService {
         return "User verified successfully";
     }
 
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     @Override   // only for logged in
     public String resendVerification(Authentication authentication, String baseUrl) {
         String email;
@@ -127,6 +129,7 @@ public class AuthServiceImpl implements AuthService {
 
         User user = userRepository.findByEmail(email)
                                   .orElseThrow(() -> new ResourceNotFoundException("User not found"));
+
         VerificationToken verificationToken = tokenService.generateToken(user);
 
         authEmailService.sendVerification(user, baseUrl, verificationToken);
