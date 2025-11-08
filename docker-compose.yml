@@ -1,0 +1,34 @@
+services:
+  academix-db:
+    image: postgres:latest
+    environment:
+      POSTGRES_DB: academix
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - ./db-data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d academix" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    networks:
+      - academix
+
+  academix-server:
+    image: pogiii/academix:1.0
+    environment:
+      POSTGRES_URL: academix-db:5432
+      DB_PASSWORD: password
+      DB_USER: user
+    ports:
+      - "8080:8080"
+    networks:
+      - academix
+    depends_on:
+      academix-db:
+        condition: service_healthy
+
+networks:
+  academix:
