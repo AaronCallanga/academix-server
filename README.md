@@ -80,6 +80,4 @@ http://localhost:8080
 
 Feel free to fork this repository and contribute by submitting pull requests. Ensure Docker images build successfully and all tests pass.
 
-
-Do you want me to do that next?
 ```
